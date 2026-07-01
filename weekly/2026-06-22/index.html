@@ -144,7 +144,7 @@
   .case-card .lesson strong { color: var(--lmnd-pink); }
 
   /* QUOTES */
-  .voices-note { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; padding: 14px 18px; background: var(--surface-sunken); border-radius: var(--radius-sm); line-height: 1.6; }
+  .quote-context { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--lmnd-pink); margin-bottom: 8px; }
   .quote-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lmnd-pink); border-radius: var(--radius-md); padding: 20px 24px; box-shadow: var(--shadow-sm); margin-bottom: 14px; display: flex; gap: 18px; }
   .quote-avatar { width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0; object-fit: cover; background: var(--surface-sunken); }
   .quote-avatar.initials { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: white; background: var(--lmnd-pink); }
@@ -426,11 +426,10 @@
 
   <!-- VOICES -->
   <div x-show="tab === 'voices'" x-cloak x-transition>
-    <div class="voices-note">Real, verbatim quotes pulled from three different primary sources this week (not all from one report). Photos are shown only where we could verify them against the person's own bio page — otherwise we show initials rather than guess whose face it is.</div>
-
     <div class="quote-card">
       <img class="quote-avatar" src="https://substackcdn.com/image/fetch/$s_!yd_h!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0cad3dc7-a21e-4356-8bf6-ca3f552a2458_1005x1009.png" alt="Dr Philippa Hardman" onerror="this.outerHTML='<div class=\'quote-avatar initials\'>PH</div>'"/>
       <div>
+        <div class="quote-context">On why AI adoption in L&amp;D is uneven team-to-team:</div>
         <p class="quote-text">"Maturity is rising — but it's far from uniform. Many teams are still early-stage; a small group is sprinting ahead."</p>
         <div class="quote-author">Dr Philippa Hardman</div>
         <div class="quote-role">Learning Scientist · Co-Founder, Epiphany AI</div>
@@ -441,6 +440,7 @@
     <div class="quote-card">
       <div class="quote-avatar initials">JB</div>
       <div>
+        <div class="quote-context">On why one AI enablement plan can't fit every role:</div>
         <p class="quote-text">"Enabling an Uber driver is very different from enabling a middle manager, software engineer, sales rep, or manufacturing worker."</p>
         <div class="quote-author">Josh Bersin</div>
         <div class="quote-role">Global Industry Analyst · Founder, The Josh Bersin Company</div>
@@ -451,6 +451,7 @@
     <div class="quote-card">
       <div class="quote-avatar initials">JD</div>
       <div>
+        <div class="quote-context">On what AI in learning should actually be for:</div>
         <p class="quote-text">"AI should save time for better learning, not fewer people."</p>
         <div class="quote-author">Julie Dirksen</div>
         <div class="quote-role">Learning &amp; Design Consultant · Author, "Talk to the Elephant"</div>

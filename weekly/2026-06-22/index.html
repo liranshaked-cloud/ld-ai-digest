@@ -40,9 +40,8 @@
   .week-nav .arrow { color: var(--border-strong); font-weight: 900; pointer-events: none; }
   .week-nav .arrow.enabled { color: var(--text-primary); pointer-events: auto; text-decoration: none; cursor: pointer; }
   .week-nav .arrow.enabled:hover { color: var(--lmnd-pink); }
-  .slack-pill { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; cursor: help; position: relative; }
-  .slack-pill .tooltip { display: none; position: absolute; top: 130%; right: 0; width: 220px; background: var(--text-primary); color: white; font-size: 11px; font-weight: 600; padding: 10px 12px; border-radius: var(--radius-sm); line-height: 1.5; box-shadow: var(--shadow-md); text-align: left; z-index: 50; }
-  .slack-pill.open .tooltip { display: block; }
+  .slack-pill { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; transition: border-color .15s ease; }
+  .slack-pill:hover { border-color: var(--lmnd-pink); color: var(--text-primary); }
 
   /* HEADER */
   .header { background: var(--surface); padding: 52px 24px 40px; text-align: center; border-bottom: 1px solid var(--border); }
@@ -187,9 +186,7 @@
     <span>Week of Jun 22–28, 2026</span>
     <span class="arrow" id="next-arrow">→</span>
   </div>
-  <span class="slack-pill" id="slack-pill" onclick="this.classList.toggle('open')">📬 Also in Slack
-    <span class="tooltip">Not live yet — Liran needs to create the channel first. Once it exists, new issues post there automatically.</span>
-  </span>
+  <a class="slack-pill" href="https://team-lemonade.slack.com/archives/C0BDZT7EVAT" target="_blank" style="text-decoration:none; cursor:pointer;">📬 #ld-ai-digest on Slack</a>
 </nav>
 
 <!-- HEADER -->
@@ -577,12 +574,6 @@ const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-// Close Slack tooltip when clicking elsewhere
-document.addEventListener('click', (e) => {
-  const pill = document.getElementById('slack-pill');
-  if (pill && !pill.contains(e.target)) pill.classList.remove('open');
-});
 
 // Charts
 const pink = '#FF0083', gray = '#E8E8ED', dark = '#1F1F26';

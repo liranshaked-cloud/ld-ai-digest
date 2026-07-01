@@ -1,0 +1,23 @@
+{
+  "weeks": [
+    {
+      "id": "2026-06-22",
+      "label": "Week of Jun 22–28, 2026",
+      "path": "weekly/2026-06-22/index.html",
+      "theme": "The Confidence Gap",
+      "quote": "AI adoption in L&D just passed 87% — but confidence in what to build next hasn't caught up.",
+      "tags": ["AI Adoption", "Critical Thinking", "Skills Gap", "Internal Mobility", "AI Literacy", "Trust", "Onboarding"],
+      "companies": ["Mastercard", "IBM", "Eightfold AI"],
+      "publishedAt": "2026-07-01",
+      "articles": [
+        { "title": "AI Is Eroding Critical Thinking At Work. The Window Is Closing.", "url": "https://www.forbes.com/sites/chrisrosenberg/2026/05/28/ai-is-eroding-critical-thinking-at-work-the-window-is-closing/", "publisher": "Forbes", "date": "2026-05-28", "tags": ["Critical Thinking", "AI Risk", "Wharton Study"] },
+        { "title": "AI In L&D Has Passed The Tipping Point: Here's What The Data Shows", "url": "https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows", "publisher": "eLearning Industry", "date": "2026-06-15", "tags": ["Adoption Data", "Synthesia Report", "Personalization"] },
+        { "title": "New Research: How AI Transforms $400 Billion Of Corporate Learning", "url": "https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/", "publisher": "Josh Bersin", "date": "2026-02-11", "tags": ["Maturity Model", "Dynamic Enablement"] },
+        { "title": "The TalentLMS 2026 L&D Benchmark Report", "url": "https://www.talentlms.com/research/learning-development-report-2026", "publisher": "TalentLMS", "date": "2026-02-02", "tags": ["Benchmark Survey", "Skills Gap", "Trust"] },
+        { "title": "Internal Job Mobility Becomes Proactive With Help From AI", "url": "https://www.reworked.co/employee-experience/internal-job-mobility-becomes-proactive-with-help-from-ai/", "publisher": "Reworked", "date": "2026-01-16", "tags": ["Internal Mobility", "IBM", "Eightfold AI"] },
+        { "title": "The State of AI in HR 2026 Report", "url": "https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report", "publisher": "SHRM", "date": "2026-03-31", "tags": ["HR Benchmark", "SHRM"] },
+        { "title": "How L&D Should Approach Building AI Literacy in 2026", "url": "https://trainingindustry.com/articles/artificial-intelligence/how-ld-should-approach-building-ai-literacy-in-2026/", "publisher": "Training Industry", "date": "2026-01-06", "tags": ["AI Literacy", "AI Fluency", "Framework"] }
+      ]
+    }
+  ]
+}

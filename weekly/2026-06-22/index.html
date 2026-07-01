@@ -3,48 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Issue #2 — The Confidence Gap | L&D + AI Digest</title>
+<title>Week of Jun 22–28, 2026 — The Confidence Gap | L&D + AI Digest</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --lmnd-pink: #FF0083;
-    --lmnd-pink-tint: rgba(255, 0, 131, 0.07);
-    --lmnd-pink-tint-2: rgba(255, 0, 131, 0.14);
-    --text-primary: #1F1F26;
-    --text-muted: #6B6B75;
-    --text-faint: #9999A2;
-    --surface: #FFFFFF;
-    --surface-alt: #FAFAFB;
-    --surface-sunken: #F4F4F6;
-    --border: #E8E8ED;
-    --border-strong: #D6D6DC;
-    --shadow-sm: 0 1px 2px rgba(20,20,30,0.05);
-    --shadow-md: 0 4px 18px rgba(20,20,30,0.06);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 18px;
+    --lmnd-pink: #FF0083; --lmnd-pink-tint: rgba(255,0,131,0.07); --lmnd-pink-tint-2: rgba(255,0,131,0.14);
+    --text-primary: #1F1F26; --text-muted: #6B6B75; --text-faint: #9999A2;
+    --surface: #FFFFFF; --surface-alt: #FAFAFB; --surface-sunken: #F4F4F6;
+    --border: #E8E8ED; --border-strong: #D6D6DC;
+    --shadow-sm: 0 1px 2px rgba(20,20,30,0.05); --shadow-md: 0 4px 18px rgba(20,20,30,0.06);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px;
   }
+  html { scroll-behavior: smooth; }
   body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
   a { color: var(--text-primary); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
   a:hover { text-decoration-color: var(--text-primary); }
 
   /* NAV */
-  .top-nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(255,255,255,0.92); backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 24px; height: 52px;
-  }
-  .top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; letter-spacing: 0.2px; text-decoration: none; }
+  .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 52px; }
+  .top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; text-decoration: none; }
   .top-nav a:hover { color: var(--lmnd-pink); }
-  .top-nav .nav-right { font-size: 11px; color: var(--text-faint); font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; }
-  .slack-pill {
-    font-size: 11px; font-weight: 700; color: var(--text-muted);
-    background: var(--surface-sunken); border: 1px solid var(--border);
-    padding: 4px 12px; border-radius: 999px;
-  }
+  .week-nav { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--text-faint); font-weight: 700; }
+  .week-nav .arrow { color: var(--border-strong); font-weight: 900; pointer-events: none; }
+  .week-nav .arrow.enabled { color: var(--text-primary); pointer-events: auto; text-decoration: none; cursor: pointer; }
+  .week-nav .arrow.enabled:hover { color: var(--lmnd-pink); }
+  .slack-pill { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; }
+
+  /* SUB NAV (jump links) */
+  .subnav { display: flex; gap: 18px; justify-content: center; padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .subnav a { font-size: 12px; font-weight: 700; color: var(--text-muted); text-decoration: none; letter-spacing: 0.3px; transition: color .15s ease; }
+  .subnav a:hover { color: var(--lmnd-pink); }
 
   /* HEADER */
   .header { background: var(--surface); padding: 56px 24px 44px; text-align: center; border-bottom: 1px solid var(--border); }
@@ -55,45 +44,42 @@
 
   .container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
 
+  /* TL;DR STRIP */
+  .tldr { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; margin: 32px 0; }
+  .tldr-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; box-shadow: var(--shadow-sm); display: flex; gap: 12px; align-items: flex-start; }
+  .tldr-item .emoji { font-size: 20px; line-height: 1; }
+  .tldr-item p { font-size: 13.5px; color: #33333c; line-height: 1.55; }
+  .tldr-item strong { color: var(--lmnd-pink); }
+
   /* INFOGRAPHIC */
-  .infographic-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); margin: 36px auto; overflow: hidden; }
+  .infographic-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); margin: 8px auto 36px; overflow: hidden; }
   .infographic-title { padding: 22px 28px 0; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); }
   .infographic-wrap svg { display: block; width: 100%; height: auto; }
   .infographic-wrap a { text-decoration: none; }
 
   /* NARRATIVE */
   .narrative { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px; box-shadow: var(--shadow-sm); margin-bottom: 28px; }
-  .narrative h2 { font-size: 22px; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.01em; }
-  .narrative p { font-size: 15.5px; color: #33333c; margin-bottom: 14px; line-height: 1.75; }
+  .narrative h2 { font-size: 22px; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+  .narrative p { font-size: 15.5px; color: #33333c; margin-bottom: 14px; line-height: 1.8; }
   .narrative a { font-weight: 700; }
+  .stat-hl { color: var(--lmnd-pink); font-weight: 900; }
 
   /* REALITY CHECK CALLOUT */
-  .reality-check {
-    background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
-    padding: 18px 22px; margin-bottom: 28px;
-  }
-  .reality-check .rc-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 8px; }
-  .reality-check p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+  .reality-check { background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 28px; }
+  .reality-check .rc-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .reality-check .rc-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lmnd-pink); }
+  .reality-check .rc-sub { font-size: 12px; color: var(--text-faint); margin-bottom: 12px; }
+  .reality-check p.rc-body { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
 
   /* SECTION LABEL */
-  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin: 40px 0 16px; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin: 44px 0 16px; display: flex; align-items: center; gap: 8px; }
 
   /* ARTICLE CARDS */
-  .card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
-    box-shadow: var(--shadow-sm); margin-bottom: 22px;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-  }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 22px; transition: box-shadow 0.2s ease, transform 0.2s ease; }
   .card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
   .card-image { width: 100%; height: 210px; object-fit: cover; display: block; background: var(--surface-sunken); }
-  .card-video { position: relative; height: 210px; overflow: hidden; cursor: pointer; }
-  .card-video img { width: 100%; height: 100%; object-fit: cover; }
-  .card-video .play-btn {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    width: 58px; height: 58px; background: rgba(0,0,0,0.7); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .card-video .play-btn::after { content: ''; border-left: 20px solid white; border-top: 12px solid transparent; border-bottom: 12px solid transparent; margin-left: 5px; }
+  .video-embed { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
+  .video-embed iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:0; }
   .card-body { padding: 26px 28px; }
   .card-source { font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px; }
   .card-title { font-size: 18.5px; font-weight: 900; margin-bottom: 10px; line-height: 1.32; }
@@ -103,16 +89,15 @@
   .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .tag { font-size: 11px; font-weight: 700; background: var(--surface-sunken); color: var(--text-muted); padding: 3px 11px; border-radius: 999px; border: 1px solid var(--border); }
 
-  /* VOICES / LINKEDIN */
+  /* QUOTE SPOTLIGHT */
+  .quote-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow-sm); margin-bottom: 16px; display: flex; gap: 18px; }
+  .quote-avatar { width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0; object-fit: cover; background: var(--surface-sunken); }
+  .quote-avatar.initials { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: white; background: var(--lmnd-pink); }
+  .quote-text { font-size: 15px; color: #2a2a32; line-height: 1.6; margin-bottom: 10px; font-style: italic; }
+  .quote-author { font-size: 13.5px; font-weight: 900; }
+  .quote-role { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .quote-link { font-size: 11.5px; font-weight: 700; }
   .voices-note { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; padding: 14px 18px; background: var(--surface-sunken); border-radius: var(--radius-sm); line-height: 1.6; }
-  .spotlight-card {
-    background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lmnd-pink);
-    border-radius: var(--radius-md); padding: 20px 24px; box-shadow: var(--shadow-sm); margin-bottom: 14px;
-  }
-  .spotlight-author { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
-  .spotlight-role { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-  .spotlight-text { font-size: 14px; color: #33333c; line-height: 1.65; }
-  .spotlight-link { font-size: 12px; font-weight: 700; margin-top: 10px; display: inline-block; }
 
   /* LEMONADE ANGLE */
   .lemon-section { background: var(--surface); border-radius: var(--radius-lg); padding: 36px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 44px; }
@@ -120,7 +105,7 @@
   .lemon-section .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 26px; font-style: italic; }
   .lemon-item { margin-bottom: 22px; padding: 20px 22px; border-radius: var(--radius-md); background: var(--lmnd-pink-tint); border: 1px solid var(--lmnd-pink-tint-2); }
   .lemon-item:last-child { margin-bottom: 0; }
-  .lemon-item h3 { font-size: 15px; font-weight: 900; color: var(--text-primary); margin-bottom: 8px; }
+  .lemon-item h3 { font-size: 15px; font-weight: 900; color: var(--text-primary); margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
   .lemon-item p { font-size: 14px; color: #3a3a44; line-height: 1.7; }
 
   footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
@@ -130,32 +115,46 @@
 
 <!-- STICKY NAV -->
 <nav class="top-nav">
-  <div class="nav-left">
-    <a href="../../index.html">← All Issues</a>
+  <a href="../../index.html">← All Issues</a>
+  <div class="week-nav" id="week-nav">
+    <span class="arrow" id="prev-arrow">←</span>
+    <span>Week of Jun 22–28, 2026</span>
+    <span class="arrow" id="next-arrow">→</span>
   </div>
-  <div style="display:flex; align-items:center; gap:14px;">
-    <span class="slack-pill">📬 Also posted in Slack — ask to be added</span>
-    <div class="nav-right">Issue #2 &nbsp;·&nbsp; Jul 7, 2026</div>
-  </div>
+  <span class="slack-pill">📬 Also in Slack</span>
 </nav>
+
+<!-- SUB NAV -->
+<div class="subnav">
+  <a href="#numbers">📊 Numbers</a>
+  <a href="#deep-dives">🔎 Deep Dives</a>
+  <a href="#voices">💬 Voices</a>
+  <a href="#lemonade">🍋 Lemonade Angle</a>
+</div>
 
 <!-- HEADER -->
 <div class="header">
   <div class="brand-mark">L</div>
-  <div class="issue-label">Issue #2 &nbsp;·&nbsp; July 7, 2026</div>
+  <div class="issue-label">Week of June 22–28, 2026</div>
   <h1>The Confidence Gap</h1>
   <div class="theme-quote">AI adoption in L&amp;D just passed 87% — but confidence in what to build next hasn't caught up.</div>
 </div>
 
 <div class="container">
 
+<!-- TL;DR -->
+<div class="tldr">
+  <div class="tldr-item"><span class="emoji">📈</span><p><strong>87%</strong> of L&amp;D teams now use AI — adoption is basically universal.</p></div>
+  <div class="tldr-item"><span class="emoji">⚠️</span><p>But <strong>36%</strong> say it's weakening their own problem-solving.</p></div>
+  <div class="tldr-item"><span class="emoji">🔍</span><p>We fact-checked a viral Mastercard stat — it didn't hold up. Details below.</p></div>
+</div>
+
 <!-- INFOGRAPHIC -->
-<div class="infographic-wrap">
-  <div class="infographic-title">This Week In Numbers — click any stat for its source</div>
+<div class="infographic-wrap" id="numbers">
+  <div class="infographic-title">📊 This Week In Numbers — click any stat for its source</div>
   <svg viewBox="0 0 780 500" xmlns="http://www.w3.org/2000/svg" font-family="Lato, sans-serif">
     <rect x="0" y="0" width="780" height="500" fill="#F4F4F6"/>
 
-    <!-- Top stat boxes -->
     <a href="https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows" target="_blank">
       <rect x="20" y="20" width="235" height="115" rx="12" fill="#FFFFFF" stroke="#D6D6DC"/>
       <text x="137" y="70" text-anchor="middle" font-size="38" font-weight="900" fill="#1F1F26">87%</text>
@@ -177,38 +176,29 @@
       <text x="642" y="110" text-anchor="middle" font-size="10" font-weight="700" fill="#FF0083">↗ Josh Bersin ($400B spend)</text>
     </a>
 
-    <!-- LEFT: bar chart -->
     <rect x="20" y="155" width="360" height="325" rx="12" fill="#FFFFFF" stroke="#D6D6DC"/>
     <a href="https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report" target="_blank">
     <text x="200" y="185" text-anchor="middle" font-size="11.5" font-weight="700" fill="#6B6B75" letter-spacing="0.5">WHERE AI ACTUALLY LIVES IN HR</text>
-
     <text x="46" y="228" font-size="11" fill="#6B6B75" font-weight="700">Recruiting</text>
     <rect x="140" y="213" width="189" height="20" rx="5" fill="#E8E8ED"/>
     <text x="337" y="228" font-size="11" fill="#1F1F26" font-weight="700">27%</text>
-
     <text x="46" y="266" font-size="11" fill="#6B6B75" font-weight="700">HR Tech</text>
     <rect x="140" y="251" width="147" height="20" rx="5" fill="#E8E8ED"/>
     <text x="296" y="266" font-size="11" fill="#1F1F26" font-weight="700">21%</text>
-
     <text x="46" y="304" font-size="11" fill="#6B6B75" font-weight="700">L&amp;D</text>
     <rect x="140" y="289" width="119" height="20" rx="5" fill="#FF0083"/>
     <text x="268" y="304" font-size="11" fill="#FF0083" font-weight="900">17%</text>
-
     <text x="46" y="342" font-size="11" fill="#6B6B75" font-weight="700">Employee Exp.</text>
     <rect x="140" y="327" width="98" height="20" rx="5" fill="#E8E8ED"/>
     <text x="247" y="342" font-size="11" fill="#1F1F26" font-weight="700">14%</text>
-
     <text x="200" y="375" text-anchor="middle" font-size="10.5" fill="#9999A2">Source: SHRM — State of AI in HR 2026</text>
     </a>
-
     <rect x="40" y="400" width="320" height="60" rx="10" fill="#FAFAFB"/>
     <text x="200" y="425" text-anchor="middle" font-size="11.5" fill="#33333c" font-weight="700">L&amp;D's own AI use (17%) still trails</text>
     <text x="200" y="443" text-anchor="middle" font-size="11.5" fill="#33333c" font-weight="700">recruiting and HR tech — worth noting</text>
 
-    <!-- RIGHT: outcomes panel -->
     <rect x="395" y="155" width="365" height="325" rx="12" fill="#1F1F26"/>
     <text x="577" y="185" text-anchor="middle" font-size="11.5" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="0.5">ADOPTION VS. CONFIDENCE</text>
-
     <a href="https://www.talentlms.com/research/learning-development-report-2026" target="_blank">
       <rect x="415" y="200" width="325" height="76" rx="10" fill="rgba(255,255,255,0.06)"/>
       <text x="435" y="235" font-size="30" font-weight="900" fill="#FFFFFF">88%</text>
@@ -216,7 +206,6 @@
       <text x="500" y="245" font-size="11" fill="rgba(255,255,255,0.65)">employees access knowledge</text>
       <text x="435" y="262" font-size="9.5" font-weight="700" fill="#FF6FB8">↗ TalentLMS 2026 Benchmark</text>
     </a>
-
     <a href="https://www.talentlms.com/research/learning-development-report-2026" target="_blank">
       <rect x="415" y="286" width="325" height="76" rx="10" fill="rgba(255,0,131,0.14)" stroke="#FF0083" stroke-width="1"/>
       <text x="435" y="321" font-size="30" font-weight="900" fill="#FFFFFF">36%</text>
@@ -224,7 +213,6 @@
       <text x="500" y="331" font-size="11" fill="rgba(255,255,255,0.75)">independent problem-solving</text>
       <text x="435" y="348" font-size="9.5" font-weight="700" fill="#FF6FB8">↗ TalentLMS 2026 Benchmark</text>
     </a>
-
     <a href="https://www.absorblms.com/company/newsroom/together-trends-report-2026/" target="_blank">
       <rect x="415" y="372" width="325" height="76" rx="10" fill="rgba(255,255,255,0.06)"/>
       <text x="435" y="407" font-size="30" font-weight="900" fill="#FFFFFF">11%</text>
@@ -232,34 +220,34 @@
       <text x="500" y="417" font-size="11" fill="rgba(255,255,255,0.65)">future skills-building strategy</text>
       <text x="435" y="434" font-size="9.5" font-weight="700" fill="#FF6FB8">↗ Absorb LMS / Together 2026</text>
     </a>
-
     <text x="577" y="472" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,0.35)">Pink outline = the friction point this issue is about</text>
   </svg>
 </div>
 
 <!-- OPENING NARRATIVE -->
 <div class="narrative">
-  <h2>Adoption Without Judgment</h2>
-  <p>L&amp;D crossed a real threshold this year. Synthesia's 2026 survey puts AI adoption among learning teams at 87%, with only 2% saying they have no plans to adopt it at all — this isn't an early-adopter story anymore, it's close to universal. TalentLMS's parallel 2026 benchmark finds 88% of HR managers now expect generative AI to fundamentally reshape how employees access knowledge at work.</p>
-  <p>Look one layer beneath the adoption number and a different story shows up. That same TalentLMS report finds 36% of employees say AI is actively weakening their independent problem-solving, and just 11% of learning leaders (per Absorb LMS's "Together" trends report) feel extremely confident in their organization's future skills-building strategy. A Wharton study covered by Forbes this week is more pointed: in controlled tests, employees accepted incorrect AI-generated answers 80% of the time — and did so with high confidence in the wrong answer. Josh Bersin frames the structural version of the same problem: 74% of companies say they aren't keeping pace with skill demand, despite roughly $400B a year going into corporate training.</p>
+  <h2>📝 Adoption Without Judgment</h2>
+  <p>L&amp;D crossed a real threshold this year. Synthesia's 2026 survey puts AI adoption among learning teams at <span class="stat-hl">87%</span>, with only 2% saying they have no plans to adopt it at all — this isn't an early-adopter story anymore, it's close to universal. TalentLMS's parallel 2026 benchmark finds <span class="stat-hl">88%</span> of HR managers now expect generative AI to fundamentally reshape how employees access knowledge at work.</p>
+  <p>Look one layer beneath the adoption number and a different story shows up. That same TalentLMS report finds <span class="stat-hl">36%</span> of employees say AI is actively weakening their independent problem-solving, and just <span class="stat-hl">11%</span> of learning leaders (per Absorb LMS's "Together" trends report) feel extremely confident in their organization's future skills-building strategy. A Wharton study covered by Forbes this week is more pointed: in controlled tests, employees accepted incorrect AI-generated answers <span class="stat-hl">80%</span> of the time — and did so with high confidence in the wrong answer. Josh Bersin frames the structural version of the same problem: <span class="stat-hl">74%</span> of companies say they aren't keeping pace with skill demand, despite roughly $400B a year going into corporate training.</p>
   <p>Put together, this reads less like "AI transformation" and more like adoption that outran judgment. Organizations handed employees a powerful tool faster than they built the muscle to evaluate its output. Training Industry's new framework this week draws a useful line for L&amp;D teams trying to fix this: AI <em>literacy</em> (safe, baseline, responsible use) is not the same as AI <em>fluency</em> (using AI for real advantage) — and most 2026 training programs are still teaching the former while employees need the latter.</p>
   <p>The fix isn't slowing adoption down. It's building the evaluation habit into the workflow itself — the same way IBM and Eightfold AI are now mining real work samples for skills data instead of trusting self-reported profiles (more on that below). Trust the process less, and the output more.</p>
 </div>
 
 <div class="reality-check">
-  <div class="rc-label">Reality Check</div>
-  <p>A widely-shared 2026 stat claims Mastercard's internal AI mobility platform delivered "$21M in savings, 100,000 hours unlocked, 75% of the workforce enrolled." We traced it back to the primary source — a 2022 Josh Bersin Company / Gloat case study — and the real, verified numbers are more modest: 62% of employees registered within two months, 51% explored career paths, 32% saved one. Still a strong result. Just not the one making the rounds this year. If a rollout plan is being built on a secondhand stat, this is the week to go check the primary source.</p>
+  <div class="rc-head"><span class="rc-label">🔍 Reality Check</span></div>
+  <div class="rc-sub">What this is: every issue, we trace one widely-shared stat back to its original source and show what we find — the point is to model the exact "check before you trust it" habit this issue is about.</div>
+  <p class="rc-body">A widely-shared 2026 stat claims Mastercard's internal AI mobility platform delivered "$21M in savings, 100,000 hours unlocked, 75% of the workforce enrolled." We traced it back to the primary source — a 2022 Josh Bersin Company / Gloat case study — and the real, verified numbers are more modest: 62% of employees registered within two months, 51% explored career paths, 32% saved one. Still a strong result. Just not the one making the rounds this year. If a rollout plan is being built on a secondhand stat, this is the week to go check the primary source.</p>
 </div>
 
 <!-- ARTICLE CARDS -->
-<p class="section-label">This Week's Deep Dives</p>
+<p class="section-label" id="deep-dives">🔎 This Week's Deep Dives</p>
 
 <div class="card">
   <img class="card-image" src="https://imageio.forbes.com/specials-images/imageserve/6a188f81fa41b015079fa4ea/Person-in-profile-with-digital-AI-data-overlay-representing-human-cognition-and/0x0.jpg?width=960" alt="AI eroding critical thinking at work" onerror="this.style.display='none'"/>
   <div class="card-body">
     <div class="card-source">Forbes · May 28, 2026 · Chris Rosenberg</div>
     <div class="card-title"><a href="https://www.forbes.com/sites/chrisrosenberg/2026/05/28/ai-is-eroding-critical-thinking-at-work-the-window-is-closing/" target="_blank">AI Is Eroding Critical Thinking At Work. The Window Is Closing.</a></div>
-    <p>Covers Wharton School research on "cognitive surrender" — employees adopting AI outputs with minimal scrutiny. The headline finding: workers accepted incorrect AI answers 80% of the time while remaining highly confident in those (wrong) answers. Also cites Microsoft Research showing higher trust in AI tools correlates with less critical-thinking engagement, as judgment-building tasks get quietly outsourced.</p>
+    <p>Covers Wharton School research on "cognitive surrender" — employees adopting AI outputs with minimal scrutiny. The headline finding: workers accepted incorrect AI answers 80% of the time while remaining highly confident in those (wrong) answers. Also cites Microsoft Research showing higher trust in AI tools correlates with less critical-thinking engagement.</p>
     <div class="card-tags"><span class="tag">Critical Thinking</span><span class="tag">AI Risk</span><span class="tag">Wharton Study</span></div>
   </div>
 </div>
@@ -269,18 +257,20 @@
   <div class="card-body">
     <div class="card-source">eLearning Industry · June 15, 2026 · Kevin Alster</div>
     <div class="card-title"><a href="https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows" target="_blank">AI In L&amp;D Has Passed The Tipping Point: Here's What The Data Shows</a></div>
-    <p>Reports on Synthesia's 2026 survey of 421 L&amp;D professionals (20,000+ data points): 87% already use AI, only 2% have no adoption plans, 57% use it in production workflows. Current use is speed-focused (voice generation 63%, drafting 60%), but 72% of teams expect the next wave of value to come from personalization, not speed.</p>
+    <p>Reports on Synthesia's 2026 survey of 421 L&amp;D professionals (20,000+ data points): 87% already use AI, only 2% have no adoption plans, 57% use it in production workflows. Current use is speed-focused, but 72% of teams expect the next wave of value to come from personalization.</p>
     <div class="card-tags"><span class="tag">Adoption Data</span><span class="tag">Synthesia Report</span><span class="tag">Personalization</span></div>
   </div>
 </div>
 
 <div class="card">
-  <img class="card-image" src="https://joshbersin.com/wp-content/uploads/2026/02/rocket-scaled.jpg" alt="Josh Bersin AI transforms corporate learning" onerror="this.style.display='none'"/>
+  <div class="video-embed">
+    <iframe src="https://www.youtube.com/embed/GvW5nCnzhFs" title="New Research: AI Doesn't Just Improve Corporate Learning—It Replaces It. (Josh Bersin)" allowfullscreen></iframe>
+  </div>
   <div class="card-body">
-    <div class="card-source">Josh Bersin · February 11, 2026</div>
+    <div class="card-source">Josh Bersin · February 11, 2026 · 🎥 Video + Article</div>
     <div class="card-title"><a href="https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/" target="_blank">New Research: How AI Transforms $400 Billion Of Corporate Learning</a></div>
-    <p>Introduces a four-level "Learning Maturity Model" culminating in "Dynamic Enablement" — AI-native, dynamically-generated content replacing static courses. Key finding: 74% of companies aren't keeping pace with skill demand despite $400B in annual training spend. Companies at the top maturity level are far more likely to be innovation leaders.</p>
-    <div class="card-tags"><span class="tag">Maturity Model</span><span class="tag">Dynamic Enablement</span></div>
+    <p>Introduces a four-level "Learning Maturity Model" culminating in "Dynamic Enablement" — AI-native, dynamically-generated content replacing static courses. Key finding: 74% of companies aren't keeping pace with skill demand despite $400B in annual training spend. Bersin covers the same research in the video above (verified: real video from his own channel, @JoshBersinCompany).</p>
+    <div class="card-tags"><span class="tag">Maturity Model</span><span class="tag">Dynamic Enablement</span><span class="tag">Video</span></div>
   </div>
 </div>
 
@@ -289,7 +279,7 @@
   <div class="card-body">
     <div class="card-source">TalentLMS · 2026 Benchmark Report</div>
     <div class="card-title"><a href="https://www.talentlms.com/research/learning-development-report-2026" target="_blank">The TalentLMS 2026 L&amp;D Benchmark Report: The State of Workplace Learning</a></div>
-    <p>88% of HR managers expect generative AI to reshape knowledge access; 84% believe it will help close skills gaps. The counterweight: 47% say their AI training is designed to automate rather than augment jobs, 36% of employees report AI weakening their independent problem-solving, and 22% of learning leaders cite unreliable AI-generated content as a major blocker.</p>
+    <p>88% of HR managers expect generative AI to reshape knowledge access; 84% believe it will help close skills gaps. The counterweight: 47% say their AI training is designed to automate rather than augment jobs, and 36% of employees report AI weakening their independent problem-solving.</p>
     <div class="card-tags"><span class="tag">Benchmark Survey</span><span class="tag">Skills Gap</span><span class="tag">Trust</span></div>
   </div>
 </div>
@@ -299,7 +289,7 @@
   <div class="card-body">
     <div class="card-source">Reworked · January 16, 2026 · Mark Feffer</div>
     <div class="card-title"><a href="https://www.reworked.co/employee-experience/internal-job-mobility-becomes-proactive-with-help-from-ai/" target="_blank">Internal Job Mobility Becomes Proactive With Help From AI</a></div>
-    <p>Internal talent marketplaces are shifting from passive job boards to proactive systems. Names IBM and Eightfold AI as examples of using generative AI to extract richer, more reliable skills data from actual work samples and performance records — rather than manually self-reported profiles that go stale immediately.</p>
+    <p>Internal talent marketplaces are shifting from passive job boards to proactive systems. Names IBM and Eightfold AI as examples of using generative AI to extract richer skills data from actual work samples — rather than manually self-reported profiles that go stale immediately.</p>
     <div class="card-tags"><span class="tag">Internal Mobility</span><span class="tag">IBM</span><span class="tag">Eightfold AI</span></div>
   </div>
 </div>
@@ -308,7 +298,7 @@
   <div class="card-body">
     <div class="card-source">SHRM · State of AI in HR 2026</div>
     <div class="card-title"><a href="https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report" target="_blank">The State of AI in HR 2026 Report</a></div>
-    <p>AI tools are most common in recruiting (27%), HR technology (21%), and learning &amp; development (17%) — least common in DEI, board relations, and ESG/compliance (2% or less each). 92% of CHROs anticipate further AI integration into the workforce this year. Notably, L&amp;D's own AI use still trails recruiting and HR tech.</p>
+    <p>AI tools are most common in recruiting (27%), HR technology (21%), and learning &amp; development (17%) — least common in DEI, board relations, and ESG/compliance. 92% of CHROs anticipate further AI integration into the workforce this year.</p>
     <div class="card-tags"><span class="tag">HR Benchmark</span><span class="tag">SHRM</span></div>
   </div>
 </div>
@@ -318,39 +308,62 @@
   <div class="card-body">
     <div class="card-source">Training Industry · January 6, 2026</div>
     <div class="card-title"><a href="https://trainingindustry.com/articles/artificial-intelligence/how-ld-should-approach-building-ai-literacy-in-2026/" target="_blank">How L&amp;D Should Approach Building AI Literacy in 2026</a></div>
-    <p>Draws a sharp distinction between AI <em>literacy</em> (safe, responsible baseline use) and AI <em>fluency</em> (using AI for real competitive advantage), then lays out a practical framework for building the latter across a workforce — directly relevant to closing the confidence gap this issue is about.</p>
+    <p>Draws a sharp distinction between AI <em>literacy</em> (safe, responsible baseline use) and AI <em>fluency</em> (using AI for real competitive advantage) — directly relevant to closing the confidence gap this issue is about.</p>
     <div class="card-tags"><span class="tag">AI Literacy</span><span class="tag">AI Fluency</span><span class="tag">Framework</span></div>
   </div>
 </div>
 
 <!-- VOICES -->
-<p class="section-label">Voices Worth Following</p>
-<div class="voices-note">LinkedIn's real-time content isn't reliably searchable or verifiable from here, so rather than guess at post engagement numbers, this section points to named experts and their traceable published work.</div>
+<p class="section-label" id="voices">💬 Voices Worth Following</p>
+<div class="voices-note">These are real, verbatim quotes from named contributors to this week's primary research report, cross-checked where possible. Photos are shown only where we could verify them against the person's own bio page — otherwise we show initials rather than guess whose face it is.</div>
 
-<div class="spotlight-card">
-  <div class="spotlight-author">Dr. Philippa Hardman</div>
-  <div class="spotlight-role">Learning scientist · named expert contributor, Synthesia's 2026 AI in L&amp;D report</div>
-  <p class="spotlight-text">One of the named contributors behind this week's headline adoption data — her broader research focus is the gap between AI adoption speed and instructional design quality, which is exactly the tension this issue is tracking.</p>
-  <a class="spotlight-link" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">See the report she contributed to →</a>
+<div class="quote-card">
+  <img class="quote-avatar" src="https://substackcdn.com/image/fetch/$s_!yd_h!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0cad3dc7-a21e-4356-8bf6-ca3f552a2458_1005x1009.png" alt="Dr Philippa Hardman" onerror="this.outerHTML='<div class=\'quote-avatar initials\'>PH</div>'"/>
+  <div>
+    <p class="quote-text">"Maturity is rising — but it's far from uniform. Many teams are still early-stage; a small group is sprinting ahead."</p>
+    <div class="quote-author">Dr Philippa Hardman</div>
+    <div class="quote-role">Learning Scientist · Co-Founder, Epiphany AI</div>
+    <a class="quote-link" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">Source: Synthesia AI in L&amp;D Report 2026 →</a>
+  </div>
+</div>
+
+<div class="quote-card">
+  <img class="quote-avatar" src="https://cdn.prod.website-files.com/65e89895c5a4b8d764c0d70e/65e89895c5a4b8d764c0f78c_Kevin.webp" alt="Kevin Alster" onerror="this.outerHTML='<div class=\'quote-avatar initials\'>KA</div>'"/>
+  <div>
+    <p class="quote-text">"L&amp;D is entering a new 'AI-integrated' era where the real question isn't which tools to use but how to build a learning ecosystem that drives performance."</p>
+    <div class="quote-author">Kevin Alster</div>
+    <div class="quote-role">Strategic Advisor, Synthesia</div>
+    <a class="quote-link" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">Source: Synthesia AI in L&amp;D Report 2026 →</a>
+  </div>
+</div>
+
+<div class="quote-card">
+  <div class="quote-avatar initials">KB</div>
+  <div>
+    <p class="quote-text">"We finally have the tools to create dynamic learning content at a speed and scale we've never seen before."</p>
+    <div class="quote-author">Kristen Budd</div>
+    <div class="quote-role">Instructional Designer, Synthesia</div>
+    <a class="quote-link" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">Source: Synthesia AI in L&amp;D Report 2026 →</a>
+  </div>
 </div>
 
 <!-- LEMONADE ANGLE -->
-<div class="lemon-section">
+<div class="lemon-section" id="lemonade">
   <h2>🍋 Lemonade Angle</h2>
   <p class="subtitle">What this week means for Lemonade's product &amp; engineering L&amp;D</p>
 
   <div class="lemon-item">
-    <h3>1. Build the "why trust this" habit into code review — not a training module</h3>
+    <h3>1️⃣ Build the "why trust this" habit into code review — not a training module</h3>
     <p>Lemonade's engineers are already past the adoption question on AI coding tools. The real risk is the Wharton finding showing up quietly in PRs: an AI suggestion looks confident and syntactically clean, so it gets merged without a second look — especially risky on claims and underwriting logic. Concrete move: add a one-line PR template field for AI-assisted changes — "why do you trust this suggestion?" — cheap, fits in the existing flow of work, and it's the AI-<em>fluency</em> behavior Training Industry describes, not the AI-<em>literacy</em> behavior most engineers already have.</p>
   </div>
 
   <div class="lemon-item">
-    <h3>2. Treat the onboarding wiki as infrastructure, not content — Bersin's "Dynamic Enablement" layer</h3>
+    <h3>2️⃣ Treat the onboarding wiki as infrastructure, not content</h3>
     <p>A 3+ month engineering ramp is a static-content problem, and Bersin's maturity model puts static content on the bottom rung. Instead of another onboarding course, the higher-leverage move is a retrieval layer over what already exists — Slack history, incident runbooks, PR discussions, architecture decisions — that answers a new engineer's actual question in the moment. Same underlying pattern IBM and Eightfold are using for skills data: mine real signals instead of asking people to document things twice.</p>
   </div>
 
   <div class="lemon-item">
-    <h3>3. Mine GitHub activity for internal mobility signals — don't build a skills survey</h3>
+    <h3>3️⃣ Mine GitHub activity for internal mobility signals — don't build a skills survey</h3>
     <p>Mastercard's real, verified numbers (62% registered, 51% explored paths) still show internal marketplaces get genuine engagement without needing inflated results. For ~200 people in product and engineering, a shared skills survey gets filled out once and goes stale. What won't go stale: signals already sitting in GitHub — languages touched, review patterns, on-call history — surfaced as "who's actually been working near X" when a squad needs to staff a project or someone's looking for a lateral move.</p>
   </div>
 </div>
@@ -358,8 +371,24 @@
 </div><!-- /container -->
 
 <footer>
-  L&amp;D + AI Weekly Digest · Issue #2 · July 7, 2026 · Curated for Lemonade · Sources linked throughout — nothing here is invented
+  L&amp;D + AI Weekly Digest · Week of June 22–28, 2026 · Curated for Lemonade · Sources linked throughout — nothing here is invented
 </footer>
+
+<script>
+fetch('../../data/weeks.json')
+  .then(r => r.json())
+  .then(data => {
+    const weeks = (data.weeks || []).slice().sort((a,b) => a.id.localeCompare(b.id));
+    const idx = weeks.findIndex(w => w.id === '2026-06-22');
+    const prev = weeks[idx - 1];
+    const next = weeks[idx + 1];
+    const prevEl = document.getElementById('prev-arrow');
+    const nextEl = document.getElementById('next-arrow');
+    if (prev) { prevEl.classList.add('enabled'); prevEl.onclick = () => location.href = '../../' + prev.path; prevEl.title = prev.label; }
+    if (next) { nextEl.classList.add('enabled'); nextEl.onclick = () => location.href = '../../' + next.path; nextEl.title = next.label; }
+  })
+  .catch(() => {});
+</script>
 
 </body>
 </html>

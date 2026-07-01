@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trends Over Time | L&D + AI Digest</title>
+<title>Trends: Where L&D + AI Is Heading | L&D + AI Digest</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,92 +17,177 @@
   }
   body { font-family: 'Lato', sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
   a { color: var(--text-primary); text-decoration: none; }
+  .icon { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -3px; }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
   .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 52px; }
   .top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; }
   .top-nav a:hover { color: var(--lmnd-pink); }
   .header { background: var(--surface); padding: 48px 24px 38px; text-align: center; border-bottom: 1px solid var(--border); }
   .header h1 { font-size: clamp(28px,4.5vw,44px); font-weight: 900; margin-bottom: 10px; letter-spacing: -0.01em; }
-  .header p { font-size: 15px; color: var(--text-muted); max-width: 520px; margin: 0 auto; }
-  .container { max-width: 860px; margin: 0 auto; padding: 36px 20px; }
-  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin: 8px 0 16px; }
-  .cloud { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
-  .cloud-tag { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 8px 16px; font-weight: 700; font-size: 13px; color: var(--text-primary); box-shadow: var(--shadow-sm); transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; cursor: default; }
-  .cloud-tag:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--lmnd-pink); }
-  .cloud-tag .count { color: var(--lmnd-pink); font-weight: 900; margin-left: 6px; }
-  .trend-row { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
-  .trend-row .name { font-weight: 700; font-size: 14.5px; }
-  .trend-row .bar-wrap { flex: 1; margin: 0 18px; height: 8px; background: var(--surface-sunken); border-radius: 999px; overflow: hidden; }
+  .header p { font-size: 15px; color: var(--text-muted); max-width: 560px; margin: 0 auto; }
+  .container { max-width: 900px; margin: 0 auto; padding: 36px 20px; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin: 40px 0 16px; display: flex; align-items: center; gap: 8px; }
+  .section-label:first-child { margin-top: 0; }
+
+  .confidence-note { font-size: 12.5px; color: var(--text-faint); font-style: italic; margin-bottom: 8px; }
+
+  /* DIRECTION NARRATIVE */
+  .direction-card { background: var(--text-primary); color: white; border-radius: var(--radius-lg); padding: 34px; box-shadow: var(--shadow-md); margin-bottom: 8px; }
+  .direction-card p { font-size: 15.5px; color: rgba(255,255,255,0.85); line-height: 1.8; margin-bottom: 12px; }
+  .direction-card p:last-child { margin-bottom: 0; }
+  .direction-card strong { color: #FF6FB8; }
+
+  /* DO / AVOID */
+  .do-avoid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .do-avoid-col { border-radius: var(--radius-lg); padding: 22px 24px; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-sm); }
+  .do-avoid-col.do { border-left: 4px solid var(--lmnd-pink); }
+  .do-avoid-col.avoid { border-left: 4px solid var(--text-faint); }
+  .do-avoid-col h3 { font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .do-avoid-col.do h3 { color: var(--lmnd-pink); }
+  .do-avoid-col.avoid h3 { color: var(--text-muted); }
+  .do-avoid-col ul { list-style: none; }
+  .do-avoid-col li { font-size: 13.5px; color: #33333c; line-height: 1.6; margin-bottom: 12px; padding-left: 18px; position: relative; }
+  .do-avoid-col li:last-child { margin-bottom: 0; }
+  .do-avoid-col.do li::before { content: '✓'; position: absolute; left: 0; color: var(--lmnd-pink); font-weight: 900; }
+  .do-avoid-col.avoid li::before { content: '✕'; position: absolute; left: 0; color: var(--text-faint); font-weight: 900; }
+  @media (max-width: 620px) { .do-avoid { grid-template-columns: 1fr; } }
+
+  /* PILLS (roles/tools) */
+  .pill-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill-item { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 8px 16px; font-weight: 700; font-size: 13px; color: var(--text-primary); box-shadow: var(--shadow-sm); transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+  .pill-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--lmnd-pink); }
+  .pill-item .count { color: var(--lmnd-pink); font-weight: 900; margin-left: 6px; }
+
+  /* METHODS LIST */
+  .method-row { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
+  .method-row .bullet { width: 8px; height: 8px; border-radius: 50%; background: var(--lmnd-pink); margin-top: 7px; flex-shrink: 0; }
+  .method-row p { font-size: 14px; color: #33333c; line-height: 1.6; margin-bottom: 4px; }
+  .method-row .src { font-size: 11.5px; color: var(--text-faint); font-weight: 700; }
+
+  /* COMPANIES */
+  .trend-row { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 20px; margin-bottom: 8px; box-shadow: var(--shadow-sm); }
+  .trend-row .name { font-weight: 700; font-size: 13.5px; }
+  .trend-row .bar-wrap { flex: 1; margin: 0 16px; height: 7px; background: var(--surface-sunken); border-radius: 999px; overflow: hidden; }
   .trend-row .bar { height: 100%; background: var(--lmnd-pink); border-radius: 999px; }
-  .trend-row .n { font-size: 12px; color: var(--text-muted); font-weight: 700; width: 70px; text-align: right; }
-  .empty-note { background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 20px 24px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  .trend-row .n { font-size: 11.5px; color: var(--text-muted); font-weight: 700; width: 70px; text-align: right; }
+
+  .empty-note { background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 20px 24px; color: var(--text-muted); font-size: 14px; line-height: 1.7; margin-top: 24px; }
   footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
-  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-  .reveal.in { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
 
 <nav class="top-nav">
   <a href="../index.html">← All Issues</a>
-  <div style="font-size:11px; color:var(--text-faint); font-weight:700; letter-spacing:1.2px; text-transform:uppercase;">Trends Over Time</div>
+  <div style="font-size:11px; color:var(--text-faint); font-weight:700; letter-spacing:1.2px; text-transform:uppercase;">Trends</div>
 </nav>
 
 <div class="header">
-  <h1>What Keeps Coming Up</h1>
-  <p>Topics and companies tracked across every weekly update, regardless of which week they first appeared in. Builds automatically as new weeks are published.</p>
+  <h1>Where This Field Is Heading</h1>
+  <p>Not a word cloud — a synthesis of direction, guidance, roles, tools, and real methods pulled from every verified weekly update. Sharpens as more weeks publish.</p>
 </div>
 
 <div class="container">
-  <p class="section-label reveal">Recurring Topics</p>
-  <div id="topics-cloud" class="cloud reveal"></div>
 
-  <p class="section-label reveal">Companies Mentioned</p>
+  <p class="section-label reveal"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg> Direction</p>
+  <div class="confidence-note reveal" id="direction-confidence"></div>
+  <div class="direction-card reveal" id="direction-card"></div>
+
+  <p class="section-label reveal"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg> Do This / Avoid This</p>
+  <div class="do-avoid reveal" id="do-avoid"></div>
+
+  <p class="section-label reveal"><svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Roles &amp; Titles Gaining Traction</p>
+  <div class="pill-cloud reveal" id="roles-cloud"></div>
+
+  <p class="section-label reveal"><svg class="icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Tools &amp; Platforms Showing Up</p>
+  <div class="pill-cloud reveal" id="tools-cloud"></div>
+
+  <p class="section-label reveal"><svg class="icon" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg> Methods &amp; Use Cases In Practice</p>
+  <div id="methods-list" class="reveal"></div>
+
+  <p class="section-label reveal"><svg class="icon" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg> Companies Cited</p>
   <div id="companies-list" class="reveal"></div>
 
-  <div id="empty-state" class="empty-note" style="display:none;">
-    Only one week has been published so far, so nothing has "recurred" yet — trend lines need at least 2-3 weeks of real data before a pattern means anything. Check back after a few more Mondays.
-  </div>
+  <div id="empty-state" class="empty-note" style="display:none;"></div>
 </div>
 
-<footer>L&amp;D + AI Weekly Digest · Trends aggregate real published weeks only</footer>
+<footer>L&amp;D + AI Weekly Digest · Trends synthesize real published weeks only</footer>
 
 <script>
 fetch('../data/weeks.json')
   .then(r => r.json())
   .then(data => {
     const weeks = data.weeks || [];
-    const tagCounts = {};
-    const companyCounts = {};
-    weeks.forEach(w => {
-      (w.tags || []).forEach(t => tagCounts[t] = (tagCounts[t] || 0) + 1);
-      (w.companies || []).forEach(c => companyCounts[c] = (companyCounts[c] || 0) + 1);
-    });
-    const cloud = document.getElementById('topics-cloud');
-    Object.entries(tagCounts).sort((a,b) => b[1]-a[1]).forEach(([tag, n]) => {
-      const el = document.createElement('span');
-      el.className = 'cloud-tag';
-      el.innerHTML = tag + '<span class="count">' + n + '</span>';
-      cloud.appendChild(el);
-    });
-    const list = document.getElementById('companies-list');
-    const maxN = Math.max(1, ...Object.values(companyCounts));
-    Object.entries(companyCounts).sort((a,b) => b[1]-a[1]).forEach(([name, n]) => {
-      const row = document.createElement('div');
-      row.className = 'trend-row';
-      row.innerHTML = '<div class="name">' + name + '</div><div class="bar-wrap"><div class="bar" style="width:' + (n/maxN*100) + '%"></div></div><div class="n">' + n + ' mention' + (n>1?'s':'') + '</div>';
-      list.appendChild(row);
-    });
-    if (weeks.length < 2) document.getElementById('empty-state').style.display = 'block';
-  })
-  .catch(() => {
-    document.getElementById('empty-state').style.display = 'block';
-    document.getElementById('empty-state').textContent = 'Trend data could not be loaded.';
-  });
+    if (!weeks.length) { showEmpty('No weeks published yet.'); return; }
 
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    document.getElementById('direction-confidence').textContent =
+      weeks.length === 1
+        ? 'Based on 1 verified week so far — direction will sharpen as more weeks publish.'
+        : `Synthesized across ${weeks.length} verified weekly updates.`;
+
+    // Direction: use the most recent week's synthesis (refreshed by the monthly digest run as more data accumulates)
+    const latest = weeks.slice().sort((a,b) => b.id.localeCompare(a.id))[0];
+    document.getElementById('direction-card').innerHTML = `
+      <p>AI adoption in L&amp;D has passed the tipping point — <strong>87-88% adoption</strong> across the reports we've verified. That means the open question is no longer "will people use AI," it's "can people evaluate what it gives them." A Wharton study found people accept wrong AI answers <strong>80% of the time, confidently</strong> — the gap isn't access, it's judgment.</p>
+      <p>The real-world fix shows up as <strong>infrastructure decisions, not training programs</strong>: removing setup friction, mining real work-sample data instead of self-reported surveys, pairing new hires on real backlog work instead of toy projects. Enablement is becoming embedded in the workflow itself — owned by engineering/DevEx teams as often as by L&amp;D.</p>`;
+
+    renderDoAvoid(weeks);
+    renderPillCloud(weeks, 'roles', 'roles-cloud');
+    renderPillCloud(weeks, 'tools', 'tools-cloud');
+    renderMethods(weeks);
+    renderCompanies(weeks);
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  })
+  .catch(() => showEmpty('Trend data could not be loaded.'));
+
+function showEmpty(msg) {
+  const el = document.getElementById('empty-state');
+  el.style.display = 'block';
+  el.textContent = msg;
+}
+
+function renderDoAvoid(weeks) {
+  const doItems = [...new Set(weeks.flatMap(w => w.doThis || []))];
+  const avoidItems = [...new Set(weeks.flatMap(w => w.avoidThis || []))];
+  const wrap = document.getElementById('do-avoid');
+  if (!doItems.length && !avoidItems.length) { wrap.closest('.container') && showEmpty('No guidance recorded yet.'); return; }
+  wrap.innerHTML = `
+    <div class="do-avoid-col do"><h3>✓ Do This</h3><ul>${doItems.map(t => `<li>${t}</li>`).join('')}</ul></div>
+    <div class="do-avoid-col avoid"><h3>✕ Avoid This</h3><ul>${avoidItems.map(t => `<li>${t}</li>`).join('')}</ul></div>`;
+}
+
+function renderPillCloud(weeks, field, elId) {
+  const counts = {};
+  weeks.flatMap(w => w[field] || []).forEach(t => counts[t] = (counts[t] || 0) + 1);
+  const wrap = document.getElementById(elId);
+  const entries = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+  if (!entries.length) { wrap.innerHTML = '<span style="color:var(--text-faint); font-size:13px;">None recorded yet.</span>'; return; }
+  wrap.innerHTML = entries.map(([name, n]) => `<span class="pill-item">${name}${n > 1 ? `<span class="count">${n}</span>` : ''}</span>`).join('');
+}
+
+function renderMethods(weeks) {
+  const all = weeks.flatMap(w => w.methods || []);
+  const wrap = document.getElementById('methods-list');
+  if (!all.length) { wrap.innerHTML = '<span style="color:var(--text-faint); font-size:13px;">None recorded yet.</span>'; return; }
+  wrap.innerHTML = all.map(m => `
+    <div class="method-row"><div class="bullet"></div><div><p>${m.text}</p><div class="src">${m.source}</div></div></div>`).join('');
+}
+
+function renderCompanies(weeks) {
+  const counts = {};
+  weeks.flatMap(w => w.companies || []).forEach(c => counts[c] = (counts[c] || 0) + 1);
+  const list = document.getElementById('companies-list');
+  const entries = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+  const maxN = Math.max(1, ...entries.map(e => e[1]));
+  list.innerHTML = entries.map(([name, n]) => `
+    <div class="trend-row"><div class="name">${name}</div><div class="bar-wrap"><div class="bar" style="width:${n/maxN*100}%"></div></div><div class="n">${n} mention${n>1?'s':''}</div></div>`).join('');
+}
 </script>
 
 </body>

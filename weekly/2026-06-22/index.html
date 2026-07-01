@@ -19,6 +19,10 @@
   body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
   a { color: var(--text-primary); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
   a:hover { text-decoration-color: var(--text-primary); }
+  [id] { scroll-margin-top: 108px; }
+
+  /* READING PROGRESS BAR */
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--lmnd-pink); z-index: 200; transition: width 0.1s linear; }
 
   /* NAV */
   .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 52px; }
@@ -28,28 +32,35 @@
   .week-nav .arrow { color: var(--border-strong); font-weight: 900; pointer-events: none; }
   .week-nav .arrow.enabled { color: var(--text-primary); pointer-events: auto; text-decoration: none; cursor: pointer; }
   .week-nav .arrow.enabled:hover { color: var(--lmnd-pink); }
-  .slack-pill { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; }
+  .slack-pill { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; cursor: help; position: relative; }
+  .slack-pill .tooltip { display: none; position: absolute; top: 130%; right: 0; width: 220px; background: var(--text-primary); color: white; font-size: 11px; font-weight: 600; padding: 10px 12px; border-radius: var(--radius-sm); line-height: 1.5; box-shadow: var(--shadow-md); text-align: left; z-index: 50; }
+  .slack-pill.open .tooltip { display: block; }
 
-  /* SUB NAV (jump links) */
-  .subnav { display: flex; gap: 18px; justify-content: center; padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .subnav a { font-size: 12px; font-weight: 700; color: var(--text-muted); text-decoration: none; letter-spacing: 0.3px; transition: color .15s ease; }
-  .subnav a:hover { color: var(--lmnd-pink); }
+  /* SUB NAV (jump links) — sticky beneath top nav, scrollspy-highlighted */
+  .subnav { position: sticky; top: 52px; z-index: 90; display: flex; gap: 4px; justify-content: center; padding: 8px 16px; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .subnav a { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: var(--text-muted); text-decoration: none; letter-spacing: 0.2px; padding: 6px 12px; border-radius: 999px; transition: all .15s ease; }
+  .subnav a .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong); transition: background .15s ease; }
+  .subnav a:hover { color: var(--text-primary); background: var(--surface-sunken); }
+  .subnav a.active { color: var(--lmnd-pink); background: var(--lmnd-pink-tint); }
+  .subnav a.active .dot { background: var(--lmnd-pink); }
 
   /* HEADER */
   .header { background: var(--surface); padding: 56px 24px 44px; text-align: center; border-bottom: 1px solid var(--border); }
   .brand-mark { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: var(--lmnd-pink); border-radius: 9px; color: white; font-weight: 900; font-size: 19px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(255,0,131,0.22); }
   .header .issue-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 14px; }
   .header h1 { font-size: clamp(30px, 4.8vw, 50px); font-weight: 900; margin-bottom: 14px; line-height: 1.12; letter-spacing: -0.01em; }
-  .header .theme-quote { font-size: 16px; color: var(--text-muted); font-style: italic; max-width: 620px; margin: 0 auto; line-height: 1.6; }
+  .header .theme-quote { font-size: 16px; color: var(--text-muted); font-style: italic; max-width: 520px; margin: 0 auto; line-height: 1.6; text-wrap: balance; }
 
   .container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
 
-  /* TL;DR STRIP */
-  .tldr { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; margin: 32px 0; }
-  .tldr-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; box-shadow: var(--shadow-sm); display: flex; gap: 12px; align-items: flex-start; }
+  /* IN THIS ISSUE STRIP (was TL;DR — now real jump links, not duplicate stats) */
+  .tldr { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin: 32px 0; }
+  .tldr-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; box-shadow: var(--shadow-sm); display: flex; gap: 12px; align-items: flex-start; text-decoration: none; color: inherit; transition: all .15s ease; cursor: pointer; }
+  .tldr-item:hover { border-color: var(--lmnd-pink); transform: translateY(-2px); box-shadow: var(--shadow-md); }
   .tldr-item .emoji { font-size: 20px; line-height: 1; }
   .tldr-item p { font-size: 13.5px; color: #33333c; line-height: 1.55; }
   .tldr-item strong { color: var(--lmnd-pink); }
+  .tldr-item .go { font-size: 11px; color: var(--text-faint); font-weight: 700; margin-top: 4px; display: block; }
 
   /* INFOGRAPHIC */
   .infographic-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); margin: 8px auto 36px; overflow: hidden; }
@@ -79,12 +90,21 @@
   .quiz-reveal.show { display: block; }
   .quiz-reveal a { font-weight: 700; }
 
-  /* REALITY CHECK CALLOUT */
-  .reality-check { background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 28px; }
-  .reality-check .rc-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-  .reality-check .rc-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lmnd-pink); }
-  .reality-check .rc-sub { font-size: 12px; color: var(--text-faint); margin-bottom: 12px; }
-  .reality-check p.rc-body { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+  /* REALITY CHECK CALLOUT — claim vs. verified, at a glance */
+  .reality-check { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; margin-bottom: 28px; box-shadow: var(--shadow-sm); }
+  .reality-check .rc-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .reality-check .rc-label { font-size: 15px; font-weight: 900; color: var(--text-primary); }
+  .reality-check .rc-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.5; }
+  .rc-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .rc-col { border-radius: var(--radius-md); padding: 16px 18px; }
+  .rc-col.claim { background: #fdecec; border: 1px solid #f1c2c2; }
+  .rc-col.verified { background: var(--lmnd-pink-tint); border: 1px solid var(--lmnd-pink-tint-2); }
+  .rc-col .rc-tag { font-size: 10.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; display: block; }
+  .rc-col.claim .rc-tag { color: #b3261e; }
+  .rc-col.verified .rc-tag { color: var(--lmnd-pink); }
+  .rc-col p { font-size: 13.5px; color: #33333c; line-height: 1.55; margin: 0; }
+  .reality-check .rc-footer { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
+  @media (max-width: 560px) { .rc-compare { grid-template-columns: 1fr; } }
 
   /* SECTION LABEL */
   .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin: 44px 0 16px; display: flex; align-items: center; gap: 8px; }
@@ -139,6 +159,8 @@
   .case-card h4 { font-size: 17px; font-weight: 900; margin-bottom: 10px; }
   .case-card p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 8px; }
   .case-card .case-result { font-size: 13px; font-weight: 800; background: var(--surface-sunken); border-radius: var(--radius-sm); padding: 8px 14px; display: inline-block; margin-top: 6px; }
+  .case-card .lesson { margin-top: 14px; padding: 12px 16px; background: var(--lmnd-pink-tint); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.6; }
+  .case-card .lesson strong { color: var(--lmnd-pink); }
 
   /* PODCAST */
   .podcast-embed { border-radius: var(--radius-md); overflow: hidden; margin-bottom: 28px; box-shadow: var(--shadow-sm); }
@@ -149,6 +171,8 @@
 </head>
 <body>
 
+<div class="progress-bar" id="progress-bar"></div>
+
 <!-- STICKY NAV -->
 <nav class="top-nav">
   <a href="../../index.html">← All Issues</a>
@@ -157,17 +181,19 @@
     <span>Week of Jun 22–28, 2026</span>
     <span class="arrow" id="next-arrow">→</span>
   </div>
-  <span class="slack-pill">📬 Also in Slack</span>
+  <span class="slack-pill" id="slack-pill" onclick="this.classList.toggle('open')">📬 Also in Slack
+    <span class="tooltip">Not live yet — Liran needs to create the channel first. Once it exists, new issues post there automatically.</span>
+  </span>
 </nav>
 
 <!-- SUB NAV -->
-<div class="subnav">
-  <a href="#numbers">📊 Numbers</a>
-  <a href="#case-files">🕵️ Case Files</a>
-  <a href="#deep-dives">🔎 Deep Dives</a>
-  <a href="#voices">💬 Voices</a>
-  <a href="#domains">🧩 By Function</a>
-  <a href="#lemonade">🍋 Lemonade Angle</a>
+<div class="subnav" id="subnav">
+  <a href="#numbers" data-target="numbers"><span class="dot"></span>Numbers</a>
+  <a href="#case-files" data-target="case-files"><span class="dot"></span>Case Files</a>
+  <a href="#deep-dives" data-target="deep-dives"><span class="dot"></span>Deep Dives</a>
+  <a href="#voices" data-target="voices"><span class="dot"></span>Voices</a>
+  <a href="#domains" data-target="domains"><span class="dot"></span>By Function</a>
+  <a href="#lemonade" data-target="lemonade"><span class="dot"></span>Lemonade Angle</a>
 </div>
 
 <!-- HEADER -->
@@ -175,16 +201,16 @@
   <div class="brand-mark">L</div>
   <div class="issue-label">Week of June 22–28, 2026</div>
   <h1>The Confidence Gap</h1>
-  <div class="theme-quote">AI adoption in L&amp;D just passed 87% — but confidence in what to build next hasn't caught up.</div>
+  <div class="theme-quote">AI adoption in L&amp;D just passed 87% — confidence hasn't caught up.</div>
 </div>
 
 <div class="container">
 
-<!-- TL;DR -->
+<!-- IN THIS ISSUE -->
 <div class="tldr">
-  <div class="tldr-item"><span class="emoji">📈</span><p><strong>87%</strong> of L&amp;D teams now use AI — adoption is basically universal.</p></div>
-  <div class="tldr-item"><span class="emoji">⚠️</span><p>But <strong>36%</strong> say it's weakening their own problem-solving.</p></div>
-  <div class="tldr-item"><span class="emoji">🔍</span><p>We fact-checked a viral Mastercard stat — it didn't hold up. Details below.</p></div>
+  <a class="tldr-item" href="#numbers"><span class="emoji">📊</span><div><p><strong>This week's numbers</strong> — 6 stats, 6 sources, all linked.</p><span class="go">Jump to Numbers →</span></div></a>
+  <a class="tldr-item" href="#case-files"><span class="emoji">🕵️</span><div><p><strong>3 real case studies</strong> — Duolingo, Booking.com, Stripe.</p><span class="go">Jump to Case Files →</span></div></a>
+  <a class="tldr-item" href="#reality-check"><span class="emoji">🔍</span><div><p><strong>We fact-checked</strong> a viral stat — it didn't hold up.</p><span class="go">Jump to Reality Check →</span></div></a>
 </div>
 
 <!-- INFOGRAPHIC -->
@@ -223,9 +249,10 @@
     <text x="46" y="266" font-size="11" fill="#6B6B75" font-weight="700">HR Tech</text>
     <rect x="140" y="251" width="147" height="20" rx="5" fill="#E8E8ED"/>
     <text x="296" y="266" font-size="11" fill="#1F1F26" font-weight="700">21%</text>
-    <text x="46" y="304" font-size="11" fill="#6B6B75" font-weight="700">L&amp;D</text>
-    <rect x="140" y="289" width="119" height="20" rx="5" fill="#FF0083"/>
-    <text x="268" y="304" font-size="11" fill="#FF0083" font-weight="900">17%</text>
+    <circle cx="34" cy="300" r="3.5" fill="#FF0083"/>
+    <text x="46" y="304" font-size="11" fill="#1F1F26" font-weight="900">L&amp;D</text>
+    <rect x="140" y="289" width="119" height="20" rx="5" fill="#E8E8ED" stroke="#FF0083" stroke-width="1.5"/>
+    <text x="268" y="304" font-size="11" fill="#1F1F26" font-weight="700">17%</text>
     <text x="46" y="342" font-size="11" fill="#6B6B75" font-weight="700">Employee Exp.</text>
     <rect x="140" y="327" width="98" height="20" rx="5" fill="#E8E8ED"/>
     <text x="247" y="342" font-size="11" fill="#1F1F26" font-weight="700">14%</text>
@@ -296,10 +323,20 @@ function answerQuiz(btn, isCorrect) {
 }
 </script>
 
-<div class="reality-check">
+<div class="reality-check" id="reality-check">
   <div class="rc-head"><span class="rc-label">🔍 Reality Check</span></div>
-  <div class="rc-sub">What this is: every issue, we trace one widely-shared stat back to its original source and show what we find — the point is to model the exact "check before you trust it" habit this issue is about.</div>
-  <p class="rc-body">A widely-shared 2026 stat claims Mastercard's internal AI mobility platform delivered "$21M in savings, 100,000 hours unlocked, 75% of the workforce enrolled." We traced it back to the primary source — a 2022 Josh Bersin Company / Gloat case study — and the real, verified numbers are more modest: 62% of employees registered within two months, 51% explored career paths, 32% saved one. Still a strong result. Just not the one making the rounds this year. If a rollout plan is being built on a secondhand stat, this is the week to go check the primary source.</p>
+  <div class="rc-sub">A recurring feature: every issue we pick one stat that's going viral and trace it back to where it actually came from. Think of it as a live demo of "check before you trust it."</div>
+  <div class="rc-compare">
+    <div class="rc-col claim">
+      <span class="rc-tag">❌ What's being shared</span>
+      <p>Mastercard's AI mobility platform delivered <strong>"$21M in savings, 100,000 hours unlocked, 75% of the workforce enrolled."</strong></p>
+    </div>
+    <div class="rc-col verified">
+      <span class="rc-tag">✅ What we verified</span>
+      <p>Traced to the primary 2022 Josh Bersin Company / Gloat case study: <strong>62% registered in 2 months, 51% explored career paths, 32% saved one.</strong></p>
+    </div>
+  </div>
+  <p class="rc-footer">Still a strong result — just not the one making the rounds this year. If a rollout plan is being built on a secondhand stat, this is the week to go check the primary source.</p>
 </div>
 
 <!-- CASE FILES -->
@@ -311,6 +348,7 @@ function answerQuiz(btn, isCorrect) {
   <p>Duolingo scaled from 3 core repos to 400+ as it moved to microservices, which fragmented code-review conventions across teams. Rather than a training program, they rolled out <strong>GitHub Copilot</strong> org-wide, built custom bots on GitHub's API to standardize workflows, and used <strong>Codespaces</strong> to kill local environment setup entirely. Named: Jonathan Burket (Sr. Eng Manager), Art Chaidarun (Principal Engineer), Severin Hacker (CTO).</p>
   <span class="case-result">📈 25% faster for engineers new to a repo · review time 3h→1h · setup: hours→~1 min</span>
   <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Vendor case study (GitHub promoting its own product) — but names real people and gives specific, checkable figures. <a href="https://github.com/customer-stories/duolingo" target="_blank">Source →</a></p>
+  <div class="lesson">💡 <strong>L&amp;D Lesson:</strong> the highest-leverage "training" investment here wasn't a course — it was removing friction from the moment of actually doing the work. That's an L&amp;D decision even though no one on the project had an L&amp;D title.</div>
 </div>
 
 <div class="case-card">
@@ -319,6 +357,7 @@ function answerQuiz(btn, isCorrect) {
   <p>Booking.com's first AI coding assistant rollout underperformed — engineers were hesitant, usage lagged. The DevEx team (Bruno Passos, Zane Wright, Amos Haviv) got usage visibility via the DX platform, then built <strong>two-day hands-on workshops + recurring office hours</strong>, and reframed the goal from "adoption" to "frequent, effective use" (12+ days/month).</p>
   <span class="case-result">📈 +65% adoption after the push · daily users had 16% higher PR merge rate</span>
   <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Note: some secondary write-ups cite "3,500 engineers / 150,000 hours saved" for this rollout — we could not confirm those two numbers on DX's own case study pages, so we're leaving them out. <a href="https://getdx.com/customers/booking-drives-ai-adoption-with-dx/" target="_blank">Source →</a></p>
+  <div class="lesson">💡 <strong>L&amp;D Lesson:</strong> giving people the tool is not enablement. Booking.com only saw results after building the exact thing L&amp;D exists to build — structured practice + ongoing support — instead of assuming access equals adoption.</div>
 </div>
 
 <div class="case-card">
@@ -327,6 +366,7 @@ function answerQuiz(btn, isCorrect) {
   <p>Stripe replaced sink-or-swim onboarding with a company-wide program (82 internal instructors, founder Q&amp;As) plus an engineering-specific layer: new engineers join temporary teams for 3-4 weeks, each paired with a senior mentor, working on <strong>real tasks pulled from actual team backlogs</strong>.</p>
   <span class="case-result">📈 94.5% rated first week positive · 90% understood the full stack by program end</span>
   <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);"><a href="https://stripe.com/guides/atlas/scaling-eng" target="_blank">Source →</a></p>
+  <div class="lesson">💡 <strong>L&amp;D Lesson:</strong> real backlog tasks beat toy projects because the mentor relationship and the actual work happen at the same time — this is the "3+ month ramp" problem this issue keeps coming back to, solved with a program design choice, not more content.</div>
 </div>
 
 <!-- ARTICLE CARDS -->
@@ -405,7 +445,7 @@ function answerQuiz(btn, isCorrect) {
 
 <!-- VOICES -->
 <p class="section-label" id="voices">💬 Voices Worth Following</p>
-<div class="voices-note">These are real, verbatim quotes from named contributors to this week's primary research report, cross-checked where possible. Photos are shown only where we could verify them against the person's own bio page — otherwise we show initials rather than guess whose face it is.</div>
+<div class="voices-note">Real, verbatim quotes pulled from three different primary sources this week (not all from one report). Photos are shown only where we could verify them against the person's own bio page — otherwise we show initials rather than guess whose face it is.</div>
 
 <div class="quote-card">
   <img class="quote-avatar" src="https://substackcdn.com/image/fetch/$s_!yd_h!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0cad3dc7-a21e-4356-8bf6-ca3f552a2458_1005x1009.png" alt="Dr Philippa Hardman" onerror="this.outerHTML='<div class=\'quote-avatar initials\'>PH</div>'"/>
@@ -418,22 +458,22 @@ function answerQuiz(btn, isCorrect) {
 </div>
 
 <div class="quote-card">
-  <img class="quote-avatar" src="https://cdn.prod.website-files.com/65e89895c5a4b8d764c0d70e/65e89895c5a4b8d764c0f78c_Kevin.webp" alt="Kevin Alster" onerror="this.outerHTML='<div class=\'quote-avatar initials\'>KA</div>'"/>
+  <div class="quote-avatar initials">JB</div>
   <div>
-    <p class="quote-text">"L&amp;D is entering a new 'AI-integrated' era where the real question isn't which tools to use but how to build a learning ecosystem that drives performance."</p>
-    <div class="quote-author">Kevin Alster</div>
-    <div class="quote-role">Strategic Advisor, Synthesia</div>
-    <a class="quote-link" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">Source: Synthesia AI in L&amp;D Report 2026 →</a>
+    <p class="quote-text">"Enabling an Uber driver is very different from enabling a middle manager, software engineer, sales rep, or manufacturing worker."</p>
+    <div class="quote-author">Josh Bersin</div>
+    <div class="quote-role">Global Industry Analyst · Founder, The Josh Bersin Company</div>
+    <a class="quote-link" href="https://joshbersin.com/2026/03/the-world-of-corporate-training-lurches-toward-enablement/" target="_blank">Source: joshbersin.com, March 2026 →</a>
   </div>
 </div>
 
 <div class="quote-card">
-  <div class="quote-avatar initials">KB</div>
+  <div class="quote-avatar initials">JD</div>
   <div>
-    <p class="quote-text">"We finally have the tools to create dynamic learning content at a speed and scale we've never seen before."</p>
-    <div class="quote-author">Kristen Budd</div>
-    <div class="quote-role">Instructional Designer, Synthesia</div>
-    <a class="quote-link" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">Source: Synthesia AI in L&amp;D Report 2026 →</a>
+    <p class="quote-text">"AI should save time for better learning, not fewer people."</p>
+    <div class="quote-author">Julie Dirksen</div>
+    <div class="quote-role">Learning &amp; Design Consultant · Author, "Talk to the Elephant"</div>
+    <a class="quote-link" href="https://www.talentlms.com/research/learning-development-report-2026" target="_blank">Source: TalentLMS 2026 Benchmark Report →</a>
   </div>
 </div>
 
@@ -530,6 +570,37 @@ fetch('../../data/weeks.json')
     if (next) { nextEl.classList.add('enabled'); nextEl.onclick = () => location.href = '../../' + next.path; nextEl.title = next.label; }
   })
   .catch(() => {});
+</script>
+
+<script>
+// Reading progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress-bar').style.width = scrolled + '%';
+});
+
+// Scrollspy: highlight the active subnav link as sections pass
+const sections = ['numbers','case-files','deep-dives','voices','domains','lemonade']
+  .map(id => document.getElementById(id)).filter(Boolean);
+const navLinks = document.querySelectorAll('#subnav a');
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const link = document.querySelector('#subnav a[data-target="' + entry.target.id + '"]');
+    if (!link) return;
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-110px 0px -70% 0px' });
+sections.forEach(s => spy.observe(s));
+
+// Close Slack tooltip when clicking elsewhere
+document.addEventListener('click', (e) => {
+  const pill = document.getElementById('slack-pill');
+  if (pill && !pill.contains(e.target)) pill.classList.remove('open');
+});
 </script>
 
 </body>

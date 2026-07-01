@@ -89,6 +89,9 @@
   .quiz-reveal { display: none; font-size: 14px; color: #33333c; line-height: 1.65; padding-top: 16px; margin-top: 16px; border-top: 1px dashed var(--border-strong); }
   .quiz-reveal.show { display: block; }
   .quiz-reveal a { font-weight: 700; }
+  .quiz-verdict { display: inline-flex; align-items: center; gap: 8px; font-weight: 900; font-size: 15px; padding: 6px 16px; border-radius: 999px; margin-bottom: 14px; }
+  .quiz-verdict.right { background: var(--lmnd-pink-tint); color: var(--lmnd-pink); }
+  .quiz-verdict.wrong { background: #fdecec; color: #b3261e; }
 
   /* SECTION LABEL */
   .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin: 44px 0 16px; display: flex; align-items: center; gap: 8px; }
@@ -292,7 +295,8 @@
     <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">95%</button>
   </div>
   <div class="quiz-reveal" id="quiz-reveal">
-    <strong>87% — and only 2% have no plans to adopt at all.</strong> That's the number the whole "confidence gap" argument above hinges on: adoption is basically done, trust in the output is the part still being built. Source: <a href="https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows" target="_blank">eLearning Industry / Synthesia 2026 →</a>
+    <div class="quiz-verdict" id="quiz-verdict"></div>
+    <div><strong>87% — and only 2% have no plans to adopt at all.</strong> That's the number the whole "confidence gap" argument above hinges on: adoption is basically done, trust in the output is the part still being built. Source: <a href="https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows" target="_blank">eLearning Industry / Synthesia 2026 →</a></div>
   </div>
 </div>
 <script>
@@ -303,6 +307,9 @@ function answerQuiz(btn, isCorrect) {
     if (o.dataset.correct === 'true') o.classList.add('correct');
     else if (o === btn) o.classList.add('wrong');
   });
+  const verdict = document.getElementById('quiz-verdict');
+  verdict.textContent = isCorrect ? '✅ You got it — nice.' : '❌ Not quite — here\'s the real number:';
+  verdict.className = 'quiz-verdict ' + (isCorrect ? 'right' : 'wrong');
   document.getElementById('quiz-reveal').classList.add('show');
 }
 </script>

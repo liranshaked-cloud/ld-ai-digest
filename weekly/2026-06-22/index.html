@@ -181,7 +181,14 @@
 </style>
 <script data-goatcounter="https://liran-shaked.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
-<body x-data="{ tab: 'case-files' }">
+<body x-data="{ tab: 'case-files' }" x-init="
+  const h = location.hash.replace('#','');
+  if (h.startsWith('lemon')) tab = 'lemonade';
+  else if (h.startsWith('quote')) tab = 'voices';
+  else if (h.startsWith('article')) tab = 'deep-dives';
+  else if (h.startsWith('case')) tab = 'case-files';
+  if (h) $nextTick(() => setTimeout(() => document.getElementById(h)?.scrollIntoView({behavior:'smooth', block:'center'}), 150));
+">
 
 <div class="progress-bar" id="progress-bar"></div>
 
@@ -571,19 +578,19 @@
   <div x-show="tab === 'lemonade'" x-cloak x-transition>
     <div class="lemon-section">
       <p class="subtitle">What this week means for Lemonade's product &amp; engineering L&amp;D</p>
-      <div class="lemon-item">
+      <div class="lemon-item" id="lemon-1">
         <h3>🔀 1. Build the "why trust this" habit into code review</h3>
         <p><span class="label-inline">The signal</span>Lemonade's engineers are already past the adoption question on AI coding tools. The real risk is an AI suggestion that looks confident and syntactically clean getting merged without a second look — <strong>especially risky on claims and underwriting logic</strong>.</p>
         <p><span class="label-inline">The move</span>Add a one-line PR template field for AI-assisted changes: <strong>"why do you trust this suggestion?"</strong> Cheap, fits the existing flow of work.</p>
         <button class="like-btn" data-like-key="2026-06-22-lemon-1"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
-      <div class="lemon-item">
+      <div class="lemon-item" id="lemon-2">
         <h3>🗺️ 2. Treat the onboarding wiki as infrastructure, not content</h3>
         <p><span class="label-inline">The signal</span>A 3+ month engineering ramp is a static-content problem, and Bersin's maturity model puts static content on the bottom rung.</p>
         <p><span class="label-inline">The move</span>Build a <strong>retrieval layer over what already exists</strong> — Slack history, incident runbooks, PR discussions — that answers a new engineer's actual question in the moment.</p>
         <button class="like-btn" data-like-key="2026-06-22-lemon-2"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
-      <div class="lemon-item">
+      <div class="lemon-item" id="lemon-3">
         <h3>🧭 3. Mine GitHub activity for mobility signals, not a survey</h3>
         <p><span class="label-inline">The signal</span>Duolingo and Stripe (see Case Files) show the highest-leverage moves happen inside the actual workflow, not a separate program.</p>
         <p><span class="label-inline">The move</span>For ~200 people in product and engineering, surface "who's actually been working near X" from real GitHub signals — languages touched, review patterns, on-call history — when a squad needs to staff a project or someone wants a lateral move.</p>

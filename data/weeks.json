@@ -39,6 +39,30 @@
         { "title": "Internal Job Mobility Becomes Proactive With Help From AI", "url": "https://www.reworked.co/employee-experience/internal-job-mobility-becomes-proactive-with-help-from-ai/", "publisher": "Reworked", "date": "2026-01-16", "tags": ["Internal Mobility", "IBM", "Eightfold AI"] },
         { "title": "The State of AI in HR 2026 Report", "url": "https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report", "publisher": "SHRM", "date": "2026-03-31", "tags": ["HR Benchmark", "SHRM"] },
         { "title": "How L&D Should Approach Building AI Literacy in 2026", "url": "https://trainingindustry.com/articles/artificial-intelligence/how-ld-should-approach-building-ai-literacy-in-2026/", "publisher": "Training Industry", "date": "2026-01-06", "tags": ["AI Literacy", "AI Fluency", "Framework"] }
+      ],
+      "likeableItems": [
+        { "key": "2026-06-22-stat-87pct", "label": "Stat: 87% L&D teams using AI", "url": "https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows" },
+        { "key": "2026-06-22-stat-80pct", "label": "Stat: 80% accepted wrong AI answers", "url": "https://www.forbes.com/sites/chrisrosenberg/2026/05/28/ai-is-eroding-critical-thinking-at-work-the-window-is-closing/" },
+        { "key": "2026-06-22-stat-12pct", "label": "Stat: only 12% use AI daily", "url": "https://www.chieflearningofficer.com/2026/03/16/from-ai-access-to-workforce-readiness/" },
+        { "key": "2026-06-22-case-duolingo", "label": "Case: Duolingo (Copilot + Codespaces)", "url": "https://github.com/customer-stories/duolingo" },
+        { "key": "2026-06-22-case-booking", "label": "Case: Booking.com (AI enablement)", "url": "https://getdx.com/customers/booking-drives-ai-adoption-with-dx/" },
+        { "key": "2026-06-22-case-stripe", "label": "Case: Stripe (onboarding)", "url": "https://stripe.com/guides/atlas/scaling-eng" },
+        { "key": "2026-06-22-article-forbes", "label": "Article: Forbes — Critical Thinking", "url": "https://www.forbes.com/sites/chrisrosenberg/2026/05/28/ai-is-eroding-critical-thinking-at-work-the-window-is-closing/" },
+        { "key": "2026-06-22-article-elearningindustry", "label": "Article: eLearning Industry", "url": "https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows" },
+        { "key": "2026-06-22-article-bersin", "label": "Article: Josh Bersin ($400B video)", "url": "https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/" },
+        { "key": "2026-06-22-article-clo", "label": "Article: Chief Learning Officer", "url": "https://www.chieflearningofficer.com/2026/03/16/from-ai-access-to-workforce-readiness/" },
+        { "key": "2026-06-22-article-i4cp", "label": "Article: i4cp (Medtronic)", "url": "https://www.i4cp.com/productivity-blog/4-priorities-for-chief-learning-talent-officers-in-2026" },
+        { "key": "2026-06-22-article-360learning", "label": "Article: 360Learning", "url": "https://360learning.com/blog/product-update-ai-companion/" },
+        { "key": "2026-06-22-article-reworked", "label": "Article: Reworked (IBM/Eightfold)", "url": "https://www.reworked.co/employee-experience/internal-job-mobility-becomes-proactive-with-help-from-ai/" },
+        { "key": "2026-06-22-article-shrm", "label": "Article: SHRM", "url": "https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report" },
+        { "key": "2026-06-22-article-trainingindustry", "label": "Article: Training Industry", "url": "https://trainingindustry.com/articles/artificial-intelligence/how-ld-should-approach-building-ai-literacy-in-2026/" },
+        { "key": "2026-06-22-quote-hardman", "label": "Quote: Dr Philippa Hardman", "url": "https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" },
+        { "key": "2026-06-22-quote-bersin", "label": "Quote: Josh Bersin", "url": "https://joshbersin.com/2026/03/the-world-of-corporate-training-lurches-toward-enablement/" },
+        { "key": "2026-06-22-quote-dirksen", "label": "Quote: Julie Dirksen", "url": "https://www.talentlms.com/research/learning-development-report-2026" },
+        { "key": "2026-06-22-quote-bartoli", "label": "Quote: Diane Bartoli", "url": "https://www.hr-brew.com/stories/2025/05/28/workers-ai-learning-effective-use" },
+        { "key": "2026-06-22-lemon-1", "label": "Lemonade Angle #1 — PR trust field", "url": "weekly/2026-06-22/index.html#lemon-1" },
+        { "key": "2026-06-22-lemon-2", "label": "Lemonade Angle #2 — retrieval layer", "url": "weekly/2026-06-22/index.html#lemon-2" },
+        { "key": "2026-06-22-lemon-3", "label": "Lemonade Angle #3 — GitHub mobility signals", "url": "weekly/2026-06-22/index.html#lemon-3" }
       ]
     }
   ]

@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>L&D + AI Weekly Digest</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -101,8 +105,17 @@
 
   footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
   .icon { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -2px; }
-  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* AT A GLANCE — live mini dashboard */
+  .glance-wrap { margin: 32px 0 8px; }
+  .glance { display: grid; grid-template-columns: repeat(3, 1fr) 2fr; gap: 14px; }
+  .glance-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); }
+  .glance-stat .val { font-size: 30px; font-weight: 900; line-height: 1; color: var(--lmnd-pink); margin-bottom: 6px; }
+  .glance-stat .lbl { font-size: 12px; color: var(--text-muted); font-weight: 700; }
+  .glance-chart { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; box-shadow: var(--shadow-sm); }
+  .glance-chart h4 { font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; }
+  .glance-chart canvas { max-height: 130px; }
+  @media (max-width: 720px) { .glance { grid-template-columns: repeat(3, 1fr); } .glance-chart { grid-column: span 3; } }
 </style>
 </head>
 <body>
@@ -120,6 +133,10 @@
 
 <div class="container">
 
+  <div class="glance-wrap reveal">
+    <div class="glance" id="glance"></div>
+  </div>
+
   <div class="hero-latest reveal" id="hero-latest"></div>
 
   <div class="search-bar reveal">
@@ -133,7 +150,7 @@
   <div class="issue-grid reveal" id="issue-grid"></div>
 
   <p class="section-label">Monthly Trends Digest</p>
-  <a class="monthly-card reveal" href="monthly/2026-07/index.html">
+  <a class="monthly-card reveal" href="monthly/2026-07/index.html" data-tilt data-tilt-max="4" data-tilt-glare data-tilt-max-glare="0.15">
     <div class="month-icon"><svg class="icon" style="width:32px;height:32px;" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div>
     <div>
       <h3>July 2026 — Trends Summary</h3>
@@ -156,7 +173,7 @@ function renderHero(week) {
   const hero = document.getElementById('hero-latest');
   if (!week) { hero.innerHTML = ''; return; }
   hero.innerHTML = `
-    <a class="hero-card" href="${week.path}">
+    <a class="hero-card" href="${week.path}" data-tilt data-tilt-max="6" data-tilt-glare data-tilt-max-glare="0.2">
       <div>
         <div class="hero-label">Latest · ${week.label}</div>
         <h2>${week.theme}</h2>
@@ -164,6 +181,36 @@ function renderHero(week) {
       </div>
       <div class="hero-arrow">→</div>
     </a>`;
+  if (window.VanillaTilt) VanillaTilt.init(hero.querySelectorAll('[data-tilt]'));
+}
+
+function renderGlance(weeks) {
+  const glance = document.getElementById('glance');
+  const allTags = weeks.flatMap(w => w.tags || []);
+  const allCompanies = new Set(weeks.flatMap(w => w.companies || []));
+  const allArticles = weeks.flatMap(w => w.articles || []);
+  const allSources = new Set(allArticles.map(a => a.publisher));
+  const tagCounts = {};
+  allTags.forEach(t => tagCounts[t] = (tagCounts[t] || 0) + 1);
+  const topTags = Object.entries(tagCounts).sort((a,b) => b[1]-a[1]).slice(0, 6);
+
+  glance.innerHTML = `
+    <div class="glance-stat"><div class="val">${weeks.length}</div><div class="lbl">Week${weeks.length===1?'':'s'} Published</div></div>
+    <div class="glance-stat"><div class="val">${allSources.size}</div><div class="lbl">Distinct Sources Cited</div></div>
+    <div class="glance-stat"><div class="val">${allCompanies.size}</div><div class="lbl">Companies Referenced</div></div>
+    <div class="glance-chart"><h4>Most Recurring Topics</h4><canvas id="glanceChart"></canvas></div>`;
+
+  if (window.Chart && topTags.length) {
+    new Chart(document.getElementById('glanceChart'), {
+      type: 'bar',
+      data: { labels: topTags.map(t => t[0]), datasets: [{ data: topTags.map(t => t[1]), backgroundColor: '#FF0083', borderRadius: 5 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { display: false, grid: { display: false } }, y: { grid: { display: false }, ticks: { font: { size: 11, weight: '700' }, color: '#6B6B75' } } }
+      }
+    });
+  }
 }
 
 function renderTagFilters(weeks) {
@@ -187,6 +234,8 @@ function renderGrid(weeks) {
     const a = document.createElement('a');
     a.className = 'issue-card';
     a.href = w.path;
+    a.setAttribute('data-tilt', '');
+    a.setAttribute('data-tilt-max', '6');
     a.innerHTML = `
       <div class="issue-num">${w.label}</div>
       <h3>${w.theme}</h3>
@@ -195,6 +244,7 @@ function renderGrid(weeks) {
     grid.appendChild(a);
   });
   document.getElementById('no-results').style.display = weeks.length ? 'none' : 'block';
+  if (window.VanillaTilt) VanillaTilt.init(grid.querySelectorAll('[data-tilt]'));
 }
 
 function applyFilters() {
@@ -215,6 +265,7 @@ fetch('data/weeks.json')
   .then(r => r.json())
   .then(data => {
     ALL_WEEKS = (data.weeks || []).slice().sort((a,b) => b.id.localeCompare(a.id));
+    renderGlance(ALL_WEEKS);
     renderHero(ALL_WEEKS[0]);
     renderTagFilters(ALL_WEEKS);
     renderGrid(ALL_WEEKS);
@@ -223,10 +274,19 @@ fetch('data/weeks.json')
     document.getElementById('issue-grid').innerHTML = '<div class="no-results" style="display:block;">Could not load weekly updates.</div>';
   });
 
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+if (window.VanillaTilt) VanillaTilt.init(document.querySelectorAll('.monthly-card[data-tilt]'));
+
+if (window.gsap && window.ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.utils.toArray('.reveal').forEach((el, i) => {
+    gsap.fromTo(el, { opacity: 0, y: 24 }, {
+      opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: i * 0.08,
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+    });
+  });
+} else {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+}
 </script>
 
 </body>

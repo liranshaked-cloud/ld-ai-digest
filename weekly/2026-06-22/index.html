@@ -90,22 +90,6 @@
   .quiz-reveal.show { display: block; }
   .quiz-reveal a { font-weight: 700; }
 
-  /* REALITY CHECK CALLOUT — claim vs. verified, at a glance */
-  .reality-check { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; margin-bottom: 28px; box-shadow: var(--shadow-sm); }
-  .reality-check .rc-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-  .reality-check .rc-label { font-size: 15px; font-weight: 900; color: var(--text-primary); }
-  .reality-check .rc-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.5; }
-  .rc-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-  .rc-col { border-radius: var(--radius-md); padding: 16px 18px; }
-  .rc-col.claim { background: #fdecec; border: 1px solid #f1c2c2; }
-  .rc-col.verified { background: var(--lmnd-pink-tint); border: 1px solid var(--lmnd-pink-tint-2); }
-  .rc-col .rc-tag { font-size: 10.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; display: block; }
-  .rc-col.claim .rc-tag { color: #b3261e; }
-  .rc-col.verified .rc-tag { color: var(--lmnd-pink); }
-  .rc-col p { font-size: 13.5px; color: #33333c; line-height: 1.55; margin: 0; }
-  .reality-check .rc-footer { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
-  @media (max-width: 560px) { .rc-compare { grid-template-columns: 1fr; } }
-
   /* SECTION LABEL */
   .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin: 44px 0 16px; display: flex; align-items: center; gap: 8px; }
 
@@ -210,7 +194,7 @@
 <div class="tldr">
   <a class="tldr-item" href="#numbers"><span class="emoji">📊</span><div><p><strong>This week's numbers</strong> — 6 stats, 6 sources, all linked.</p><span class="go">Jump to Numbers →</span></div></a>
   <a class="tldr-item" href="#case-files"><span class="emoji">🕵️</span><div><p><strong>3 real case studies</strong> — Duolingo, Booking.com, Stripe.</p><span class="go">Jump to Case Files →</span></div></a>
-  <a class="tldr-item" href="#reality-check"><span class="emoji">🔍</span><div><p><strong>We fact-checked</strong> a viral stat — it didn't hold up.</p><span class="go">Jump to Reality Check →</span></div></a>
+  <a class="tldr-item" href="#lemonade"><span class="emoji">🍋</span><div><p><strong>What Lemonade should do</strong> — 3 moves tied to this week's findings.</p><span class="go">Jump to Lemonade Angle →</span></div></a>
 </div>
 
 <!-- INFOGRAPHIC -->
@@ -323,21 +307,6 @@ function answerQuiz(btn, isCorrect) {
 }
 </script>
 
-<div class="reality-check" id="reality-check">
-  <div class="rc-head"><span class="rc-label">🔍 Reality Check</span></div>
-  <div class="rc-sub">A recurring feature: every issue we pick one stat that's going viral and trace it back to where it actually came from. Think of it as a live demo of "check before you trust it."</div>
-  <div class="rc-compare">
-    <div class="rc-col claim">
-      <span class="rc-tag">❌ What's being shared</span>
-      <p>Mastercard's AI mobility platform delivered <strong>"$21M in savings, 100,000 hours unlocked, 75% of the workforce enrolled."</strong></p>
-    </div>
-    <div class="rc-col verified">
-      <span class="rc-tag">✅ What we verified</span>
-      <p>Traced to the primary 2022 Josh Bersin Company / Gloat case study: <strong>62% registered in 2 months, 51% explored career paths, 32% saved one.</strong></p>
-    </div>
-  </div>
-  <p class="rc-footer">Still a strong result — just not the one making the rounds this year. If a rollout plan is being built on a secondhand stat, this is the week to go check the primary source.</p>
-</div>
 
 <!-- CASE FILES -->
 <p class="section-label" id="case-files">🕵️ Case Files: How They Actually Did It</p>

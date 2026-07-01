@@ -36,6 +36,8 @@
   .trend-row .n { font-size: 12px; color: var(--text-muted); font-weight: 700; width: 70px; text-align: right; }
   .empty-note { background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 20px 24px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
   footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
@@ -51,11 +53,11 @@
 </div>
 
 <div class="container">
-  <p class="section-label">Recurring Topics</p>
-  <div id="topics-cloud" class="cloud"></div>
+  <p class="section-label reveal">Recurring Topics</p>
+  <div id="topics-cloud" class="cloud reveal"></div>
 
-  <p class="section-label">Companies Mentioned</p>
-  <div id="companies-list"></div>
+  <p class="section-label reveal">Companies Mentioned</p>
+  <div id="companies-list" class="reveal"></div>
 
   <div id="empty-state" class="empty-note" style="display:none;">
     Only one week has been published so far, so nothing has "recurred" yet — trend lines need at least 2-3 weeks of real data before a pattern means anything. Check back after a few more Mondays.
@@ -96,6 +98,11 @@ fetch('../data/weeks.json')
     document.getElementById('empty-state').style.display = 'block';
     document.getElementById('empty-state').textContent = 'Trend data could not be loaded.';
   });
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 </script>
 
 </body>

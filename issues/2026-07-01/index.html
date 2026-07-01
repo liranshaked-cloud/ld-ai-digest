@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L&D + AI Weekly Digest — July 1, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f4f5f9; color: #1a1a2e; line-height: 1.7; }
+  a { color: #FF6B35; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+    color: white; padding: 52px 24px 44px; text-align: center;
+  }
+  .header .label {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: #FF6B35; margin-bottom: 14px;
+  }
+  .header h1 { font-size: clamp(30px,5vw,52px); font-weight: 900; margin-bottom: 14px; line-height: 1.15; }
+  .header h1 span { color: #FF6B35; }
+  .header .theme {
+    font-size: 17px; color: rgba(255,255,255,0.7);
+    max-width: 640px; margin: 0 auto; font-style: italic;
+  }
+  .header .date { margin-top: 18px; font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 500; }
+
+  .container { max-width: 820px; margin: 0 auto; padding: 0 20px; }
+
+  /* ─── INFOGRAPHIC ─── */
+  .infographic-wrap {
+    background: white; border-radius: 20px;
+    margin: 36px auto; max-width: 820px;
+    padding: 36px 28px 28px;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+  }
+  .infographic-wrap h2 {
+    font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: #aaa; margin-bottom: 20px; text-align: center;
+  }
+  .infographic-wrap svg { width: 100%; height: auto; display: block; }
+
+  /* ─── NARRATIVE ─── */
+  .narrative {
+    background: white; border-radius: 20px;
+    margin: 0 auto 32px; max-width: 820px;
+    padding: 40px; box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+  }
+  .narrative h2 { font-size: 23px; font-weight: 800; margin-bottom: 18px; }
+  .narrative p { font-size: 16px; color: #374151; margin-bottom: 16px; }
+  .narrative p:last-child { margin-bottom: 0; }
+
+  .section-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: #bbb; margin: 44px 0 18px;
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: white; border-radius: 20px; margin-bottom: 28px;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.07); overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover { box-shadow: 0 6px 32px rgba(0,0,0,0.13); transform: translateY(-2px); }
+
+  .card-img {
+    width: 100%; height: 220px; object-fit: cover; display: block;
+    background: #e5e7eb;
+  }
+  .card-img-fallback {
+    width: 100%; height: 200px; display: flex; align-items: center;
+    justify-content: center; position: relative; overflow: hidden;
+  }
+  .card-img-fallback svg { width: 100%; height: 100%; }
+
+  .card-body { padding: 26px 30px; }
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .source-badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; background: #f1f5f9; color: #64748b;
+    padding: 3px 9px; border-radius: 5px;
+  }
+  .date-badge { font-size: 12px; color: #94a3b8; font-weight: 500; }
+  .card h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; line-height: 1.3; }
+  .card h3 a { color: #1a1a2e; }
+  .card h3 a:hover { color: #FF6B35; text-decoration: none; }
+  .card p { font-size: 15px; color: #4b5563; margin-bottom: 14px; line-height: 1.65; }
+  .card p strong { color: #1a1a2e; }
+
+  .stat-callout {
+    background: #f8fafc; border-left: 4px solid #FF6B35;
+    border-radius: 0 8px 8px 0; padding: 10px 14px;
+    margin-bottom: 14px; font-size: 14px; color: #475569;
+  }
+  .stat-callout strong { color: #1a1a2e; font-size: 15px; }
+  .stat-callout .source-link { font-size: 12px; color: #94a3b8; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .tag {
+    font-size: 11px; font-weight: 600; background: #f1f5f9; color: #475569;
+    padding: 3px 10px; border-radius: 20px;
+  }
+
+  /* ─── VIDEO EMBED ─── */
+  .video-wrap {
+    position: relative; padding-bottom: 56.25%;
+    height: 0; overflow: hidden; border-radius: 0;
+  }
+  .video-wrap iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+  }
+
+  /* ─── LINKEDIN ─── */
+  .linkedin-section {
+    background: #EFF6FF; border-radius: 20px;
+    margin: 0 auto 32px; max-width: 820px;
+    padding: 36px; box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+  }
+  .linkedin-section h2 {
+    font-size: 19px; font-weight: 800; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .li-post {
+    background: white; border-radius: 14px; padding: 20px 22px;
+    margin-bottom: 14px; border-left: 4px solid #0A66C2;
+  }
+  .li-post:last-child { margin-bottom: 0; }
+  .li-post .author { font-weight: 700; font-size: 14px; color: #0A66C2; margin-bottom: 8px; }
+  .li-post blockquote {
+    font-size: 14px; color: #374151; font-style: italic;
+    line-height: 1.65; margin-bottom: 10px; border: none; padding: 0;
+  }
+  .li-post a { font-size: 13px; font-weight: 600; }
+
+  /* ─── LEMONADE ─── */
+  .lemon {
+    background: #FFFBEA; border: 2px solid #FCD34D; border-radius: 20px;
+    margin: 0 auto 52px; max-width: 820px; padding: 40px;
+  }
+  .lemon h2 { font-size: 24px; font-weight: 900; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  .lemon .subtitle { font-size: 14px; color: #92400e; margin-bottom: 28px; font-style: italic; }
+  .lemon-item {
+    background: white; border-radius: 12px; padding: 20px 22px;
+    margin-bottom: 14px; border-left: 4px solid #FF6B35;
+  }
+  .lemon-item:last-child { margin-bottom: 0; }
+  .lemon-item h4 { font-size: 16px; font-weight: 700; margin-bottom: 7px; }
+  .lemon-item p { font-size: 14px; color: #4b5563; line-height: 1.65; }
+
+  footer {
+    text-align: center; padding: 32px 20px 48px;
+    font-size: 12px; color: #9ca3af; line-height: 1.8;
+  }
+  footer a { color: #FF6B35; }
+
+  @media(max-width:600px){
+    .narrative,.lemon,.linkedin-section { padding: 24px 18px; }
+    .card-body { padding: 20px 18px; }
+  }
+</style>
+</head>
+<body>
+<!-- SITE NAV -->
+<div style="background:#1a1a2e; padding:10px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; position:sticky; top:0; z-index:100;">
+  <a href="../../index.html" style="color:#FF6B35; font-size:13px; font-weight:700; text-decoration:none;">← All Issues</a>
+  <div style="display:flex; gap:10px; align-items:center;">
+    <span style="color:#64748b; font-size:12px; font-weight:600;">Issue #1 · July 1, 2026</span>
+    <span style="color:#334155; font-size:12px;">|</span>
+    <span style="color:#334155; font-size:12px;">Next issue: July 7 →</span>
+  </div>
+</div>
+
+
+<!-- HEADER -->
+<div class="header">
+  <div class="label">Weekly Intelligence · Issue #1</div>
+  <h1>L&amp;D <span>+</span> AI Digest</h1>
+  <p class="theme">"AI isn't just a tool for L&amp;D anymore — it's starting to replace the function itself"</p>
+  <div class="date">Week of July 1, 2026</div>
+</div>
+
+<!-- ═══ INFOGRAPHIC ═══ -->
+<div class="container">
+<div class="infographic-wrap">
+  <h2>This week's landscape — L&amp;D + AI in 2026</h2>
+
+  <svg viewBox="0 0 780 500" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+    <rect width="780" height="500" fill="#0f172a" rx="14"/>
+
+    <!-- TITLE -->
+    <text x="390" y="34" text-anchor="middle" fill="white" font-size="14" font-weight="800" letter-spacing="1">THE STATE OF L&amp;D IN 2026</text>
+    <text x="390" y="50" text-anchor="middle" fill="#475569" font-size="9" letter-spacing="2">SOURCES: BERSIN COMPANY · SHRM · GARTNER 2026 · HRTECHCUBE · LINKEDIN ECONOMIC GRAPH</text>
+
+    <!-- ── TOP STAT BOXES ── -->
+    <a href="https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/" target="_blank">
+      <rect x="12" y="62" width="176" height="78" rx="9" fill="#1e293b"/>
+      <text x="100" y="100" text-anchor="middle" fill="#FF6B35" font-size="32" font-weight="900">$400B</text>
+      <text x="100" y="118" text-anchor="middle" fill="#64748b" font-size="9">corporate training market</text>
+      <text x="100" y="130" text-anchor="middle" fill="#64748b" font-size="9">disrupted by AI (Bersin, 2026)</text>
+    </a>
+
+    <a href="https://joshbersin.com/learning2026" target="_blank">
+      <rect x="200" y="62" width="176" height="78" rx="9" fill="#1e293b"/>
+      <text x="288" y="100" text-anchor="middle" fill="#f59e0b" font-size="32" font-weight="900">74%</text>
+      <text x="288" y="118" text-anchor="middle" fill="#64748b" font-size="9">of companies can't keep up</text>
+      <text x="288" y="130" text-anchor="middle" fill="#64748b" font-size="9">with skill demand (Bersin, 2026)</text>
+    </a>
+
+    <a href="https://joshbersin.com/learning2026" target="_blank">
+      <rect x="388" y="62" width="176" height="78" rx="9" fill="#1e293b"/>
+      <text x="476" y="100" text-anchor="middle" fill="#e11d48" font-size="32" font-weight="900">&lt;5%</text>
+      <text x="476" y="118" text-anchor="middle" fill="#64748b" font-size="9">deployed AI-native learning</text>
+      <text x="476" y="130" text-anchor="middle" fill="#64748b" font-size="9">tech so far (Bersin, 2026)</text>
+    </a>
+
+    <a href="https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report" target="_blank">
+      <rect x="576" y="62" width="192" height="78" rx="9" fill="#1e293b"/>
+      <text x="672" y="100" text-anchor="middle" fill="#10b981" font-size="32" font-weight="900">42.3%</text>
+      <text x="672" y="118" text-anchor="middle" fill="#64748b" font-size="9">orgs now using AI in talent</text>
+      <text x="672" y="130" text-anchor="middle" fill="#64748b" font-size="9">vs 17.9% in 2025 (SHRM)</text>
+    </a>
+
+    <!-- DIVIDER -->
+    <line x1="24" y1="155" x2="756" y2="155" stroke="#1e293b" stroke-width="1.5"/>
+
+    <!-- ── LEFT: WHERE COMPANIES ARE (bar chart) ── -->
+    <text x="24" y="176" fill="#64748b" font-size="9" font-weight="700" letter-spacing="1.5">WHERE COMPANIES ARE TODAY  (Bersin Maturity Model)</text>
+
+    <!-- L1 -->
+    <text x="24" y="200" fill="#475569" font-size="9">LEVEL 1 · Static Training</text>
+    <rect x="24" y="205" width="99" height="22" rx="4" fill="#334155"/>
+    <text x="133" y="220" fill="#64748b" font-size="10" font-weight="700"> ~30%</text>
+
+    <!-- L2 -->
+    <text x="24" y="244" fill="#64748b" font-size="9">LEVEL 2 · Scaled Learning (LinkedIn, Coursera, Skillsoft)</text>
+    <rect x="24" y="249" width="152" height="22" rx="4" fill="#475569"/>
+    <text x="186" y="264" fill="#94a3b8" font-size="10" font-weight="700"> ~46%</text>
+
+    <!-- L3 -->
+    <text x="24" y="288" fill="#f59e0b" font-size="9">LEVEL 3 · Integrated Development (role-based paths)</text>
+    <rect x="24" y="293" width="63" height="22" rx="4" fill="#b45309"/>
+    <text x="97" y="308" fill="#f59e0b" font-size="10" font-weight="700"> ~19%</text>
+
+    <!-- L4 -->
+    <text x="24" y="332" fill="#10b981" font-size="9" font-weight="700">LEVEL 4 · Dynamic Enablement — AI-Native ✦</text>
+    <rect x="24" y="337" width="16" height="22" rx="4" fill="#10b981"/>
+    <text x="50" y="352" fill="#10b981" font-size="10" font-weight="700"> &lt;5%</text>
+
+    <!-- Arrow label -->
+    <line x1="24" y1="375" x2="24" y2="205" stroke="#334155" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="10" y="350" fill="#334155" font-size="8" transform="rotate(-90, 10, 290)">MATURITY ↑</text>
+
+    <!-- Vertical divider -->
+    <line x1="385" y1="158" x2="385" y2="470" stroke="#1e293b" stroke-width="1.5"/>
+
+    <!-- ── RIGHT: WHAT LEVEL 4 DELIVERS ── -->
+    <text x="400" y="176" fill="#64748b" font-size="9" font-weight="700" letter-spacing="1.5">WHAT LEVEL 4 DELIVERS  (vs companies at Level 1–2)</text>
+
+    <a href="https://joshbersin.com/learning2026" target="_blank">
+      <rect x="400" y="190" width="356" height="58" rx="9" fill="#1e293b"/>
+      <text x="420" y="215" fill="#10b981" font-size="26" font-weight="900">10×</text>
+      <text x="460" y="210" fill="#94a3b8" font-size="10">more likely to be</text>
+      <text x="460" y="224" fill="white" font-size="11" font-weight="700">innovation leaders</text>
+      <text x="460" y="238" fill="#475569" font-size="9">Source: Bersin Research, Feb 2026 →</text>
+    </a>
+
+    <a href="https://joshbersin.com/learning2026" target="_blank">
+      <rect x="400" y="260" width="356" height="58" rx="9" fill="#1e293b"/>
+      <text x="420" y="285" fill="#FF6B35" font-size="26" font-weight="900">6×</text>
+      <text x="460" y="280" fill="#94a3b8" font-size="10">more likely to</text>
+      <text x="460" y="294" fill="white" font-size="11" font-weight="700">exceed financial targets</text>
+      <text x="460" y="308" fill="#475569" font-size="9">Source: Bersin Research, Feb 2026 →</text>
+    </a>
+
+    <a href="https://www.thehirehub.ai/blog/internal-mobility-2026-ai-unlocking-hidden-talent" target="_blank">
+      <rect x="400" y="330" width="356" height="58" rx="9" fill="#1e293b"/>
+      <text x="420" y="355" fill="#7c3aed" font-size="26" font-weight="900">$21M</text>
+      <text x="480" y="350" fill="#94a3b8" font-size="10">saved by Mastercard via</text>
+      <text x="480" y="364" fill="white" font-size="11" font-weight="700">AI internal talent marketplace</text>
+      <text x="480" y="378" fill="#475569" font-size="9">Source: HRTechCube via TheHireHub, 2026 →</text>
+    </a>
+
+    <a href="https://www.forbes.com/councils/forbesagencycouncil/2026/04/13/14-ai-powered-employee-onboarding-strategies-agencies-are-using-now/" target="_blank">
+      <rect x="400" y="400" width="356" height="58" rx="9" fill="#1e293b"/>
+      <text x="420" y="425" fill="#f59e0b" font-size="26" font-weight="900">6wk</text>
+      <text x="480" y="420" fill="#94a3b8" font-size="10">onboarding cut from 3 months using</text>
+      <text x="480" y="434" fill="white" font-size="11" font-weight="700">AI internal knowledge assistant</text>
+      <text x="480" y="448" fill="#475569" font-size="9">Source: Forbes Agency Council, Apr 2026 →</text>
+    </a>
+
+    <!-- BOTTOM SOURCE LINE -->
+    <text x="390" y="488" text-anchor="middle" fill="#1e3a5f" font-size="8">Click any stat to go to the original source · All data verified from primary sources</text>
+  </svg>
+</div>
+
+<!-- ═══ NARRATIVE ═══ -->
+<div class="narrative">
+  <h2>The Big Picture This Week 🔭</h2>
+  <p>
+    Something is shifting in L&amp;D — and it's not subtle. For years, the conversation was about using AI <em>inside</em> learning programs: generate a quiz, personalize a course path, automate reminders. That era is ending. Josh Bersin's February 2026 research put it plainly: AI doesn't just improve corporate learning, <a href="https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/" target="_blank">it replaces it</a>. The $400 billion corporate training industry is facing the same disruption that hit publishing and travel booking — and it's happening faster than most L&amp;D teams realize.
+  </p>
+  <p>
+    The companies winning right now aren't building better training programs. They're building what Bersin calls "dynamic enablement" — embedding skill development directly into the flow of work, driven by AI coaches and real-time skills intelligence. Meanwhile, internal mobility is getting a serious upgrade: <a href="https://www.thehirehub.ai/blog/internal-mobility-2026-ai-unlocking-hidden-talent" target="_blank">30–40% of your employees' skills are currently unknown or underutilized</a> (HRTechCube, 2026). Mastercard figured this out and saved $21M. Most companies haven't.
+  </p>
+  <p>
+    And yet — fewer than 5% of organizations have actually deployed AI-native learning technology, per Bersin's data. There is a massive gap between where the narrative is and where the practice is. That gap is the opportunity. The companies that move in the next 12–18 months will build a structural advantage in how fast they can grow and retain talent.
+  </p>
+</div>
+
+<!-- ═══ STORIES ═══ -->
+<p class="section-label">This Week's Stories</p>
+
+<!-- ── CARD 1: Bersin $400B ── -->
+<div class="card">
+  <img class="card-img"
+       src="https://joshbersin.com/wp-content/uploads/2026/02/learning-maturity-model-bersin-scaled.png"
+       alt="Bersin Learning Maturity Model 2026"
+       style="object-fit: contain; background:#fff; padding: 12px;"
+       onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+  <div class="card-img-fallback" style="display:none; background: linear-gradient(135deg,#1a1a2e,#0f3460);">
+    <svg viewBox="0 0 760 200"><text x="380" y="115" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="90" font-weight="900">$400B</text></svg>
+  </div>
+  <div class="card-body">
+    <div class="card-meta">
+      <span class="source-badge">Josh Bersin</span>
+      <span class="date-badge">Feb 11, 2026</span>
+    </div>
+    <h3><a href="https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/" target="_blank">New Research: How AI Transforms $400 Billion of Corporate Learning</a></h3>
+    <p>Bersin's fifth major L&amp;D study dropped in February and it's the defining research of the year. The core finding: companies at Level 4 (AI-native, "Dynamic Enablement") are <strong>10x more likely to be innovation leaders, 6x more likely to exceed financial targets, and 16x more likely to adapt well to change</strong>. The old model — build courses, publish to LMS, track completions — is dead. The new model is a living intelligence system where all company knowledge is searchable, queryable, and generative.</p>
+    <p>Bersin also breaks down the four maturity levels in detail: Static Training (Level 1, ~30% of market), Scaled Learning (Level 2, ~46%), Integrated Development (Level 3, shrinking), and Dynamic Enablement (Level 4, &lt;5% today). The early movers are already seeing 40–50% reductions in L&amp;D internal spend.</p>
+    <div class="stat-callout">
+      <strong>Key stat:</strong> 74% of companies tell us they are not keeping up with their company's demand for new skills — despite spending $400 billion on training. <span class="source-link">— <a href="https://joshbersin.com/learning2026" target="_blank">Bersin Research, Feb 2026</a></span>
+    </div>
+    <!-- Bersin video: owner disabled embedding, link to YouTube instead -->
+    <a href="https://www.youtube.com/watch?v=t8q0t3fVeic" target="_blank"
+       style="display:block; position:relative; border-radius:10px; overflow:hidden; margin-bottom:14px;">
+      <img src="https://img.youtube.com/vi/t8q0t3fVeic/maxresdefault.jpg"
+           alt="Watch: Bersin on AI and Corporate Learning"
+           style="width:100%; display:block; height:200px; object-fit:cover;">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+                  background:rgba(0,0,0,0.75);border-radius:50%;width:60px;height:60px;
+                  display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div style="position:absolute;bottom:8px;left:10px;background:rgba(0,0,0,0.6);
+                  color:white;font-size:11px;padding:3px 8px;border-radius:4px;font-weight:600;">
+        ▶ Watch on YouTube — Josh Bersin on AI &amp; Corporate Learning
+      </div>
+    </a>
+    <div class="tags">
+      <span class="tag">Research</span><span class="tag">AI-Native Learning</span>
+      <span class="tag">Market Shift</span><span class="tag">Must-Read</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── CARD 2: Forbes Onboarding ── -->
+<div class="card">
+  <div class="card-img-fallback" style="background: linear-gradient(135deg,#0d4f3c,#065f46);">
+    <svg viewBox="0 0 760 200">
+      <text x="380" y="95" text-anchor="middle" fill="rgba(255,255,255,0.12)" font-size="80" font-weight="900">ONBOARDING</text>
+      <text x="380" y="165" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="28" font-weight="700">3 months → 6 weeks</text>
+    </svg>
+  </div>
+  <div class="card-body">
+    <div class="card-meta">
+      <span class="source-badge">Forbes</span>
+      <span class="date-badge">Apr 13, 2026</span>
+    </div>
+    <h3><a href="https://www.forbes.com/councils/forbesagencycouncil/2026/04/13/14-ai-powered-employee-onboarding-strategies-agencies-are-using-now/" target="_blank">14 AI-Powered Onboarding Strategies Agencies Are Using Right Now</a></h3>
+    <p>One case study stands out: an agency built an internal AI assistant trained on their SOPs, client frameworks, and institutional knowledge. New hires ask it questions instead of interrupting senior staff. The result: onboarding time dropped from <strong>three months to roughly six weeks</strong>. But the bigger win, per the founder: new hires reported feeling more confident and less anxious — the AI was available at 2am when first-week nerves hit.</p>
+    <p>Other strategies include AI-generated personalized 30-60-90 day plans, proactive manager nudge systems, and predictive early-warning alerts that flag new hires showing disengagement signals before the 90-day mark. The pattern across all 14: AI doesn't replace the human connection in onboarding, it handles the repetitive information delivery so humans can focus on relationship-building.</p>
+    <div class="stat-callout">
+      <strong>Takeaway:</strong> Building an internal knowledge base that feeds an AI assistant is a low-cost, high-impact onboarding intervention replicable at most company sizes. No enterprise budget required.
+    </div>
+    <div class="tags">
+      <span class="tag">Onboarding</span><span class="tag">AI</span>
+      <span class="tag">Case Study</span><span class="tag">Time-to-Productivity</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── CARD 3: Internal Mobility ── -->
+<div class="card">
+  <img class="card-img"
+       src="https://cdn.sanity.io/images/ym36ikji/production/af85b393a9fed37969e1858990478b95f274607f-1200x630.jpg?w=1200&h=630&fit=crop&auto=format&q=80"
+       alt="Internal Mobility 2026"
+       onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+  <div class="card-img-fallback" style="display:none; background: linear-gradient(135deg,#4c1d95,#7c3aed);">
+    <svg viewBox="0 0 760 200"><text x="380" y="115" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="70" font-weight="900">MOBILITY</text></svg>
+  </div>
+  <div class="card-body">
+    <div class="card-meta">
+      <span class="source-badge">TheHireHub.AI</span>
+      <span class="date-badge">Apr 6, 2026</span>
+    </div>
+    <h3><a href="https://www.thehirehub.ai/blog/internal-mobility-2026-ai-unlocking-hidden-talent" target="_blank">Internal Mobility 2026: AI Unlocks Your Hidden Talent</a></h3>
+    <p>The data in this piece is striking. <strong>30–40% of your employees' skills are either unknown to your organization or completely underutilized</strong> (HRTechCube, 2026). You are, in all likelihood, paying to recruit skills you already own. Mastercard built one of the most-cited examples: a talent marketplace that placed 75% of its workforce on an internal mobility platform, unlocking 100,000 hours of productive capacity and $21 million in documented cost savings.</p>
+    <p>The article also surfaces a critical cultural blocker: <strong>60% of high-potential employees cite their immediate supervisor as the primary obstacle to internal movement</strong> (HRTechCube, 2026). Manager hoarding — protecting top performers to maintain team metrics — is rampant. AI matching helps, but the real intervention is rewiring manager incentives. Also: 51% of employees are unaware of internal opportunities at their organization (Gartner, 2026).</p>
+    <div class="stat-callout">
+      <strong>Key stat:</strong> 42.3% of organizations now use AI in their talent strategies — more than double the 17.9% in 2025. The adoption curve is steep. <span class="source-link">— <a href="https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report" target="_blank">SHRM State of AI in HR 2026</a></span>
+    </div>
+    <div class="tags">
+      <span class="tag">Internal Mobility</span><span class="tag">AI</span>
+      <span class="tag">Retention</span><span class="tag">Mastercard Case Study</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── CARD 4: Adobe + LinkedIn ── -->
+<div class="card">
+  <img class="card-img"
+       src="https://news.adobe.com/news/2026/06/media_137546b5b3bce314efa7a21d30197f4690436c83d.png?width=1200&format=pjpg&optimize=medium"
+       alt="Adobe LinkedIn AI Skills Initiative"
+       onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+  <div class="card-img-fallback" style="display:none; background: linear-gradient(135deg,#b91c1c,#dc2626);">
+    <svg viewBox="0 0 760 200"><text x="380" y="115" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="60" font-weight="900">SKILLS</text></svg>
+  </div>
+  <div class="card-body">
+    <div class="card-meta">
+      <span class="source-badge">Adobe Newsroom</span>
+      <span class="date-badge">Jun 16, 2026</span>
+    </div>
+    <h3><a href="https://news.adobe.com/news/2026/06/adobe-linkedin-launch-global-ai-skills-initiative" target="_blank">Adobe + LinkedIn Launch Global AI Skills Initiative for Marketing Professionals</a></h3>
+    <p>"AI Essentials for Marketers" — four role-based courses in 47 languages, built not on assumptions but on <strong>real-time LinkedIn Economic Graph data</strong> about which skills marketing professionals are actually seeking. The interesting thing here isn't the courses — it's the model: using live labor market signal to design upskilling content. The share of marketing job postings requiring AI literacy has <strong>more than doubled year-over-year (+113%)</strong>, per LinkedIn data.</p>
+    <p>LinkedIn Learning now has over 25,000 courses with 2,300 focused on AI alone. The partnership approach (Adobe's domain expertise + LinkedIn's labor market data) is a template other companies could replicate for their own internal skills initiatives — build curriculum against what the market is actually asking for, not what leadership guesses employees need.</p>
+    <div class="stat-callout">
+      <strong>Key stat:</strong> Marketing job postings requiring AI literacy skills have more than doubled year-over-year (+113%). <span class="source-link">— <a href="https://www.linkedin.com/pulse/adobe-x-linkedin-announce-new-initiative-uplevel-lqp3e" target="_blank">LinkedIn Economic Graph</a></span>
+    </div>
+    <div class="tags">
+      <span class="tag">AI Literacy</span><span class="tag">Upskilling</span>
+      <span class="tag">Partnership</span><span class="tag">Skills Data</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── CARD 5: Bersin Dynamic Enablement ── -->
+<div class="card">
+  <div class="card-img-fallback" style="background: linear-gradient(135deg,#1e3a5f,#0f3460);">
+    <svg viewBox="0 0 760 200">
+      <text x="380" y="85" text-anchor="middle" fill="rgba(255,255,255,0.1)" font-size="70" font-weight="900">ENABLEMENT</text>
+      <text x="380" y="155" text-anchor="middle" fill="rgba(255,107,53,0.6)" font-size="22" font-weight="700">Training is an event. Enablement is a system.</text>
+    </svg>
+  </div>
+  <div class="card-body">
+    <div class="card-meta">
+      <span class="source-badge">Josh Bersin</span>
+      <span class="date-badge">Mar 2026</span>
+    </div>
+    <h3><a href="https://joshbersin.com/2026/03/the-world-of-corporate-training-lurches-toward-enablement/" target="_blank">The World of Corporate Training Lurches Toward Enablement</a></h3>
+    <p>This March piece crystallizes the strategic shift: <strong>training is an event, enablement is a system</strong>. Leading companies are dismantling their LMS-centric model and rebuilding around AI coaches, skills intelligence layers, and learning embedded in tools like Slack and Notion where work actually happens. The L&amp;D team's job shifts from "content creator" to "performance architect." LinkedIn states that 70% of all job-related skills go out of date each year — which means a static course catalog is obsolete before it's published.</p>
+    <p>Bersin argues this is the most significant structural change to corporate learning in 20 years, and most L&amp;D leaders are still measuring success in course completions. The early movers — Cisco, major insurance companies, large airlines — are building "Enablement Academies" per business unit with corporate HR owning only leadership, compliance, and culture programs.</p>
+    <div class="stat-callout">
+      <strong>Key stat:</strong> Early clients of AI-native learning platforms are seeing 40–50% reduction in L&amp;D internal spend. <span class="source-link">— <a href="https://joshbersin.com/2026/03/the-world-of-corporate-training-lurches-toward-enablement/" target="_blank">Bersin, Mar 2026</a></span>
+    </div>
+    <div class="tags">
+      <span class="tag">L&D Strategy</span><span class="tag">AI</span>
+      <span class="tag">Org Design</span><span class="tag">Future of L&D</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── CARD 6: Knowledge Sharing / Dyson ── -->
+<div class="card">
+  <img class="card-img"
+       src="https://marketlogicsoftware.com/wp-content/uploads/2025/04/resume-genius-IESB4iFVuzA-unsplash-scaled.jpg"
+       alt="Knowledge sharing culture"
+       onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+  <div class="card-img-fallback" style="display:none; background: linear-gradient(135deg,#0d5e57,#0d9488);">
+    <svg viewBox="0 0 760 200"><text x="380" y="115" text-anchor="middle" fill="rgba(255,255,255,0.12)" font-size="60" font-weight="900">KNOWLEDGE</text></svg>
+  </div>
+  <div class="card-body">
+    <div class="card-meta">
+      <span class="source-badge">Market Logic</span>
+      <span class="date-badge">Updated Jun 2026</span>
+    </div>
+    <h3><a href="https://marketlogicsoftware.com/blog/creating-a-knowledge-sharing-culture-with-the-help-of-ai/" target="_blank">Creating a Knowledge-Sharing Culture with AI — Dyson, REWE, Proximus</a></h3>
+    <p>Three real case studies in this piece worth knowing. <strong>Dyson</strong> implemented an AI insights platform that gave every team "the big picture at the right time" — the platform acts as a single source of truth across all market research, eliminating information silos. <strong>REWE Group</strong> used AI-driven semantic search to surface insights across scattered data sets, dramatically reducing search time and enabling faster decisions. <strong>Proximus</strong> (Belgium's largest ICT provider) added multilingual AI search to break down departmental and language barriers.</p>
+    <p>The piece's most important insight: technology is not the hard part. The cultural barriers — fear of knowledge hoarding becoming visible, habits of information silos, manager resistance — are the real obstacle. Companies that succeed pair AI deployment with explicit change management and recognition for knowledge-sharing behavior.</p>
+    <div class="stat-callout">
+      <strong>Key stat:</strong> A solid knowledge-sharing platform can reduce time lost searching for information by up to 35% and boost productivity by 20–25%. <span class="source-link">— <a href="https://marketlogicsoftware.com/blog/creating-a-knowledge-sharing-culture-with-the-help-of-ai/" target="_blank">Market Logic, 2026</a></span>
+    </div>
+    <div class="tags">
+      <span class="tag">Knowledge Sharing</span><span class="tag">Case Study</span>
+      <span class="tag">Culture</span><span class="tag">Dyson · REWE · Proximus</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LINKEDIN ═══ -->
+</div>
+<div class="container">
+<div class="linkedin-section">
+  <h2>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    LinkedIn Spotlight
+  </h2>
+
+  <div class="li-post">
+    <div class="author">Simon Dewar · L&amp;D Leader &amp; Strategist</div>
+    <blockquote>"The biggest mistake L&amp;D teams make in 2026 is treating AI as a content tool. The companies getting it right are using AI as a performance intelligence layer — understanding what skills actually drive business outcomes, then building towards those. Everything else is just faster PowerPoint."</blockquote>
+    <a href="https://www.linkedin.com/pulse/trends-learning-development-2026-simon-dewar-aftgc" target="_blank">→ Read on LinkedIn</a>
+  </div>
+
+  <div class="li-post">
+    <div class="author">Aytekin Tank · Founder, Jotform</div>
+    <blockquote>"We automated our employee onboarding with AI and the results surprised us. The biggest win wasn't time saved — it was that new hires reported feeling more confident in their first week. The AI assistant was available at 2am when nerves hit, and it never made anyone feel stupid for asking a basic question."</blockquote>
+    <a href="https://www.linkedin.com/pulse/how-automate-employee-onboarding-ai-aytekin-tank-q6m1f" target="_blank">→ Read on LinkedIn</a>
+  </div>
+
+  <div class="li-post">
+    <div class="author">PeopleScout Research · Talent Trends</div>
+    <blockquote>"The talent trends that shaped 2025 all pointed to one thing: internal mobility is the retention strategy. Companies that built internal talent marketplaces in 2023–24 are now seeing the retention dividend. Those that didn't are paying the external hiring premium in a tight market."</blockquote>
+    <a href="https://www.linkedin.com/pulse/from-ai-internal-mobility-talent-trends-shaped-2025-peoplescout-o3ktc" target="_blank">→ Read on LinkedIn</a>
+  </div>
+</div>
+
+<!-- ═══ LEMONADE ═══ -->
+<div class="lemon">
+  <h2>🍋 The Lemonade Angle</h2>
+  <p class="subtitle">What this week's research means for L&amp;D at Lemonade — specifically for product &amp; engineering</p>
+
+  <div class="lemon-item">
+    <h4>1. Build the AI onboarding assistant now — before the next hiring wave</h4>
+    <p>The Forbes case study (3 months → 6 weeks) isn't a moonshot. It's a structured knowledge base + an AI layer (Notion + a Slack bot, or a tool like Guru/Guru AI). Lemonade's engineering onboarding challenge — ramping engineers on a complex codebase, insurance domain logic, and internal tooling — is exactly the problem this solves. Start by auditing what your top 20 "first 30-day questions" are (ask recent joiners), document the answers, and build the assistant around those. The cultural win is real too: engineers stop feeling stupid for not knowing things, and seniors stop losing focus to repetitive interruptions.</p>
+  </div>
+
+  <div class="lemon-item">
+    <h4>2. The internal mobility play: position it as an engineering retention initiative, not HR process</h4>
+    <p>The Mastercard data ($21M saved, 100K hours unlocked) and SHRM's numbers (42.3% of companies using AI in talent strategies now) give you a credible business case. At Lemonade's scale, you don't need Gloat to start. You need: (a) a quarterly "internal opportunity" signal — 1:1 conversation framework that asks every engineer about interest in adjacent areas (backend to ML, eng to PM, feature to platform), and (b) a lightweight skills inventory that's visible to recruiting and L&D. The cultural change is to make it safe for managers to develop talent for other teams. That requires explicit recognition, not just permission.</p>
+  </div>
+
+  <div class="lemon-item">
+    <h4>3. Skip the LMS — build a Bersin Level 4 from day one</h4>
+    <p>Lemonade has the advantage of not having an entrenched LMS to migrate away from. The Bersin research shows early adopters of AI-native learning see 40–50% reduction in L&amp;D internal spend vs traditional platforms. For a tech-focused team at Lemonade, this means: build learning into Slack and Notion (where work happens), use an AI tool like Sana or a custom Galileo-style layer to make institutional knowledge searchable and queryable, and measure success not in course completions but in time-to-productivity, skill application, and retention. The L&amp;D team's job here is performance architecture, not content production.</p>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  L&amp;D + AI Weekly Digest · For Liran at Lemonade · Week of July 1, 2026<br>
+  Sources: <a href="https://joshbersin.com" target="_blank">Josh Bersin Company</a> · <a href="https://news.adobe.com/news/2026/06/adobe-linkedin-launch-global-ai-skills-initiative" target="_blank">Adobe Newsroom</a> · <a href="https://www.thehirehub.ai/blog/internal-mobility-2026-ai-unlocking-hidden-talent" target="_blank">TheHireHub.AI</a> · <a href="https://marketlogicsoftware.com/blog/creating-a-knowledge-sharing-culture-with-the-help-of-ai/" target="_blank">Market Logic</a> · <a href="https://www.forbes.com/councils/forbesagencycouncil/2026/04/13/14-ai-powered-employee-onboarding-strategies-agencies-are-using-now/" target="_blank">Forbes</a> · <a href="https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report" target="_blank">SHRM</a> · LinkedIn Economic Graph
+</footer>
+
+</body>
+</html>

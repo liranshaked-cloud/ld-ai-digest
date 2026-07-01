@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: ld-ai-digest
+    env: static
+    buildCommand: ""
+    staticPublishPath: .
+    routes:
+      - type: rewrite
+        source: /
+        destination: /index.html

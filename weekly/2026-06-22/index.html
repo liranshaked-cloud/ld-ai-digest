@@ -222,11 +222,11 @@
       <div class="lbl">accepted wrong AI answers, confidently</div>
       <div class="src">Forbes / Wharton study</div>
     </a>
-    <a class="bento-stat" href="https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/" target="_blank">
+    <a class="bento-stat" href="https://www.chieflearningofficer.com/2026/03/16/from-ai-access-to-workforce-readiness/" target="_blank">
       <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M23 18l-9.5-9.5-5 5L1 6"/><path d="M7 18H1v-6"/></svg></div>
-      <div class="val">74%</div>
-      <div class="lbl">not keeping pace with skill demand</div>
-      <div class="src">Josh Bersin ($400B spend)</div>
+      <div class="val">12%</div>
+      <div class="lbl">use AI daily — despite 88% org-level adoption</div>
+      <div class="src">Chief Learning Officer / Gallup</div>
     </a>
     <div class="chart-card">
       <h4>Where AI Actually Lives in HR</h4>
@@ -234,8 +234,8 @@
       <canvas id="hrChart"></canvas>
     </div>
     <div class="chart-card">
-      <h4>Adoption vs. Confidence</h4>
-      <div class="chart-hint">High adoption, low trust in the output — the gap this issue is about</div>
+      <h4>Promise vs. Delivery</h4>
+      <div class="chart-hint">Adoption headlines are real — follow-through lags behind, three different ways</div>
       <canvas id="gapChart"></canvas>
     </div>
   </div>
@@ -323,8 +323,8 @@
   <div x-show="tab === 'deep-dives'" x-cloak x-transition>
     <div class="narrative" style="margin-bottom:20px;">
       <h2><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Adoption Without Judgment</h2>
-      <p><span class="lead-in">The headline:</span> L&amp;D crossed a real threshold this year. Synthesia's 2026 survey puts AI adoption among learning teams at <span class="stat-hl">87%</span>, with only 2% saying they have no plans to adopt it at all. TalentLMS's parallel benchmark finds <span class="stat-hl">88%</span> of HR managers now expect generative AI to fundamentally reshape how employees access knowledge.</p>
-      <p><span class="lead-in">The catch:</span> that same TalentLMS report finds <span class="stat-hl">36%</span> of employees say AI is actively weakening their independent problem-solving, and just <span class="stat-hl">11%</span> feel extremely confident in their skills-building strategy (Absorb LMS). A Wharton study covered by Forbes: employees accepted incorrect AI answers <span class="stat-hl">80%</span> of the time, <strong>with high confidence in the wrong answer</strong>.</p>
+      <p><span class="lead-in">The headline:</span> L&amp;D crossed a real threshold this year. Synthesia's 2026 survey puts AI adoption among learning teams at <span class="stat-hl">87%</span>, with only 2% saying they have no plans to adopt it at all. A March 2026 Chief Learning Officer analysis cites McKinsey data that <span class="stat-hl">88%</span> of organizations now use AI in at least one business function.</p>
+      <p><span class="lead-in">The catch:</span> that same Chief Learning Officer piece cites Gallup's 22,000-person workforce survey — only <span class="stat-hl">12%</span> of employees actually use AI daily, despite that near-universal org-level adoption. 360Learning, citing Fosway Group research, found only <span class="stat-hl">24%</span> of promised vendor AI features are actually live. A Wharton study covered by Forbes: employees accepted incorrect AI answers <span class="stat-hl">80%</span> of the time, <strong>with high confidence in the wrong answer</strong>. And per LinkedIn's Workplace Learning Report, the share of employees whose manager helped them build a career plan just dropped to <span class="stat-hl">15%</span> — support is shrinking exactly when people need more of it, not less.</p>
       <p><span class="lead-in">The fix:</span> it isn't slowing adoption down — it's <strong>building the evaluation habit into the workflow itself</strong>, the same way IBM and Eightfold AI are mining real work samples for skills data instead of trusting self-reported profiles (see Case Files).</p>
     </div>
 
@@ -370,14 +370,40 @@
 
     <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
       <div class="card-head" @click="open = !open">
-        <img src="https://images.www.talentlms.com/wp-content/uploads/2025/11/Featured-image-LD-Benchmark-Report-2026.webp" alt="" onerror="this.style.display='none'"/>
-        <div><div class="card-source">TalentLMS · 2026 Benchmark Report</div><div class="card-title">The TalentLMS 2026 L&amp;D Benchmark Report</div><div class="card-teaser">36% say AI is weakening problem-solving.</div></div>
+        <img src="https://www.chieflearningofficer.com/wp-content/uploads/2024/07/CLO-social-share-logo-1200x630-1.jpg" alt="" onerror="this.style.display='none'"/>
+        <div><div class="card-source">Chief Learning Officer · Mar 16, 2026 · Hamilton, Stratbucker, Bigelow</div><div class="card-title">From AI Access To Workforce Readiness</div><div class="card-teaser">88% org adoption, only 12% use AI daily.</div></div>
         <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
       </div>
       <div class="card-body" x-show="open" x-transition>
-        <p>88% of HR managers expect generative AI to reshape knowledge access. The counterweight: 47% say their AI training is designed to automate rather than augment jobs, and 22% cite unreliable AI content as a major blocker.</p>
-        <a class="readmore" href="https://www.talentlms.com/research/learning-development-report-2026" target="_blank">Read the full report →</a>
-        <div class="card-tags"><span class="tag">Benchmark Survey</span><span class="tag">Skills Gap</span><span class="tag">Trust</span></div>
+        <p>Cites a Gallup workforce survey of 22,000+ employees: only ~12% report using AI daily, even though McKinsey data shows 88% of organizations use AI in at least one business function. The authors' point: access rolled out faster than actual readiness to use it well — this issue's "confidence gap" in one data pairing.</p>
+        <a class="readmore" href="https://www.chieflearningofficer.com/2026/03/16/from-ai-access-to-workforce-readiness/" target="_blank">Read the full article →</a>
+        <div class="card-tags"><span class="tag">Adoption Gap</span><span class="tag">Gallup</span><span class="tag">McKinsey</span></div>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <img src="https://content.i4cp.com/images/image_uploads/0001/0479/4-priorities-for-cltos-in-2026-hero.webp" alt="" onerror="this.style.display='none'"/>
+        <div><div class="card-source">i4cp · Jan 27, 2026</div><div class="card-title">4 Priorities For Chief Learning &amp; Talent Officers in 2026</div><div class="card-teaser">High performers: nearly 3x more confident in skills readiness.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>Top 2026 CLTO priorities: upskilling the workforce (59%), leadership development (54%), manager effectiveness (46%), implementing AI (43%). High-performing organizations are nearly 3x more likely to express confidence in workforce skills readiness. Amber Alexander, VP Global Talent Management at Medtronic: "By integrating AI and automation into our talent systems, we can simplify complex processes, sharpen decision-making, and help employees see how their work drives meaningful outcomes."</p>
+        <a class="readmore" href="https://www.i4cp.com/productivity-blog/4-priorities-for-chief-learning-talent-officers-in-2026" target="_blank">Read the full article →</a>
+        <div class="card-tags"><span class="tag">CLTO Priorities</span><span class="tag">Medtronic</span><span class="tag">Confidence</span></div>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <img src="https://images.prismic.io/360learning/aNVZfp5xUNkB1G8n_%5BEN%5DBlogAIcompanionAllmodes-1200x627-META.png" alt="" onerror="this.style.display='none'"/>
+        <div><div class="card-source">360Learning · Product Update</div><div class="card-title">Meet Your New AI Companion</div><div class="card-teaser">Fosway: only 24% of promised vendor AI features are live.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>Announcing 360Learning's own "AI Companion" (Search, Insights, and Action modes), the post cites Fosway Group research that only 24% of promised vendor AI features are actually live in production — a useful reality check when evaluating any AI vendor's roadmap slide, including this one.</p>
+        <a class="readmore" href="https://360learning.com/blog/product-update-ai-companion/" target="_blank">Read the full article →</a>
+        <div class="card-tags"><span class="tag">Vendor AI Claims</span><span class="tag">Fosway Group</span></div>
       </div>
     </div>
 
@@ -453,6 +479,17 @@
         <div class="quote-author">Julie Dirksen</div>
         <div class="quote-role">Learning &amp; Design Consultant · Author, "Talk to the Elephant"</div>
         <a class="quote-link" href="https://www.talentlms.com/research/learning-development-report-2026" target="_blank">Source: TalentLMS 2026 Benchmark Report →</a>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-avatar initials">DB</div>
+      <div>
+        <div class="quote-context">On the actual skill gap behind AI-assisted learning:</div>
+        <p class="quote-text">"Can you use AI to say: How can I make this more digestible?"</p>
+        <div class="quote-author">Diane Bartoli</div>
+        <div class="quote-role">SVP, EdAssist by Bright Horizons</div>
+        <a class="quote-link" href="https://www.hr-brew.com/stories/2025/05/28/workers-ai-learning-effective-use" target="_blank">Source: HR Brew, May 2025 →</a>
       </div>
     </div>
 
@@ -591,15 +628,15 @@ new Chart(document.getElementById('hrChart'), {
   }
 });
 const gapLinks = [
-  'https://www.talentlms.com/research/learning-development-report-2026',
-  'https://www.talentlms.com/research/learning-development-report-2026',
-  'https://www.absorblms.com/company/newsroom/together-trends-report-2026/'
+  'https://www.chieflearningofficer.com/2026/03/16/from-ai-access-to-workforce-readiness/',
+  'https://360learning.com/blog/product-update-ai-companion/',
+  'https://business.linkedin.com/learn/resources/workplace-learning-report'
 ];
 new Chart(document.getElementById('gapChart'), {
   type: 'bar',
   data: {
-    labels: ['Expect GenAI to\nreshape knowledge', 'Say AI weakens\nproblem-solving', 'Confident in\nskills strategy'],
-    datasets: [{ data: [88, 36, 11], backgroundColor: [dark, pink, pink], borderRadius: 6 }]
+    labels: ['Orgs using AI\nin some function', 'Promised vendor AI\nfeatures actually live', 'Managers who helped\nwith a career plan'],
+    datasets: [{ data: [88, 24, 15], backgroundColor: [dark, pink, pink], borderRadius: 6 }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,

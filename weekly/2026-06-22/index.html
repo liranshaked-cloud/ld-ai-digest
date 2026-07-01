@@ -63,6 +63,21 @@
   .narrative p { font-size: 15.5px; color: #33333c; margin-bottom: 14px; line-height: 1.8; }
   .narrative a { font-weight: 700; }
   .stat-hl { color: var(--lmnd-pink); font-weight: 900; }
+  .lead-in { font-weight: 900; color: var(--text-primary); }
+
+  /* QUICK GUT CHECK QUIZ */
+  .quiz-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm); margin-bottom: 28px; }
+  .quiz-box .quiz-kicker { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 10px; }
+  .quiz-question { font-weight: 900; font-size: 17px; margin-bottom: 16px; line-height: 1.4; }
+  .quiz-options { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
+  .quiz-opt { padding: 10px 20px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-weight: 800; font-size: 14px; cursor: pointer; transition: all .15s ease; font-family: inherit; }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--lmnd-pink); transform: translateY(-1px); }
+  .quiz-opt.correct { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
+  .quiz-opt.wrong { background: #fdecec; border-color: #e5a3a3; color: #b3261e; }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-reveal { display: none; font-size: 14px; color: #33333c; line-height: 1.65; padding-top: 16px; margin-top: 16px; border-top: 1px dashed var(--border-strong); }
+  .quiz-reveal.show { display: block; }
+  .quiz-reveal a { font-weight: 700; }
 
   /* REALITY CHECK CALLOUT */
   .reality-check { background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 28px; }
@@ -105,8 +120,29 @@
   .lemon-section .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 26px; font-style: italic; }
   .lemon-item { margin-bottom: 22px; padding: 20px 22px; border-radius: var(--radius-md); background: var(--lmnd-pink-tint); border: 1px solid var(--lmnd-pink-tint-2); }
   .lemon-item:last-child { margin-bottom: 0; }
-  .lemon-item h3 { font-size: 15px; font-weight: 900; color: var(--text-primary); margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
-  .lemon-item p { font-size: 14px; color: #3a3a44; line-height: 1.7; }
+  .lemon-item h3 { font-size: 15px; font-weight: 900; color: var(--text-primary); margin-bottom: 10px; display: flex; gap: 8px; align-items: center; }
+  .lemon-item p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 8px; }
+  .lemon-item p:last-child { margin-bottom: 0; }
+  .lemon-item .label-inline { font-weight: 900; color: var(--lmnd-pink); text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.6px; margin-right: 6px; }
+
+  /* DOMAINS */
+  .domains-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 14px; margin-bottom: 28px; }
+  .domain-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; box-shadow: var(--shadow-sm); }
+  .domain-card h4 { font-size: 14px; font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .domain-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 8px; }
+  .domain-card a { font-size: 12px; font-weight: 700; }
+  .domain-card .role-tag { display: inline-block; font-size: 10.5px; font-weight: 800; background: var(--lmnd-pink-tint); color: var(--lmnd-pink); padding: 2px 9px; border-radius: 999px; margin: 2px 4px 2px 0; }
+
+  /* CASE FILES */
+  .case-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow-sm); margin-bottom: 18px; }
+  .case-card .case-co { font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 8px; }
+  .case-card h4 { font-size: 17px; font-weight: 900; margin-bottom: 10px; }
+  .case-card p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 8px; }
+  .case-card .case-result { font-size: 13px; font-weight: 800; background: var(--surface-sunken); border-radius: var(--radius-sm); padding: 8px 14px; display: inline-block; margin-top: 6px; }
+
+  /* PODCAST */
+  .podcast-embed { border-radius: var(--radius-md); overflow: hidden; margin-bottom: 28px; box-shadow: var(--shadow-sm); }
+  .podcast-embed iframe { display: block; width: 100%; border: 0; }
 
   footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
 </style>
@@ -127,8 +163,10 @@
 <!-- SUB NAV -->
 <div class="subnav">
   <a href="#numbers">📊 Numbers</a>
+  <a href="#case-files">🕵️ Case Files</a>
   <a href="#deep-dives">🔎 Deep Dives</a>
   <a href="#voices">💬 Voices</a>
+  <a href="#domains">🧩 By Function</a>
   <a href="#lemonade">🍋 Lemonade Angle</a>
 </div>
 
@@ -227,16 +265,68 @@
 <!-- OPENING NARRATIVE -->
 <div class="narrative">
   <h2>📝 Adoption Without Judgment</h2>
-  <p>L&amp;D crossed a real threshold this year. Synthesia's 2026 survey puts AI adoption among learning teams at <span class="stat-hl">87%</span>, with only 2% saying they have no plans to adopt it at all — this isn't an early-adopter story anymore, it's close to universal. TalentLMS's parallel 2026 benchmark finds <span class="stat-hl">88%</span> of HR managers now expect generative AI to fundamentally reshape how employees access knowledge at work.</p>
-  <p>Look one layer beneath the adoption number and a different story shows up. That same TalentLMS report finds <span class="stat-hl">36%</span> of employees say AI is actively weakening their independent problem-solving, and just <span class="stat-hl">11%</span> of learning leaders (per Absorb LMS's "Together" trends report) feel extremely confident in their organization's future skills-building strategy. A Wharton study covered by Forbes this week is more pointed: in controlled tests, employees accepted incorrect AI-generated answers <span class="stat-hl">80%</span> of the time — and did so with high confidence in the wrong answer. Josh Bersin frames the structural version of the same problem: <span class="stat-hl">74%</span> of companies say they aren't keeping pace with skill demand, despite roughly $400B a year going into corporate training.</p>
-  <p>Put together, this reads less like "AI transformation" and more like adoption that outran judgment. Organizations handed employees a powerful tool faster than they built the muscle to evaluate its output. Training Industry's new framework this week draws a useful line for L&amp;D teams trying to fix this: AI <em>literacy</em> (safe, baseline, responsible use) is not the same as AI <em>fluency</em> (using AI for real advantage) — and most 2026 training programs are still teaching the former while employees need the latter.</p>
-  <p>The fix isn't slowing adoption down. It's building the evaluation habit into the workflow itself — the same way IBM and Eightfold AI are now mining real work samples for skills data instead of trusting self-reported profiles (more on that below). Trust the process less, and the output more.</p>
+  <p><span class="lead-in">The headline:</span> L&amp;D crossed a real threshold this year. Synthesia's 2026 survey puts AI adoption among learning teams at <span class="stat-hl">87%</span>, with only 2% saying they have no plans to adopt it at all — this isn't an early-adopter story anymore, it's close to universal. TalentLMS's parallel 2026 benchmark finds <span class="stat-hl">88%</span> of HR managers now expect generative AI to fundamentally reshape how employees access knowledge at work.</p>
+  <p><span class="lead-in">The catch:</span> look one layer beneath the adoption number and a different story shows up. That same TalentLMS report finds <span class="stat-hl">36%</span> of employees say AI is actively weakening their independent problem-solving, and just <span class="stat-hl">11%</span> of learning leaders (per Absorb LMS's "Together" trends report) feel extremely confident in their organization's future skills-building strategy. A Wharton study covered by Forbes this week is more pointed: in controlled tests, employees accepted incorrect AI-generated answers <span class="stat-hl">80%</span> of the time — and did so <strong>with high confidence in the wrong answer</strong>. Josh Bersin frames the structural version of the same problem: <span class="stat-hl">74%</span> of companies say they aren't keeping pace with skill demand, despite roughly $400B a year going into corporate training.</p>
+  <p><span class="lead-in">The framework:</span> put together, this reads less like "AI transformation" and more like <strong>adoption that outran judgment</strong>. Organizations handed employees a powerful tool faster than they built the muscle to evaluate its output. Training Industry's new framework this week draws a useful line for L&amp;D teams trying to fix this: AI <em>literacy</em> (safe, baseline, responsible use) is <strong>not the same</strong> as AI <em>fluency</em> (using AI for real advantage) — and most 2026 training programs are still teaching the former while employees need the latter.</p>
+  <p><span class="lead-in">The fix:</span> it isn't slowing adoption down. It's <strong>building the evaluation habit into the workflow itself</strong> — the same way IBM and Eightfold AI are now mining real work samples for skills data instead of trusting self-reported profiles (more on that below). Trust the process less, and the output more.</p>
 </div>
+
+<div class="quiz-box">
+  <div class="quiz-kicker">🧠 Quick Gut Check</div>
+  <div class="quiz-question">Before you scroll up again — what % of L&amp;D teams do you think already use AI in some form?</div>
+  <div class="quiz-options" id="quiz-options">
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">42%</button>
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">61%</button>
+    <button class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true)">87%</button>
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">95%</button>
+  </div>
+  <div class="quiz-reveal" id="quiz-reveal">
+    <strong>87% — and only 2% have no plans to adopt at all.</strong> That's the number the whole "confidence gap" argument above hinges on: adoption is basically done, trust in the output is the part still being built. Source: <a href="https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows" target="_blank">eLearning Industry / Synthesia 2026 →</a>
+  </div>
+</div>
+<script>
+function answerQuiz(btn, isCorrect) {
+  const opts = document.querySelectorAll('#quiz-options .quiz-opt');
+  opts.forEach(o => {
+    o.disabled = true;
+    if (o.dataset.correct === 'true') o.classList.add('correct');
+    else if (o === btn) o.classList.add('wrong');
+  });
+  document.getElementById('quiz-reveal').classList.add('show');
+}
+</script>
 
 <div class="reality-check">
   <div class="rc-head"><span class="rc-label">🔍 Reality Check</span></div>
   <div class="rc-sub">What this is: every issue, we trace one widely-shared stat back to its original source and show what we find — the point is to model the exact "check before you trust it" habit this issue is about.</div>
   <p class="rc-body">A widely-shared 2026 stat claims Mastercard's internal AI mobility platform delivered "$21M in savings, 100,000 hours unlocked, 75% of the workforce enrolled." We traced it back to the primary source — a 2022 Josh Bersin Company / Gloat case study — and the real, verified numbers are more modest: 62% of employees registered within two months, 51% explored career paths, 32% saved one. Still a strong result. Just not the one making the rounds this year. If a rollout plan is being built on a secondhand stat, this is the week to go check the primary source.</p>
+</div>
+
+<!-- CASE FILES -->
+<p class="section-label" id="case-files">🕵️ Case Files: How They Actually Did It</p>
+
+<div class="case-card">
+  <div class="case-co">Duolingo · GitHub customer story</div>
+  <h4>Copilot + Codespaces, not a training rollout</h4>
+  <p>Duolingo scaled from 3 core repos to 400+ as it moved to microservices, which fragmented code-review conventions across teams. Rather than a training program, they rolled out <strong>GitHub Copilot</strong> org-wide, built custom bots on GitHub's API to standardize workflows, and used <strong>Codespaces</strong> to kill local environment setup entirely. Named: Jonathan Burket (Sr. Eng Manager), Art Chaidarun (Principal Engineer), Severin Hacker (CTO).</p>
+  <span class="case-result">📈 25% faster for engineers new to a repo · review time 3h→1h · setup: hours→~1 min</span>
+  <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Vendor case study (GitHub promoting its own product) — but names real people and gives specific, checkable figures. <a href="https://github.com/customer-stories/duolingo" target="_blank">Source →</a></p>
+</div>
+
+<div class="case-card">
+  <div class="case-co">Booking.com · via DX</div>
+  <h4>When AI tool adoption stalls, the fix was enablement, not the tool</h4>
+  <p>Booking.com's first AI coding assistant rollout underperformed — engineers were hesitant, usage lagged. The DevEx team (Bruno Passos, Zane Wright, Amos Haviv) got usage visibility via the DX platform, then built <strong>two-day hands-on workshops + recurring office hours</strong>, and reframed the goal from "adoption" to "frequent, effective use" (12+ days/month).</p>
+  <span class="case-result">📈 +65% adoption after the push · daily users had 16% higher PR merge rate</span>
+  <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Note: some secondary write-ups cite "3,500 engineers / 150,000 hours saved" for this rollout — we could not confirm those two numbers on DX's own case study pages, so we're leaving them out. <a href="https://getdx.com/customers/booking-drives-ai-adoption-with-dx/" target="_blank">Source →</a></p>
+</div>
+
+<div class="case-card">
+  <div class="case-co">Stripe · Atlas guide</div>
+  <h4>"Stripe 101" + "/dev/start": real backlog tasks, not toy projects</h4>
+  <p>Stripe replaced sink-or-swim onboarding with a company-wide program (82 internal instructors, founder Q&amp;As) plus an engineering-specific layer: new engineers join temporary teams for 3-4 weeks, each paired with a senior mentor, working on <strong>real tasks pulled from actual team backlogs</strong>.</p>
+  <span class="case-result">📈 94.5% rated first week positive · 90% understood the full stack by program end</span>
+  <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);"><a href="https://stripe.com/guides/atlas/scaling-eng" target="_blank">Source →</a></p>
 </div>
 
 <!-- ARTICLE CARDS -->
@@ -345,6 +435,58 @@
     <div class="quote-role">Instructional Designer, Synthesia</div>
     <a class="quote-link" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">Source: Synthesia AI in L&amp;D Report 2026 →</a>
   </div>
+</div>
+
+<div class="podcast-embed">
+  <iframe src="https://open.spotify.com/embed/episode/4z0G0jrFKe5CIsXdBx34UZ" height="152" title="Designing High-Impact Learning with AI with Dr. Philippa Hardman" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+</div>
+
+<!-- L&D BY FUNCTION -->
+<p class="section-label" id="domains">🧩 L&amp;D By Function — How It's Different in Each Room</p>
+<div class="domains-grid">
+
+  <div class="domain-card">
+    <h4>💻 Tech / Product &amp; Engineering</h4>
+    <p>Less "training," more infrastructure: codifying code-review norms, CI/incident hygiene, and running experiments that measurably move dev velocity.</p>
+    <span class="role-tag">Engineering Enablement Manager</span><span class="role-tag">AI Enablement Engineer</span>
+    <p><a href="https://preset.io/blog/ai-enablement-engineer/" target="_blank">Preset: "the highest-leverage role in tech" →</a></p>
+  </div>
+
+  <div class="domain-card">
+    <h4>🧑‍🤝‍🧑 People / HR</h4>
+    <p>Josh Bersin's own framework argues HR/L&amp;D must move from publishing courses to <strong>"dynamic enablement" delivered in the flow of work</strong> — role-based AI learning journeys and champion networks, not one-time workshops. No named company has yet published a full case study of this in action (we checked) — the concept is ahead of the proof.</p>
+    <span class="role-tag">AI Enablement Lead</span><span class="role-tag">AI Literacy &amp; Change Lead</span>
+    <p><a href="https://joshbersin.com/2026/03/the-world-of-corporate-training-lurches-toward-enablement/" target="_blank">Bersin: "Corporate Training Lurches Toward Enablement" →</a></p>
+  </div>
+
+  <div class="domain-card">
+    <h4>🎧 Customer Success</h4>
+    <p>Moving from "human glue between systems" (status updates, follow-ups — now AI's job) toward strategic, self-serve education design as buyers expect to learn on their own schedule.</p>
+    <span class="role-tag">CS Enablement Lead</span><span class="role-tag">Customer Solutions Architect</span>
+    <p><a href="https://www.guideflow.com/blog/customer-success-enablement" target="_blank">Guideflow: CS enablement in 2026 →</a></p>
+  </div>
+
+  <div class="domain-card">
+    <h4>📊 Data / Analytics</h4>
+    <p>The bar moved from "produce the dashboard" to "navigate ambiguous problems with imperfect data, using AI as leverage." Data literacy itself is maturing into its own discipline.</p>
+    <span class="role-tag">Analytics Engineer</span><span class="role-tag">AI-Augmented Analyst</span>
+    <p><a href="https://www.turningdataintowisdom.com/data-literacy-has-outgrown-its-original-job/" target="_blank">"Data literacy has outgrown its original job" →</a></p>
+  </div>
+
+  <div class="domain-card">
+    <h4>🐞 QA</h4>
+    <p>The sharpest shift of any function: developers now own routine test automation, so QA moves upstream to strategy and reviewing AI-written tests. The real industry data (World Quality Report 2025-26): <strong>89% are piloting AI-augmented QE workflows, but only 15% have reached enterprise scale</strong> — adoption is way ahead of actual capability-building.</p>
+    <span class="role-tag">Evaluation Engineer</span><span class="role-tag">AI Assurance Architect</span>
+    <p><a href="https://www.capgemini.com/news/press-releases/world-quality-report-2025-ai-adoption-surges-in-quality-engineering-but-enterprise-level-scaling-remains-elusive/" target="_blank">World Quality Report 2025-26 (Capgemini) →</a></p>
+  </div>
+
+  <div class="domain-card">
+    <h4>🎨 Design / UX</h4>
+    <p>Less about the design team adopting AI, more about designing interfaces that make employees/customers trust and adopt AI in the first place. Maze's 2026 research names the exact same "confidence gap" this issue is about: most orgs give AI tool access but <strong>fewer than half provide real training or support</strong> to use it well.</p>
+    <span class="role-tag">AI UX Designer</span><span class="role-tag">Design Ops</span>
+    <p><a href="https://maze.co/blog/future-user-research-2026/" target="_blank">Maze: Future of User Research 2026 →</a></p>
+  </div>
+
 </div>
 
 <!-- LEMONADE ANGLE -->

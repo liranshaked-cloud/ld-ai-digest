@@ -6,8 +6,8 @@
       "path": "weekly/2026-06-22/index.html",
       "theme": "The Confidence Gap",
       "quote": "AI adoption in L&D just passed 87% — but confidence in what to build next hasn't caught up.",
-      "tags": ["AI Adoption", "Critical Thinking", "Skills Gap", "Internal Mobility", "AI Literacy", "Trust", "Onboarding"],
-      "companies": ["Mastercard", "IBM", "Eightfold AI"],
+      "tags": ["AI Adoption", "Critical Thinking", "Skills Gap", "Internal Mobility", "AI Literacy", "Trust", "Onboarding", "Case Study", "Enablement", "QA", "Design", "Data", "Customer Success"],
+      "companies": ["Mastercard", "IBM", "Eightfold AI", "Duolingo", "Booking.com", "Stripe", "GitHub", "Synthesia"],
       "publishedAt": "2026-07-01",
       "articles": [
         { "title": "AI Is Eroding Critical Thinking At Work. The Window Is Closing.", "url": "https://www.forbes.com/sites/chrisrosenberg/2026/05/28/ai-is-eroding-critical-thinking-at-work-the-window-is-closing/", "publisher": "Forbes", "date": "2026-05-28", "tags": ["Critical Thinking", "AI Risk", "Wharton Study"] },

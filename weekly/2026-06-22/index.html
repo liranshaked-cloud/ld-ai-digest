@@ -36,6 +36,9 @@
   .comment-toggle:hover { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
   .comment-toggle.open { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
   .mini-comments { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-strong); }
+  /* Cusdis renders in a cross-origin iframe, so we can't restyle its internals directly —
+     zoom shrinks the whole rendered widget (including its fonts) as a workaround. */
+  #cusdis_thread iframe, .mini-comments iframe { zoom: 0.8; }
 
   /* READING PROGRESS BAR */
   .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--lmnd-pink); z-index: 200; transition: width 0.1s linear; }
@@ -767,7 +770,9 @@ new Chart(document.getElementById('gapChart'), {
   }
 
   document.querySelectorAll('.comment-toggle').forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      evt.stopPropagation();
       const key = btn.dataset.commentKey;
       let container = document.getElementById('mc-' + key);
       if (container) {

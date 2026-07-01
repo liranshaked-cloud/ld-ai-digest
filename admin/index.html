@@ -51,6 +51,13 @@
   .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; box-shadow: var(--shadow-sm); flex: 1; }
   .total-num { font-size: 34px; font-weight: 900; color: var(--lmnd-pink); }
   .total-label { font-size: 12px; color: var(--text-muted); font-weight: 700; }
+
+  /* SOURCES */
+  .sources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 10px; }
+  .source-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px; box-shadow: var(--shadow-sm); }
+  .source-card a { font-size: 13.5px; font-weight: 800; text-decoration: none; }
+  .source-card a:hover { color: var(--lmnd-pink); text-decoration: underline; }
+  .source-card .cat { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-faint); margin-top: 3px; }
 </style>
 </head>
 <body>
@@ -76,6 +83,10 @@
 
   <p class="section-label">Item Breakdown Per Week</p>
   <div id="week-details"></div>
+
+  <p class="section-label">Research Sources (<span id="source-count">–</span>)</p>
+  <div class="callout">This is the full list the weekly automation researches from — it always draws from everything here. To add a source, just tell me ("add X to the sources list") — no separate form, since a public self-service add-form would need its own backend, and this list changes rarely enough that it's not worth that.</div>
+  <div id="sources-list"></div>
 
 </div>
 
@@ -148,6 +159,24 @@ fetch('../data/weeks.json')
           </div>`).join('')}
       </div>`;
     }).join('');
+  });
+
+fetch('../data/sources.json')
+  .then(r => r.json())
+  .then(data => {
+    const sources = data.sources || [];
+    document.getElementById('source-count').textContent = sources.length;
+    document.getElementById('sources-list').innerHTML = `
+      <div class="sources-grid">
+        ${sources.map(s => `
+          <div class="source-card">
+            <a href="${s.url}" target="_blank">${s.name} ↗</a>
+            <div class="cat">${s.category}</div>
+          </div>`).join('')}
+      </div>`;
+  })
+  .catch(() => {
+    document.getElementById('sources-list').innerHTML = '<div class="callout">Could not load sources list.</div>';
   });
 </script>
 

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — L&D + AI Digest</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lmnd-pink: #FF0083; --lmnd-pink-tint: rgba(255,0,131,0.07);
+    --text-primary: #1F1F26; --text-muted: #6B6B75; --text-faint: #9999A2;
+    --surface: #FFFFFF; --surface-alt: #FAFAFB; --surface-sunken: #F4F4F6;
+    --border: #E8E8ED; --border-strong: #D6D6DC;
+    --shadow-sm: 0 1px 2px rgba(20,20,30,0.05); --shadow-md: 0 4px 18px rgba(20,20,30,0.06);
+    --radius-md: 12px; --radius-lg: 18px;
+  }
+  body { font-family: 'Lato', sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.6; }
+  a { color: var(--text-primary); }
+  .header { background: var(--surface); padding: 40px 24px 32px; border-bottom: 1px solid var(--border); }
+  .header h1 { font-size: 26px; font-weight: 900; }
+  .header p { font-size: 13.5px; color: var(--text-muted); margin-top: 8px; max-width: 640px; }
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px; }
+  .callout { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; margin-bottom: 28px; box-shadow: var(--shadow-sm); font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+  .callout a { font-weight: 700; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin: 32px 0 14px; }
+  .row { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 18px; margin-bottom: 8px; box-shadow: var(--shadow-sm); }
+  .row .label { font-size: 13.5px; font-weight: 700; }
+  .row .bar-wrap { flex: 1; margin: 0 16px; height: 6px; background: var(--surface-sunken); border-radius: 999px; overflow: hidden; }
+  .row .bar { height: 100%; background: var(--lmnd-pink); border-radius: 999px; }
+  .row .n { font-size: 13px; font-weight: 900; color: var(--lmnd-pink); width: 40px; text-align: right; }
+  .total { font-size: 34px; font-weight: 900; color: var(--lmnd-pink); }
+  .total-label { font-size: 12px; color: var(--text-muted); font-weight: 700; }
+  .stat-strip { display: flex; gap: 20px; margin-bottom: 28px; }
+  .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; box-shadow: var(--shadow-sm); flex: 1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 L&D + AI Digest — Admin</h1>
+  <p>Private view: liked items per issue. Not linked anywhere on the public site. Note: this data isn't secret — like counts are read from a public, no-login counter service, so anyone who inspected the page source could query the same numbers. Nothing sensitive lives here.</p>
+</div>
+
+<div class="container">
+
+  <div class="callout">
+    For real visitor analytics (page views, browsers, referrers), see your <a href="https://liran-shaked.goatcounter.com" target="_blank">GoatCounter dashboard →</a> (requires your login — kept separate rather than embedded here for that reason).
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat-box"><div class="total" id="total-likes">–</div><div class="total-label">Total likes, all items</div></div>
+    <div class="stat-box"><div class="total" id="top-count">–</div><div class="total-label" id="top-label">Most-liked item</div></div>
+  </div>
+
+  <p class="section-label">Week of Jun 22–28, 2026 — "The Confidence Gap"</p>
+  <div id="rows"></div>
+
+</div>
+
+<script>
+const NS = 'ld-ai-digest';
+const ITEMS = [
+  { key: '2026-06-22-stat-87pct', label: '📊 Stat: 87% L&D teams using AI' },
+  { key: '2026-06-22-stat-80pct', label: '📊 Stat: 80% accepted wrong AI answers' },
+  { key: '2026-06-22-stat-12pct', label: '📊 Stat: only 12% use AI daily' },
+  { key: '2026-06-22-case-duolingo', label: '🕵️ Case: Duolingo (Copilot + Codespaces)' },
+  { key: '2026-06-22-case-booking', label: '🕵️ Case: Booking.com (AI enablement)' },
+  { key: '2026-06-22-case-stripe', label: '🕵️ Case: Stripe (onboarding)' },
+  { key: '2026-06-22-article-forbes', label: '🔎 Article: Forbes — Critical Thinking' },
+  { key: '2026-06-22-article-elearningindustry', label: '🔎 Article: eLearning Industry' },
+  { key: '2026-06-22-article-bersin', label: '🔎 Article: Josh Bersin ($400B video)' },
+  { key: '2026-06-22-article-clo', label: '🔎 Article: Chief Learning Officer' },
+  { key: '2026-06-22-article-i4cp', label: '🔎 Article: i4cp (Medtronic)' },
+  { key: '2026-06-22-article-360learning', label: '🔎 Article: 360Learning' },
+  { key: '2026-06-22-article-reworked', label: '🔎 Article: Reworked (IBM/Eightfold)' },
+  { key: '2026-06-22-article-shrm', label: '🔎 Article: SHRM' },
+  { key: '2026-06-22-article-trainingindustry', label: '🔎 Article: Training Industry' },
+  { key: '2026-06-22-quote-hardman', label: '💬 Quote: Dr Philippa Hardman' },
+  { key: '2026-06-22-quote-bersin', label: '💬 Quote: Josh Bersin' },
+  { key: '2026-06-22-quote-dirksen', label: '💬 Quote: Julie Dirksen' },
+  { key: '2026-06-22-quote-bartoli', label: '💬 Quote: Diane Bartoli' },
+  { key: '2026-06-22-lemon-1', label: '🍋 Lemonade Angle #1 — PR trust field' },
+  { key: '2026-06-22-lemon-2', label: '🍋 Lemonade Angle #2 — retrieval layer' },
+  { key: '2026-06-22-lemon-3', label: '🍋 Lemonade Angle #3 — GitHub mobility signals' },
+];
+
+Promise.all(ITEMS.map(item =>
+  fetch(`https://abacus.jasoncameron.dev/get/${NS}/${item.key}`)
+    .then(r => r.json())
+    .then(d => ({ ...item, count: d.value || 0 }))
+    .catch(() => ({ ...item, count: 0 }))
+)).then(results => {
+  results.sort((a, b) => b.count - a.count);
+  const total = results.reduce((sum, r) => sum + r.count, 0);
+  document.getElementById('total-likes').textContent = total;
+  if (results.length && results[0].count > 0) {
+    document.getElementById('top-count').textContent = results[0].count;
+    document.getElementById('top-label').textContent = results[0].label;
+  } else {
+    document.getElementById('top-count').textContent = '–';
+  }
+  const maxN = Math.max(1, ...results.map(r => r.count));
+  document.getElementById('rows').innerHTML = results.map(r => `
+    <div class="row">
+      <div class="label">${r.label}</div>
+      <div class="bar-wrap"><div class="bar" style="width:${(r.count / maxN) * 100}%"></div></div>
+      <div class="n">${r.count}</div>
+    </div>`).join('');
+});
+</script>
+
+</body>
+</html>

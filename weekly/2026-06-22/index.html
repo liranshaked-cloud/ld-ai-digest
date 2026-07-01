@@ -25,6 +25,12 @@
   [id] { scroll-margin-top: 64px; }
   .icon { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; vertical-align: -3px; }
 
+  /* LIKE BUTTON — anonymous, one click per browser, no login */
+  .like-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all .15s ease; }
+  .like-btn:hover:not(.liked) { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
+  .like-btn.liked { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); cursor: default; }
+  .like-btn .heart { font-size: 13px; }
+
   /* READING PROGRESS BAR */
   .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--lmnd-pink); z-index: 200; transition: width 0.1s linear; }
 
@@ -205,6 +211,7 @@
   <a class="tldr-item" href="#tabs-panel" @click="tab='case-files'"><span class="emoji">🕵️</span><div><p><strong>3 real case studies</strong> — Duolingo, Booking.com, Stripe.</p><span class="go">Open Case Files →</span></div></a>
   <a class="tldr-item" href="#tabs-panel" @click="tab='voices'"><span class="emoji">💬</span><div><p><strong>Real quotes</strong> from 3 different primary sources.</p><span class="go">Open Voices →</span></div></a>
   <a class="tldr-item" href="#tabs-panel" @click="tab='lemonade'"><span class="emoji">🍋</span><div><p><strong>What Lemonade should do</strong> — 3 moves tied to this week.</p><span class="go">Open Lemonade Angle →</span></div></a>
+  <a class="tldr-item" href="#comments"><span class="emoji">👍</span><div><p><strong>Like anything?</strong> Every stat, case, and quote has its own reaction button.</p><span class="go">Jump to Comments →</span></div></a>
 </div>
 
 <!-- BENTO NUMBERS -->
@@ -216,18 +223,21 @@
       <div class="val">87%</div>
       <div class="lbl">L&amp;D teams already using AI</div>
       <div class="src">eLearning Industry / Synthesia</div>
+      <button class="like-btn" data-like-key="2026-06-22-stat-87pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
     </a>
     <a class="bento-stat" href="https://www.forbes.com/sites/chrisrosenberg/2026/05/28/ai-is-eroding-critical-thinking-at-work-the-window-is-closing/" target="_blank">
       <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
       <div class="val">80%</div>
       <div class="lbl">accepted wrong AI answers, confidently</div>
       <div class="src">Forbes / Wharton study</div>
+      <button class="like-btn" data-like-key="2026-06-22-stat-80pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
     </a>
     <a class="bento-stat" href="https://www.chieflearningofficer.com/2026/03/16/from-ai-access-to-workforce-readiness/" target="_blank">
       <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M23 18l-9.5-9.5-5 5L1 6"/><path d="M7 18H1v-6"/></svg></div>
       <div class="val">12%</div>
       <div class="lbl">use AI daily — despite 88% org-level adoption</div>
       <div class="src">Chief Learning Officer / Gallup</div>
+      <button class="like-btn" data-like-key="2026-06-22-stat-12pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
     </a>
     <div class="chart-card">
       <h4>Where AI Actually Lives in HR</h4>
@@ -290,6 +300,7 @@
         <span class="case-result">📈 25% faster for engineers new to a repo · review time 3h→1h · setup: hours→~1 min</span>
         <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Vendor case study (GitHub promoting its own product) — but names real people and gives specific, checkable figures. <a href="https://github.com/customer-stories/duolingo" target="_blank">Source →</a></p>
         <div class="lesson">💡 <strong>L&amp;D Lesson:</strong> the highest-leverage "training" investment here wasn't a course — it was removing friction from the moment of actually doing the work. That's an L&amp;D decision even though no one on the project had an L&amp;D title.</div>
+        <button class="like-btn" data-like-key="2026-06-22-case-duolingo"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -303,6 +314,7 @@
         <span class="case-result">📈 +65% adoption after the push · daily users had 16% higher PR merge rate</span>
         <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Note: some secondary write-ups cite "3,500 engineers / 150,000 hours saved" for this rollout — we could not confirm those two numbers on DX's own case study pages, so we're leaving them out. <a href="https://getdx.com/customers/booking-drives-ai-adoption-with-dx/" target="_blank">Source →</a></p>
         <div class="lesson">💡 <strong>L&amp;D Lesson:</strong> giving people the tool is not enablement. Booking.com only saw results after building the exact thing L&amp;D exists to build — structured practice + ongoing support — instead of assuming access equals adoption.</div>
+        <button class="like-btn" data-like-key="2026-06-22-case-booking"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -316,6 +328,7 @@
         <span class="case-result">📈 94.5% rated first week positive · 90% understood the full stack by program end</span>
         <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);"><a href="https://stripe.com/guides/atlas/scaling-eng" target="_blank">Source →</a></p>
         <div class="lesson">💡 <strong>L&amp;D Lesson:</strong> real backlog tasks beat toy projects because the mentor relationship and the actual work happen at the same time — this is the "3+ month ramp" problem this issue keeps coming back to, solved with a program design choice, not more content.</div>
+        <button class="like-btn" data-like-key="2026-06-22-case-stripe"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
   </div>
@@ -339,6 +352,7 @@
         <p>Covers Wharton School research on "cognitive surrender" — employees adopting AI outputs with minimal scrutiny. Also cites Microsoft Research showing higher trust in AI tools correlates with less critical-thinking engagement.</p>
         <a class="readmore" href="https://www.forbes.com/sites/chrisrosenberg/2026/05/28/ai-is-eroding-critical-thinking-at-work-the-window-is-closing/" target="_blank">Read the full article →</a>
         <div class="card-tags"><span class="tag">Critical Thinking</span><span class="tag">AI Risk</span><span class="tag">Wharton Study</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-forbes"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -352,6 +366,7 @@
         <p>Synthesia's 2026 survey of 421 L&amp;D professionals: 57% use AI in production workflows already. Current use is speed-focused, but 72% expect the next wave of value from personalization.</p>
         <a class="readmore" href="https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows" target="_blank">Read the full article →</a>
         <div class="card-tags"><span class="tag">Adoption Data</span><span class="tag">Synthesia Report</span><span class="tag">Personalization</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-elearningindustry"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -366,6 +381,7 @@
         <div class="video-embed"><iframe src="https://www.youtube.com/embed/GvW5nCnzhFs" title="Josh Bersin: AI transforms corporate learning" allowfullscreen></iframe></div>
         <a class="readmore" href="https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/" target="_blank">Read the full article →</a>
         <div class="card-tags"><span class="tag">Maturity Model</span><span class="tag">Dynamic Enablement</span><span class="tag">Video</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-bersin"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -379,6 +395,7 @@
         <p>Cites a Gallup workforce survey of 22,000+ employees: only ~12% report using AI daily, even though McKinsey data shows 88% of organizations use AI in at least one business function. The authors' point: access rolled out faster than actual readiness to use it well — this issue's "confidence gap" in one data pairing.</p>
         <a class="readmore" href="https://www.chieflearningofficer.com/2026/03/16/from-ai-access-to-workforce-readiness/" target="_blank">Read the full article →</a>
         <div class="card-tags"><span class="tag">Adoption Gap</span><span class="tag">Gallup</span><span class="tag">McKinsey</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-clo"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -392,6 +409,7 @@
         <p>Top 2026 CLTO priorities: upskilling the workforce (59%), leadership development (54%), manager effectiveness (46%), implementing AI (43%). High-performing organizations are nearly 3x more likely to express confidence in workforce skills readiness. Amber Alexander, VP Global Talent Management at Medtronic: "By integrating AI and automation into our talent systems, we can simplify complex processes, sharpen decision-making, and help employees see how their work drives meaningful outcomes."</p>
         <a class="readmore" href="https://www.i4cp.com/productivity-blog/4-priorities-for-chief-learning-talent-officers-in-2026" target="_blank">Read the full article →</a>
         <div class="card-tags"><span class="tag">CLTO Priorities</span><span class="tag">Medtronic</span><span class="tag">Confidence</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-i4cp"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -405,6 +423,7 @@
         <p>Announcing 360Learning's own "AI Companion" (Search, Insights, and Action modes), the post cites Fosway Group research that only 24% of promised vendor AI features are actually live in production — a useful reality check when evaluating any AI vendor's roadmap slide, including this one.</p>
         <a class="readmore" href="https://360learning.com/blog/product-update-ai-companion/" target="_blank">Read the full article →</a>
         <div class="card-tags"><span class="tag">Vendor AI Claims</span><span class="tag">Fosway Group</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-360learning"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -418,6 +437,7 @@
         <p>Internal talent marketplaces are shifting from passive job boards to proactive systems. Names IBM and Eightfold AI as examples of extracting skills data from actual work — not self-reported profiles that go stale immediately.</p>
         <a class="readmore" href="https://www.reworked.co/employee-experience/internal-job-mobility-becomes-proactive-with-help-from-ai/" target="_blank">Read the full article →</a>
         <div class="card-tags"><span class="tag">Internal Mobility</span><span class="tag">IBM</span><span class="tag">Eightfold AI</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-reworked"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -431,6 +451,7 @@
         <p>AI tools are most common in recruiting (27%), HR technology (21%), and L&amp;D (17%) — least common in DEI, board relations, and ESG/compliance. 92% of CHROs anticipate further AI integration this year.</p>
         <a class="readmore" href="https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report" target="_blank">Read the full report →</a>
         <div class="card-tags"><span class="tag">HR Benchmark</span><span class="tag">SHRM</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-shrm"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
 
@@ -444,6 +465,7 @@
         <p>Draws a sharp distinction between AI <em>literacy</em> (safe, responsible baseline use) and AI <em>fluency</em> (using AI for real competitive advantage) — directly relevant to closing the confidence gap this issue is about.</p>
         <a class="readmore" href="https://trainingindustry.com/articles/artificial-intelligence/how-ld-should-approach-building-ai-literacy-in-2026/" target="_blank">Read the full article →</a>
         <div class="card-tags"><span class="tag">AI Literacy</span><span class="tag">AI Fluency</span><span class="tag">Framework</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-trainingindustry"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
   </div>
@@ -458,6 +480,7 @@
         <div class="quote-author">Dr Philippa Hardman</div>
         <div class="quote-role">Learning Scientist · Co-Founder, Epiphany AI</div>
         <a class="quote-link" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">Source: Synthesia AI in L&amp;D Report 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-06-22-quote-hardman"><span class="heart">👍</span> <span class="like-count">–</span></button></div>
       </div>
     </div>
 
@@ -469,6 +492,7 @@
         <div class="quote-author">Josh Bersin</div>
         <div class="quote-role">Global Industry Analyst · Founder, The Josh Bersin Company</div>
         <a class="quote-link" href="https://joshbersin.com/2026/03/the-world-of-corporate-training-lurches-toward-enablement/" target="_blank">Source: joshbersin.com, March 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-06-22-quote-bersin"><span class="heart">👍</span> <span class="like-count">–</span></button></div>
       </div>
     </div>
 
@@ -480,6 +504,7 @@
         <div class="quote-author">Julie Dirksen</div>
         <div class="quote-role">Learning &amp; Design Consultant · Author, "Talk to the Elephant"</div>
         <a class="quote-link" href="https://www.talentlms.com/research/learning-development-report-2026" target="_blank">Source: TalentLMS 2026 Benchmark Report →</a>
+        <div><button class="like-btn" data-like-key="2026-06-22-quote-dirksen"><span class="heart">👍</span> <span class="like-count">–</span></button></div>
       </div>
     </div>
 
@@ -491,6 +516,7 @@
         <div class="quote-author">Diane Bartoli</div>
         <div class="quote-role">SVP, EdAssist by Bright Horizons</div>
         <a class="quote-link" href="https://www.hr-brew.com/stories/2025/05/28/workers-ai-learning-effective-use" target="_blank">Source: HR Brew, May 2025 →</a>
+        <div><button class="like-btn" data-like-key="2026-06-22-quote-bartoli"><span class="heart">👍</span> <span class="like-count">–</span></button></div>
       </div>
     </div>
 
@@ -549,22 +575,25 @@
         <h3>🔀 1. Build the "why trust this" habit into code review</h3>
         <p><span class="label-inline">The signal</span>Lemonade's engineers are already past the adoption question on AI coding tools. The real risk is an AI suggestion that looks confident and syntactically clean getting merged without a second look — <strong>especially risky on claims and underwriting logic</strong>.</p>
         <p><span class="label-inline">The move</span>Add a one-line PR template field for AI-assisted changes: <strong>"why do you trust this suggestion?"</strong> Cheap, fits the existing flow of work.</p>
+        <button class="like-btn" data-like-key="2026-06-22-lemon-1"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
       <div class="lemon-item">
         <h3>🗺️ 2. Treat the onboarding wiki as infrastructure, not content</h3>
         <p><span class="label-inline">The signal</span>A 3+ month engineering ramp is a static-content problem, and Bersin's maturity model puts static content on the bottom rung.</p>
         <p><span class="label-inline">The move</span>Build a <strong>retrieval layer over what already exists</strong> — Slack history, incident runbooks, PR discussions — that answers a new engineer's actual question in the moment.</p>
+        <button class="like-btn" data-like-key="2026-06-22-lemon-2"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
       <div class="lemon-item">
         <h3>🧭 3. Mine GitHub activity for mobility signals, not a survey</h3>
         <p><span class="label-inline">The signal</span>Duolingo and Stripe (see Case Files) show the highest-leverage moves happen inside the actual workflow, not a separate program.</p>
         <p><span class="label-inline">The move</span>For ~200 people in product and engineering, surface "who's actually been working near X" from real GitHub signals — languages touched, review patterns, on-call history — when a squad needs to staff a project or someone wants a lateral move.</p>
+        <button class="like-btn" data-like-key="2026-06-22-lemon-3"><span class="heart">👍</span> <span class="like-count">–</span></button>
       </div>
     </div>
   </div>
 </div>
 
-<p class="section-label"><svg class="icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg> React &amp; Discuss</p>
+<p class="section-label" id="comments"><svg class="icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg> React &amp; Discuss</p>
 <div class="giscus"></div>
 <script src="https://giscus.app/client.js"
         data-repo="liranshaked-cloud/ld-ai-digest"
@@ -665,6 +694,40 @@ new Chart(document.getElementById('gapChart'), {
     onClick: (evt, els) => { if (els.length) window.open(gapLinks[els[0].index], '_blank'); }
   }
 });
+</script>
+
+<script>
+// Anonymous, no-login like buttons — one like per browser per item, via public Abacus counter API
+(function () {
+  const NS = 'ld-ai-digest';
+  const LIKED_KEY = 'ld-ai-digest-liked';
+  const liked = JSON.parse(localStorage.getItem(LIKED_KEY) || '{}');
+
+  document.querySelectorAll('.like-btn').forEach(async (btn) => {
+    const key = btn.dataset.likeKey;
+    const countEl = btn.querySelector('.like-count');
+    if (liked[key]) btn.classList.add('liked');
+    try {
+      const r = await fetch(`https://abacus.jasoncameron.dev/get/${NS}/${key}`);
+      const d = await r.json();
+      countEl.textContent = d.value || 0;
+    } catch (e) { countEl.textContent = '–'; }
+
+    btn.addEventListener('click', async (evt) => {
+      evt.preventDefault();
+      evt.stopPropagation();
+      if (btn.classList.contains('liked')) return;
+      btn.classList.add('liked');
+      liked[key] = true;
+      localStorage.setItem(LIKED_KEY, JSON.stringify(liked));
+      try {
+        const r = await fetch(`https://abacus.jasoncameron.dev/hit/${NS}/${key}`);
+        const d = await r.json();
+        countEl.textContent = d.value;
+      } catch (e) {}
+    });
+  });
+})();
 </script>
 
 </body>

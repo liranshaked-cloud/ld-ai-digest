@@ -6,8 +6,8 @@
       "path": "weekly/2026-06-22/index.html",
       "theme": "The Confidence Gap",
       "quote": "AI adoption in L&D just passed 87% — but confidence in what to build next hasn't caught up.",
-      "tags": ["AI Adoption", "Critical Thinking", "Skills Gap", "Internal Mobility", "AI Literacy", "Trust", "Onboarding", "Case Study", "Enablement", "QA", "Design", "Data", "Customer Success", "Vendor Claims", "Career Development"],
-      "companies": ["Mastercard", "IBM", "Eightfold AI", "Duolingo", "Booking.com", "Stripe", "GitHub", "Synthesia", "Medtronic"],
+      "tags": ["AI Adoption", "Critical Thinking", "Skills Gap", "Internal Mobility", "AI Literacy", "Trust", "Onboarding", "Case Study", "Enablement", "QA", "Design", "Data", "Customer Success", "Vendor Claims", "Career Development", "Flow of Work", "LinkedIn"],
+      "companies": ["Mastercard", "IBM", "Eightfold AI", "Duolingo", "Booking.com", "Stripe", "GitHub", "Synthesia", "Medtronic", "BCG"],
       "publishedAt": "2026-07-01",
       "roles": ["Engineering Enablement Manager", "AI Enablement Engineer", "AI Enablement Lead", "AI Literacy & Change Lead", "CS Enablement Lead", "Customer Solutions Architect", "Analytics Engineer", "AI-Augmented Analyst", "Evaluation Engineer", "AI Assurance Architect", "AI UX Designer", "Design Ops"],
       "tools": ["GitHub Copilot", "GitHub Codespaces", "DX (getdx.com)", "Synthesia", "TalentLMS", "Eightfold AI"],
@@ -38,7 +38,8 @@
         { "title": "Meet Your New AI Companion", "url": "https://360learning.com/blog/product-update-ai-companion/", "publisher": "360Learning", "date": "2025-10-01", "tags": ["Vendor AI Claims", "Fosway Group"] },
         { "title": "Internal Job Mobility Becomes Proactive With Help From AI", "url": "https://www.reworked.co/employee-experience/internal-job-mobility-becomes-proactive-with-help-from-ai/", "publisher": "Reworked", "date": "2026-01-16", "tags": ["Internal Mobility", "IBM", "Eightfold AI"] },
         { "title": "The State of AI in HR 2026 Report", "url": "https://www.shrm.org/topics-tools/research/state-of-ai-hr-2026/full-report", "publisher": "SHRM", "date": "2026-03-31", "tags": ["HR Benchmark", "SHRM"] },
-        { "title": "How L&D Should Approach Building AI Literacy in 2026", "url": "https://trainingindustry.com/articles/artificial-intelligence/how-ld-should-approach-building-ai-literacy-in-2026/", "publisher": "Training Industry", "date": "2026-01-06", "tags": ["AI Literacy", "AI Fluency", "Framework"] }
+        { "title": "How L&D Should Approach Building AI Literacy in 2026", "url": "https://trainingindustry.com/articles/artificial-intelligence/how-ld-should-approach-building-ai-literacy-in-2026/", "publisher": "Training Industry", "date": "2026-01-06", "tags": ["AI Literacy", "AI Fluency", "Framework"] },
+        { "title": "AI Is Moving Corporate Learning Out of the Classroom and Into Workflows", "url": "https://www.bcg.com/publications/2026/ai-is-moving-corporate-learning-out-of-the-classroom", "publisher": "BCG", "date": "2026-06", "tags": ["Flow of Work", "BCG", "CLO Strategy"] }
       ],
       "likeableItems": [
         { "key": "2026-06-22-stat-87pct", "label": "Stat: 87% L&D teams using AI", "url": "https://elearningindustry.com/ai-in-ld-has-passed-the-tipping-point-heres-what-the-data-shows" },
@@ -60,6 +61,8 @@
         { "key": "2026-06-22-quote-bersin", "label": "Quote: Josh Bersin", "url": "https://joshbersin.com/2026/03/the-world-of-corporate-training-lurches-toward-enablement/" },
         { "key": "2026-06-22-quote-dirksen", "label": "Quote: Julie Dirksen", "url": "https://www.talentlms.com/research/learning-development-report-2026" },
         { "key": "2026-06-22-quote-bartoli", "label": "Quote: Diane Bartoli", "url": "https://www.hr-brew.com/stories/2025/05/28/workers-ai-learning-effective-use" },
+        { "key": "2026-06-22-quote-sharpe", "label": "Quote: David Sharpe (LinkedIn)", "url": "https://www.linkedin.com/search/results/people/?keywords=David%20Sharpe%20Senior%20Learning%20Development%20Leader" },
+        { "key": "2026-06-22-article-bcg", "label": "Article: BCG (Flow of Work)", "url": "https://www.bcg.com/publications/2026/ai-is-moving-corporate-learning-out-of-the-classroom" },
         { "key": "2026-06-22-lemon-1", "label": "Lemonade Angle #1 — PR trust field", "url": "weekly/2026-06-22/index.html#lemon-1" },
         { "key": "2026-06-22-lemon-2", "label": "Lemonade Angle #2 — retrieval layer", "url": "weekly/2026-06-22/index.html#lemon-2" },
         { "key": "2026-06-22-lemon-3", "label": "Lemonade Angle #3 — GitHub mobility signals", "url": "weekly/2026-06-22/index.html#lemon-3" }

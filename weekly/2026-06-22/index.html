@@ -499,6 +499,21 @@
         <button class="comment-toggle" data-comment-key="2026-06-22-article-trainingindustry" data-comment-title="Article: Training Industry">💬 Comments</button>
       </div>
     </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/></svg></div>
+        <div><div class="card-source">BCG · 2026</div><div class="card-title">AI Is Moving Corporate Learning Out of the Classroom and Into Workflows</div><div class="card-teaser">"AI has done that for them" — the flow-of-work shift, from BCG itself.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>Elizabeth Lyle, Managing Director at BCG: <em>"For years, L&amp;D has been trying to get out of the classroom and into the workflow — AI has done that for them."</em> BCG partner Patrick Erker adds that as content creation gets commoditized, value shifts to AI fluency, solution architecture, and business partnership — CLOs should be building teams around that, not more content production.</p>
+        <a class="readmore" href="https://www.bcg.com/publications/2026/ai-is-moving-corporate-learning-out-of-the-classroom" target="_blank">Read the full article →</a>
+        <div class="card-tags"><span class="tag">Flow of Work</span><span class="tag">BCG</span><span class="tag">CLO Strategy</span></div>
+        <button class="like-btn" data-like-key="2026-06-22-article-bcg"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-06-22-article-bcg" data-comment-title="Article: BCG">💬 Comments</button>
+      </div>
+    </div>
   </div>
 
   <!-- VOICES -->
@@ -548,6 +563,18 @@
         <div class="quote-role">SVP, EdAssist by Bright Horizons</div>
         <a class="quote-link" href="https://www.hr-brew.com/stories/2025/05/28/workers-ai-learning-effective-use" target="_blank">Source: HR Brew, May 2025 →</a>
         <div><button class="like-btn" data-like-key="2026-06-22-quote-bartoli"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-06-22-quote-bartoli" data-comment-title="Quote: Diane Bartoli">💬 Comments</button></div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-avatar initials">DS</div>
+      <div>
+        <div class="quote-context">On what actually survives in L&amp;D once AI can build the course:</div>
+        <p class="quote-text">"AI can build the course. It can't run the room."</p>
+        <div class="quote-author">David Sharpe</div>
+        <div class="quote-role">Senior Learning &amp; Development Leader, Enterprise Leadership Development</div>
+        <a class="quote-link" href="https://www.linkedin.com/search/results/people/?keywords=David%20Sharpe%20Senior%20Learning%20Development%20Leader" target="_blank">Source: LinkedIn post, Jun 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-06-22-quote-sharpe"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-06-22-quote-sharpe" data-comment-title="Quote: David Sharpe">💬 Comments</button></div>
       </div>
     </div>
 

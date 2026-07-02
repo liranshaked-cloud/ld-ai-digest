@@ -29,6 +29,8 @@
     { "name": "i4cp", "url": "https://www.i4cp.com", "category": "Analyst Firm" },
     { "name": "HR Brew", "url": "https://www.hr-brew.com", "category": "Trade Press" },
     { "name": "360Learning", "url": "https://360learning.com", "category": "Vendor Blog" },
-    { "name": "Sana Labs", "url": "https://sanalabs.com", "category": "Vendor Blog" }
+    { "name": "Sana Labs", "url": "https://sanalabs.com", "category": "Vendor Blog" },
+    { "name": "BCG", "url": "https://www.bcg.com", "category": "Analyst / Consulting" },
+    { "name": "LinkedIn (your feed + content search)", "url": "https://www.linkedin.com/feed/", "category": "Social — requires connected browser" }
   ]
 }

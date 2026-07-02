@@ -58,6 +58,16 @@
   .source-card a { font-size: 13.5px; font-weight: 800; text-decoration: none; }
   .source-card a:hover { color: var(--lmnd-pink); text-decoration: underline; }
   .source-card .cat { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-faint); margin-top: 3px; }
+
+  /* LINKEDIN VOICES */
+  .person-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; box-shadow: var(--shadow-sm); margin-bottom: 10px; }
+  .person-card .name-row { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+  .person-card .name-row a { font-size: 14px; font-weight: 800; text-decoration: none; }
+  .person-card .name-row a:hover { color: var(--lmnd-pink); text-decoration: underline; }
+  .person-card .added { font-size: 10.5px; color: var(--text-faint); font-weight: 700; }
+  .person-card .title { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+  .person-card .notable { font-size: 12.5px; color: #33333c; margin-top: 8px; line-height: 1.5; }
+  .person-card .post-row { font-size: 12px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border-strong); color: var(--text-muted); }
 </style>
 </head>
 <body>
@@ -87,6 +97,10 @@
   <p class="section-label">Research Sources (<span id="source-count">–</span>)</p>
   <div class="callout">This is the full list the weekly automation researches from — it always draws from everything here. To add a source, just tell me ("add X to the sources list") — no separate form, since a public self-service add-form would need its own backend, and this list changes rarely enough that it's not worth that.</div>
   <div id="sources-list"></div>
+
+  <p class="section-label">LinkedIn Voices (<span id="people-count">–</span>)</p>
+  <div class="callout">Individual people (not company pages) whose posts have been good enough to feature — the automation checks their profiles directly each week in addition to a fresh keyword search, so good voices don't get lost after one issue.</div>
+  <div id="people-list"></div>
 
 </div>
 
@@ -177,6 +191,27 @@ fetch('../data/sources.json')
   })
   .catch(() => {
     document.getElementById('sources-list').innerHTML = '<div class="callout">Could not load sources list.</div>';
+  });
+
+fetch('../data/linkedin_people.json')
+  .then(r => r.json())
+  .then(data => {
+    const people = data.people || [];
+    document.getElementById('people-count').textContent = people.length;
+    document.getElementById('people-list').innerHTML = people.map(p => `
+      <div class="person-card">
+        <div class="name-row">
+          <a href="${p.profileUrl}" target="_blank">${p.name} ↗</a>
+          <span class="added">added ${p.addedDate}</span>
+        </div>
+        <div class="title">${p.title}</div>
+        <div class="notable">${p.notableFor}</div>
+        ${(p.posts || []).map(post => `
+          <div class="post-row">📌 ${post.topic} <br>Found via: ${post.foundVia} · ${post.date} · used in week ${post.usedInWeek}</div>`).join('')}
+      </div>`).join('') || '<div class="callout">No LinkedIn voices tracked yet.</div>';
+  })
+  .catch(() => {
+    document.getElementById('people-list').innerHTML = '<div class="callout">Could not load LinkedIn voices list.</div>';
   });
 </script>
 

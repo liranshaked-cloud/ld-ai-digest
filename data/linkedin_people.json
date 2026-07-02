@@ -15,6 +15,38 @@
           "usedInWeek": "2026-06-22"
         }
       ]
+    },
+    {
+      "name": "Dr. Aneish Kumar",
+      "title": "Governance, Risk & AI Architect | Strategic Advisor | Former MD & CEO, BNY India | Board Advisor",
+      "profileUrl": "https://www.linkedin.com/in/dr-aneish-kumar-422426b6/",
+      "notableFor": "Individual practitioner (not a company page) writing on why judgment and accountability outlast AI in leadership decisions — directly relevant to leadership-development content, not generic AI hype.",
+      "addedDate": "2026-07-02",
+      "posts": [
+        {
+          "topic": "Leadership Begins Where Algorithms Stop — 'Advice can be delegated. But responsibility cannot be.'",
+          "url": "https://www.linkedin.com/pulse/leadership-begin-where-algorithms-stop-dr-aneish-kumar-raxdf/",
+          "foundVia": "LinkedIn content search, keyword \"L&D AI\", past-week filter",
+          "date": "2026-07-02",
+          "usedInWeek": "2026-06-22"
+        }
+      ]
+    },
+    {
+      "name": "David De Cremer",
+      "title": "Provost's Chair & Professor, NUS Business School; author, \"The AI-Savvy Leader\"",
+      "profileUrl": "https://www.linkedin.com/in/david-de-cremer-5648249/",
+      "notableFor": "Watchlist add — found as a named contributor (with Jim Link and Josh Bersin) in another company's LinkedIn article on AI in L&D. Real, verified profile; no personal post of his has been read directly yet, so no quote has been used. Flagged so his own posts get checked directly in a future week instead of only appearing secondhand.",
+      "addedDate": "2026-07-02",
+      "posts": []
+    },
+    {
+      "name": "Jim Link",
+      "title": "Chief Human Resources Officer; SHRM board figure",
+      "profileUrl": "https://www.linkedin.com/in/jim-link/",
+      "notableFor": "Watchlist add — same as David De Cremer: a real, verified profile found as a named contributor in another company's LinkedIn article, not yet read directly. Flagged for a direct check in a future week rather than added on secondhand mention alone.",
+      "addedDate": "2026-07-02",
+      "posts": []
     }
   ]
 }

@@ -95,11 +95,11 @@
   <div id="week-details"></div>
 
   <p class="section-label">Research Sources (<span id="source-count">–</span>)</p>
-  <div class="callout">This is the full list the weekly automation researches from — it always draws from everything here. To add a source, just tell me ("add X to the sources list") — no separate form, since a public self-service add-form would need its own backend, and this list changes rarely enough that it's not worth that.</div>
+  <div class="callout">This is the full list the weekly automation researches from — it always draws from everything here. This is a real file in the repo (<code>data/sources.json</code>), so you can add, edit, or delete entries yourself any time, directly on GitHub, and it's picked up on the next run: <a href="https://github.com/liranshaked-cloud/ld-ai-digest/edit/main/data/sources.json" target="_blank">Edit sources.json on GitHub ↗</a></div>
   <div id="sources-list"></div>
 
   <p class="section-label">LinkedIn Voices (<span id="people-count">–</span>)</p>
-  <div class="callout">Individual people (not company pages) whose posts have been good enough to feature — the automation checks their profiles directly each week in addition to a fresh keyword search, so good voices don't get lost after one issue.</div>
+  <div class="callout">Individual people (not company pages) whose posts have been good enough to feature — the automation checks their profiles directly each week in addition to a fresh keyword search, so good voices don't get lost after one issue. This is the source of truth for that check going forward: <code>data/linkedin_people.json</code>, editable directly on GitHub — add, edit, or delete anyone: <a href="https://github.com/liranshaked-cloud/ld-ai-digest/edit/main/data/linkedin_people.json" target="_blank">Edit linkedin_people.json on GitHub ↗</a></div>
   <div id="people-list"></div>
 
 </div>

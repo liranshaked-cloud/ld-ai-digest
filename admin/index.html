@@ -207,7 +207,7 @@ fetch('../data/linkedin_people.json')
         <div class="title">${p.title}</div>
         <div class="notable">${p.notableFor}</div>
         ${(p.posts || []).map(post => `
-          <div class="post-row">📌 ${post.topic} <br>Found via: ${post.foundVia} · ${post.date} · used in week ${post.usedInWeek}</div>`).join('')}
+          <div class="post-row">📌 ${post.url ? `<a href="${post.url}" target="_blank">${post.topic} ↗</a>` : post.topic} <br>Found via: ${post.foundVia} · ${post.date} · used in week ${post.usedInWeek}</div>`).join('')}
       </div>`).join('') || '<div class="callout">No LinkedIn voices tracked yet.</div>';
   })
   .catch(() => {

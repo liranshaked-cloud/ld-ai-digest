@@ -128,11 +128,12 @@ fetch('../data/weeks.json')
         ? 'Based on 1 verified week so far — direction will sharpen as more weeks publish.'
         : `Synthesized across ${weeks.length} verified weekly updates.`;
 
-    // Direction: use the most recent week's synthesis (refreshed by the monthly digest run as more data accumulates)
-    const latest = weeks.slice().sort((a,b) => b.id.localeCompare(a.id))[0];
+    // Direction: synthesize across all weeks
     document.getElementById('direction-card').innerHTML = `
-      <p>AI adoption in L&amp;D has passed the tipping point — <strong>87-88% adoption</strong> across the reports we've verified. That means the open question is no longer "will people use AI," it's "can people evaluate what it gives them." A Wharton study found people accept wrong AI answers <strong>80% of the time, confidently</strong> — the gap isn't access, it's judgment.</p>
-      <p>The real-world fix shows up as <strong>infrastructure decisions, not training programs</strong>: removing setup friction, mining real work-sample data instead of self-reported surveys, pairing new hires on real backlog work instead of toy projects. Enablement is becoming embedded in the workflow itself — owned by engineering/DevEx teams as often as by L&amp;D.</p>`;
+      <p><strong>Phase 1: Adoption tipping point (achieved, 87% L&D teams using AI)</strong> → Phase 2: Governance. AI has moved from "will we use it?" to "how do we use it responsibly?" The open questions are no longer about access or tool capability, but about <strong>judgment, governance, and human-AI collaboration design</strong>.</p>
+      <p>Week 1 finding: Confidence gap. <strong>80% of people accept wrong AI answers confidently</strong>. Week 2 finding: Governance gap. Organizations are shifting from "what can AI do?" to "what should it do?" — requiring orchestration across culture, leadership, risk, HR, legal, and brand.</p>
+      <p>Real-world fix: <strong>Embed enablement and governance into workflow design, not separate training</strong>. Remove friction (GitHub Codespaces). Mine real signals (GitHub activity, code review patterns) instead of self-reports. Build judgment-development explicitly into onboarding. Deploy enablement specialists directly with teams doing AI work, not centralized L&amp;D centers. Automate deterministic onboarding tasks with agentic AI; free humans for mentoring and culture-building.</p>`;
+
 
     renderDoAvoid(weeks);
     renderPillCloud(weeks, 'roles', 'roles-cloud');

@@ -47,6 +47,22 @@
       "notableFor": "Watchlist add — same as David De Cremer: a real, verified profile found as a named contributor in another company's LinkedIn article, not yet read directly. Flagged for a direct check in a future week rather than added on secondhand mention alone.",
       "addedDate": "2026-07-02",
       "posts": []
+    },
+    {
+      "name": "Brent Schlenker, M.Ed.",
+      "title": "AI Supported L&D Professional | Customer Enablement | The L&D Morning Brief | Navigating AI's Impact",
+      "profileUrl": "https://www.linkedin.com/in/bschlenker/",
+      "notableFor": "Individual L&D practitioner voice with 15,224 followers, posting daily L&D Morning Brief newsletter focused on current AI impact in learning — genuine, current, practitioner-oriented content, not corporate marketing.",
+      "addedDate": "2026-07-06",
+      "posts": [
+        {
+          "topic": "The L&D Morning Brief — daily coverage of AI breakthroughs, L&D trends, and implications for learning professionals",
+          "url": "https://www.linkedin.com/in/bschlenker/",
+          "foundVia": "LinkedIn content search, keyword 'L&D AI', past-week filter; direct profile verification",
+          "date": "2026-07-06 (ongoing daily)",
+          "usedInWeek": "2026-06-29"
+        }
+      ]
     }
   ]
 }

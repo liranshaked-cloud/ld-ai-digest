@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week of Jun 29–Jul 5, 2026 — The Governance Moment | L&D + AI Digest</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lmnd-pink: #FF0083; --lmnd-pink-tint: rgba(255,0,131,0.07); --lmnd-pink-tint-2: rgba(255,0,131,0.14);
+    --text-primary: #1F1F26; --text-muted: #6B6B75; --text-faint: #9999A2;
+    --surface: #FFFFFF; --surface-alt: #FAFAFB; --surface-sunken: #F4F4F6;
+    --border: #E8E8ED; --border-strong: #D6D6DC;
+    --shadow-sm: 0 1px 2px rgba(20,20,30,0.05); --shadow-md: 0 4px 18px rgba(20,20,30,0.06);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px;
+  }
+  [x-cloak] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: var(--text-primary); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--text-primary); }
+  [id] { scroll-margin-top: 64px; }
+  .icon { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; vertical-align: -3px; }
+  .like-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all .15s ease; }
+  .like-btn:hover:not(.liked) { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
+  .like-btn.liked { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); cursor: default; }
+  .like-btn .heart { font-size: 13px; }
+  .comment-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; margin-left: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all .15s ease; }
+  .comment-toggle:hover { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
+  .comment-toggle.open { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
+  .mini-comments { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-strong); }
+  #cusdis_thread iframe, .mini-comments iframe { zoom: 0.8; }
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--lmnd-pink); z-index: 200; transition: width 0.1s linear; }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 52px; }
+  .top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; text-decoration: none; }
+  .top-nav a:hover { color: var(--lmnd-pink); }
+  .week-nav { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--text-faint); font-weight: 700; }
+  .week-nav .arrow { color: var(--border-strong); font-weight: 900; pointer-events: none; }
+  .week-nav .arrow.enabled { color: var(--text-primary); pointer-events: auto; text-decoration: none; cursor: pointer; }
+  .week-nav .arrow.enabled:hover { color: var(--lmnd-pink); }
+  .slack-pill { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; transition: border-color .15s ease; }
+  .slack-pill:hover { border-color: var(--lmnd-pink); color: var(--text-primary); }
+  .header { background: var(--surface); padding: 52px 24px 40px; text-align: center; border-bottom: 1px solid var(--border); }
+  .brand-mark { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: var(--lmnd-pink); border-radius: 9px; color: white; font-weight: 900; font-size: 19px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(255,0,131,0.22); }
+  .header .issue-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 14px; }
+  .header h1 { font-size: clamp(30px, 4.8vw, 50px); font-weight: 900; margin-bottom: 14px; line-height: 1.12; letter-spacing: -0.01em; }
+  .header .theme-quote { font-size: 16px; color: var(--text-muted); font-style: italic; max-width: 480px; margin: 0 auto; line-height: 1.6; text-wrap: balance; }
+  .container { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+  .tldr { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin: 28px 0; }
+  .tldr-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; box-shadow: var(--shadow-sm); display: flex; gap: 12px; align-items: flex-start; text-decoration: none; color: inherit; transition: all .15s ease; cursor: pointer; }
+  .tldr-item:hover { border-color: var(--lmnd-pink); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .tldr-item .emoji { font-size: 20px; line-height: 1; }
+  .tldr-item p { font-size: 13.5px; color: #33333c; line-height: 1.55; }
+  .tldr-item strong { color: var(--lmnd-pink); }
+  .tldr-item .go { font-size: 11px; color: var(--text-faint); font-weight: 700; margin-top: 4px; display: block; }
+  .numbers-wrap { margin: 8px 0 28px; }
+  .numbers-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+  .bento-stat { grid-column: span 2; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow-sm); text-decoration: none; color: inherit; transition: all .15s ease; }
+  .bento-stat:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--lmnd-pink); }
+  .bento-stat .icon-wrap { width: 32px; height: 32px; border-radius: 9px; background: var(--lmnd-pink-tint); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; color: var(--lmnd-pink); }
+  .bento-stat .val { font-size: 34px; font-weight: 900; line-height: 1; margin-bottom: 8px; }
+  .bento-stat .lbl { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+  .bento-stat .src { font-size: 10.5px; font-weight: 700; color: var(--lmnd-pink); text-transform: uppercase; letter-spacing: 0.4px; }
+  .tab-bar { display: flex; gap: 6px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px; margin-bottom: 22px; box-shadow: var(--shadow-sm); }
+  .tab-btn { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; padding: 10px 16px; border-radius: 999px; border: none; background: transparent; color: var(--text-muted); font-weight: 800; font-size: 13px; cursor: pointer; font-family: inherit; transition: all .15s ease; white-space: nowrap; }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active { background: var(--text-primary); color: white; }
+  @media (max-width: 700px) { .tab-bar { justify-content: flex-start; overflow-x: auto; } .tab-btn { flex: none; } }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 14px; transition: box-shadow 0.2s ease; }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card-head { display: flex; gap: 16px; align-items: center; padding: 16px 20px; cursor: pointer; }
+  .card-source { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
+  .card-title { font-size: 15.5px; font-weight: 900; line-height: 1.3; }
+  .card-teaser { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
+  .card-chevron { margin-left: auto; color: var(--text-faint); transition: transform .2s ease; flex-shrink: 0; }
+  .card.is-open .card-chevron { transform: rotate(180deg); }
+  .card-body { padding: 0 20px 22px 20px; }
+  .card-body p { font-size: 14px; color: #454550; line-height: 1.7; margin-bottom: 12px; }
+  .case-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 14px; overflow: hidden; }
+  .case-card .case-head { padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .case-card .case-co { font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 6px; }
+  .case-card h4 { font-size: 15.5px; font-weight: 900; }
+  .case-card .case-body { padding: 0 22px 22px; display: none; }
+  .case-card.is-open .case-body { display: block; }
+  .case-card p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 8px; }
+  .case-card .case-result { font-size: 12.5px; font-weight: 800; background: var(--surface-sunken); border-radius: var(--radius-sm); padding: 8px 14px; display: inline-block; margin-top: 6px; }
+  .case-card .lesson { margin-top: 14px; padding: 12px 16px; background: var(--lmnd-pink-tint); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.6; }
+  .quote-context { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--lmnd-pink); margin-bottom: 8px; }
+  .quote-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lmnd-pink); border-radius: var(--radius-md); padding: 20px 24px; box-shadow: var(--shadow-sm); margin-bottom: 14px; display: flex; gap: 18px; }
+  .quote-avatar { width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0; object-fit: cover; background: var(--surface-sunken); }
+  .quote-avatar.initials { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: white; background: var(--lmnd-pink); }
+  .quote-text { font-size: 15px; color: #2a2a32; line-height: 1.6; margin-bottom: 10px; font-style: italic; }
+  .quote-author { font-size: 13.5px; font-weight: 900; }
+  .quote-role { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .lemon-section { background: var(--surface); border-radius: var(--radius-lg); padding: 32px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+  .lemon-item { margin-bottom: 16px; padding: 18px 20px; border-radius: var(--radius-md); background: var(--lmnd-pink-tint); border: 1px solid var(--lmnd-pink-tint-2); }
+  .lemon-item h3 { font-size: 15px; font-weight: 900; color: var(--text-primary); margin-bottom: 8px; }
+  .lemon-item p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 6px; }
+  footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
+  [x-cloak] { display: none !important; }
+</style>
+<script data-goatcounter="https://liran-shaked.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body x-data="{ tab: 'case-files', cardOpen: {} }" x-init="
+  const h = location.hash.replace('#','');
+  if (h.startsWith('lemon')) tab = 'lemonade';
+  else if (h.startsWith('quote')) tab = 'voices';
+  else if (h.startsWith('article')) tab = 'deep-dives';
+  if (h) $nextTick(() => setTimeout(() => document.getElementById(h)?.scrollIntoView({behavior:'smooth', block:'center'}), 150));
+">
+<div class="progress-bar" x-init="
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const bar = $el;
+    bar.style.width = (window.scrollY / (doc.scrollHeight - window.innerHeight)) * 100 + '%';
+  });
+"></div>
+
+<nav class="top-nav">
+  <a href="/">L&D + AI Digest</a>
+  <div class="week-nav">
+    <span class="arrow">‹</span>
+    <span>Week of Jun 29–Jul 5</span>
+    <span class="arrow">›</span>
+    <a href="/" class="slack-pill">View all</a>
+  </div>
+</nav>
+
+<div class="header">
+  <div class="brand-mark">🧠</div>
+  <div class="issue-label">Week of Jun 29–Jul 5, 2026</div>
+  <h1>The Governance Moment</h1>
+  <p class="theme-quote">AI has moved from experimentation to execution. The real advantage belongs to leaders who intentionally design human-AI collaboration.</p>
+</div>
+
+<div class="container">
+  <div class="tldr">
+    <a href="#case-files" class="tldr-item">
+      <div class="emoji">📋</div>
+      <div>
+        <p><strong>Case Files</strong></p>
+        <p>Microsoft's $2.5B bet, Amazon's no-code onboarding agents</p>
+        <div class="go">See 3 real cases →</div>
+      </div>
+    </a>
+    <a href="#voices" class="tldr-item">
+      <div class="emoji">💬</div>
+      <div>
+        <p><strong>Voices</strong></p>
+        <p>Practitioners on AI governance & what should AI do</p>
+        <div class="go">Read 3 quotes →</div>
+      </div>
+    </a>
+    <a href="#comments" class="tldr-item">
+      <div class="emoji">💭</div>
+      <div>
+        <p><strong>In This Issue</strong></p>
+        <p>6 key stats, 7 articles, analysis & L&D angle</p>
+        <div class="go">Comment below →</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="numbers-wrap">
+    <div class="numbers-title">Key Numbers</div>
+    <div class="bento">
+      <a href="#" class="bento-stat">
+        <div class="icon-wrap">📊</div>
+        <div class="val">87%</div>
+        <div class="lbl">L&D teams using AI</div>
+        <div class="src">Intellum</div>
+      </a>
+      <a href="#" class="bento-stat">
+        <div class="icon-wrap">🎯</div>
+        <div class="val">67%</div>
+        <div class="lbl">Large orgs plan AI-assisted onboarding by 2026</div>
+        <div class="src">PwC</div>
+      </a>
+      <a href="#" class="bento-stat">
+        <div class="icon-wrap">🌱</div>
+        <div class="val">48%</div>
+        <div class="lbl">CLOs prioritize learning culture (up from 16% in 2022)</div>
+        <div class="src">iVentiv</div>
+      </a>
+      <a href="#" class="bento-stat">
+        <div class="icon-wrap">🚀</div>
+        <div class="val">40%</div>
+        <div class="lbl">CEOs cite AI adoption as top priority</div>
+        <div class="src">NetGuru</div>
+      </a>
+      <a href="#" class="bento-stat">
+        <div class="icon-wrap">✨</div>
+        <div class="val">82%</div>
+        <div class="lbl">Higher retention with structured onboarding</div>
+        <div class="src">HR Research</div>
+      </a>
+      <a href="#" class="bento-stat">
+        <div class="icon-wrap">⚠️</div>
+        <div class="val">66%</div>
+        <div class="lbl">Employees say their L&D inadequate</div>
+        <div class="src">SHRM</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="tabs-wrap">
+    <div class="tab-bar" role="tablist">
+      <button class="tab-btn" :class="{ active: tab === 'case-files' }" @click="tab = 'case-files'" role="tab">📋 Case Files</button>
+      <button class="tab-btn" :class="{ active: tab === 'voices' }" @click="tab = 'voices'" role="tab">💬 Voices</button>
+      <button class="tab-btn" :class="{ active: tab === 'deep-dives' }" @click="tab = 'deep-dives'" role="tab">📖 Deep Dives</button>
+      <button class="tab-btn" :class="{ active: tab === 'lemonade' }" @click="tab = 'lemonade'" role="tab">🍋 Lemonade Angle</button>
+    </div>
+
+    <div x-show="tab === 'case-files'">
+      <div class="section-label">Three real organizations executing AI at scale</div>
+
+      <div class="case-card" id="case-microsoft" @click="cardOpen['ms'] = !cardOpen['ms']" :class="{ 'is-open': cardOpen['ms'] }">
+        <div class="case-head">
+          <div>
+            <div class="case-co">Enterprise</div>
+            <h4>Microsoft: Forward-Deployed Engineering</h4>
+          </div>
+          <div class="card-chevron">▼</div>
+        </div>
+        <div class="case-body">
+          <p><strong>The Move:</strong> $2.5 billion investment in new AI implementation unit with 6,000 employees embedded directly with clients doing AI work, following "forward deployed engineering" model.</p>
+          <p>This signals a major shift: Microsoft isn't selling AI tools and walking away. It's putting thousands of people into customer organizations to handle the hard work of AI adoption — governance, integration, cultural change, and ramp patterns.</p>
+          <div class="case-result">📈 6,000 forward-deployed engineers embedded with clients</div>
+          <div class="lesson"><strong>💡 L&D Lesson:</strong> Enablement and governance can't happen remotely. Embed L&D practitioners directly into teams doing AI work, not in centralized training centers.</div>
+        </div>
+      </div>
+
+      <div class="case-card" id="case-amazon" @click="cardOpen['amz'] = !cardOpen['amz']" :class="{ 'is-open': cardOpen['amz'] }">
+        <div class="case-head">
+          <div>
+            <div class="case-co">Infrastructure</div>
+            <h4>Amazon Quick: No-Code Onboarding Agents</h4>
+          </div>
+          <div class="card-chevron">▼</div>
+        </div>
+        <div class="case-body">
+          <p><strong>The Tool:</strong> Amazon Quick is a fully managed agentic service for HR: create no-code AI agents that answer new-hire questions, track compliance across systems (HR, IT, payroll), and clear tickets automatically.</p>
+          <p>This is the onboarding trend for 2026: agentic AI handles the routine work (account creation, doc collection, training scheduling) freeing humans for judgment calls and relationship-building during ramp.</p>
+          <div class="case-result">⏱️ Up to 50% faster time-to-productivity; significantly higher retention</div>
+          <div class="lesson"><strong>💡 L&D Lesson:</strong> Automate the repetitive, deterministic parts of onboarding. Use AI agents to handle sequential tasks. Save human attention for mentoring and cultural integration.</div>
+        </div>
+      </div>
+
+      <div class="case-card" id="case-duolingo" @click="cardOpen['duo'] = !cardOpen['duo']" :class="{ 'is-open': cardOpen['duo'] }">
+        <div class="case-head">
+          <div>
+            <div class="case-co">Product</div>
+            <h4>Duolingo + GitHub: Copilot in Production</h4>
+          </div>
+          <div class="card-chevron">▼</div>
+        </div>
+        <div class="case-body">
+          <p><strong>The Integration:</strong> GitHub Copilot + Codespaces embedded in Duolingo's 300+ developer workflow for 2+ years. Real-time code suggestions, automated routine tasks, unified development environment.</p>
+          <p>No special training program. Engineers onboard to the tool naturally, learn by doing, and benefit from force-multiplier effects from day one.</p>
+          <div class="case-result">📊 25% faster dev speed (new repos); 10% for experienced staff; 67% faster code review turnaround</div>
+          <div class="lesson"><strong>💡 L&D Lesson:</strong> Remove environment setup friction (Codespaces) so new engineers can contribute to real work immediately. AI tooling is the training program — don't add a separate course layer.</div>
+        </div>
+      </div>
+    </div>
+
+    <div x-show="tab === 'voices'">
+      <div class="section-label">Practitioners on the shift from "what can AI do" to "what should it do"</div>
+
+      <div class="quote-card" id="quote-cooke">
+        <div class="quote-avatar initials">MC</div>
+        <div>
+          <div class="quote-context">Progression: From Experimentation to Execution</div>
+          <div class="quote-text">"AI has moved from experimentation to execution. We're calling this the Year of Progression because organizations are no longer asking whether to adopt AI, they're advancing along a clear maturity path. The real advantage now belongs to leaders who intentionally design human-AI collaboration and treat progression as their operating model."</div>
+          <div class="quote-author">Mike Cooke</div>
+          <div class="quote-role">CEO, Brandon Hall Group</div>
+          <button class="like-btn" @click.prevent.stop="$el.classList.toggle('liked')">❤️ <span>Like</span></button>
+          <button class="comment-toggle" @click.prevent.stop="$el.classList.toggle('open'); $el.nextElementSibling?.scrollIntoView({block:'nearest'})">💬 <span>Comment</span></button>
+          <div class="mini-comments" x-show="false" id="cusdis-quote-cooke" data-page-id="2026-06-29-quote-cooke"></div>
+        </div>
+      </div>
+
+      <div class="quote-card" id="quote-howard">
+        <div class="quote-avatar initials">SH</div>
+        <div>
+          <div class="quote-context">Learning in Flow of Work</div>
+          <div class="quote-text">"Learning no longer pulls people away from work. It shows up when and where it matters most."</div>
+          <div class="quote-author">Shannon Howard</div>
+          <div class="quote-role">Director, Customer & Content Marketing, Intellum</div>
+          <button class="like-btn" @click.prevent.stop="$el.classList.toggle('liked')">❤️ <span>Like</span></button>
+          <button class="comment-toggle" @click.prevent.stop="$el.classList.toggle('open'); $el.nextElementSibling?.scrollIntoView({block:'nearest'})">💬 <span>Comment</span></button>
+          <div class="mini-comments" x-show="false" id="cusdis-quote-howard" data-page-id="2026-06-29-quote-howard"></div>
+        </div>
+      </div>
+
+      <div class="quote-card" id="quote-summers">
+        <div class="quote-avatar initials">KS</div>
+        <div>
+          <div class="quote-context">Skills-Based Organization Maturity</div>
+          <div class="quote-text">"Skills-based approaches will be table stakes in many large organizations. The real differentiation comes from clear alignment to business priorities, a roadmap that moves beyond mapping into real deployment, and employee-level meaning."</div>
+          <div class="quote-author">Kerry Summers</div>
+          <div class="quote-role">Content Marketing, iVentiv</div>
+          <button class="like-btn" @click.prevent.stop="$el.classList.toggle('liked')">❤️ <span>Like</span></button>
+          <button class="comment-toggle" @click.prevent.stop="$el.classList.toggle('open'); $el.nextElementSibling?.scrollIntoView({block:'nearest'})">💬 <span>Comment</span></button>
+          <div class="mini-comments" x-show="false" id="cusdis-quote-summers" data-page-id="2026-06-29-quote-summers"></div>
+        </div>
+      </div>
+    </div>
+
+    <div x-show="tab === 'deep-dives'">
+      <div class="section-label">Recent research & analysis</div>
+
+      <div class="card" @click="cardOpen['article-1'] = !cardOpen['article-1']" :class="{ 'is-open': cardOpen['article-1'] }">
+        <div class="card-head">
+          <div style="flex: 1;">
+            <div class="card-source">Brandon Hall Group</div>
+            <div class="card-title">Strategic Intelligence: HR Outlook 2026</div>
+            <div class="card-teaser">L&D Progression Model + Learning-Performance Convergence framework from Brandon Hall's HCM Excellence Awards research.</div>
+          </div>
+          <div class="card-chevron">▼</div>
+        </div>
+        <div class="card-body">
+          <p>Brandon Hall Group released three flagship research assets for 2026: HR Outlook (strategic roadmap for human-AI capability), L&D Progression Model (function maturity assessment), and Learning-Performance Convergence Model (linking learning to operational outcomes).</p>
+          <p>The research is grounded in real organizational case studies showing measurable impact: Zalvadora AI training saw 127.5% revenue growth; BCA platform achieved 366,000 hours saved; Adobe Connect showed 467% ROI over 3 years.</p>
+          <p><a href="https://brandonhall.com/brandon-hall-groups-strategic-intelligence-hr-outlook-2026-ld-progression-models-and-the-framework-that-connects-learning-to-performance/" target="_blank">Read full report →</a></p>
+        </div>
+      </div>
+
+      <div class="card" @click="cardOpen['article-2'] = !cardOpen['article-2']" :class="{ 'is-open': cardOpen['article-2'] }">
+        <div class="card-head">
+          <div style="flex: 1;">
+            <div class="card-source">iVentiv</div>
+            <div class="card-title">2026 L&D Trends: AI Governance, Skills-Based Orgs, Learning Culture</div>
+            <div class="card-teaser">Learning culture priority jumped from 16% (2022) to 48% (2025). AI governance moves from "what can AI do?" to "what should it do?"</div>
+          </div>
+          <div class="card-chevron">▼</div>
+        </div>
+        <div class="card-body">
+          <p>Three key shifts for 2026: (1) L&D becomes organizational design force, not just capability builder; (2) Skills-based approaches go from experimental to best practice, but cultural resistance to skill obsolescence is the real blocker, not tech; (3) AI governance requires orchestration across culture, leadership, risk, HR, legal, brand.</p>
+          <p>Emerging challenge: how do entry-level employees build judgment when AI automates routine tasks? L&D is positioned to help integrate responsible AI adoption into the organization.</p>
+          <p><a href="https://iventiv.com/news/2026-ld-trends-skills-based-organisations-ai-governance-and-learning-culture" target="_blank">Read analysis →</a></p>
+        </div>
+      </div>
+
+      <div class="card" @click="cardOpen['article-3'] = !cardOpen['article-3']" :class="{ 'is-open': cardOpen['article-3'] }">
+        <div class="card-head">
+          <div style="flex: 1;">
+            <div class="card-source">Intellum</div>
+            <div class="card-title">2026 L&D Trends: AI, Skills Analytics, Ecosystem Integration</div>
+            <div class="card-teaser">Five trends reshaping L&D: ecosystem integration, AI content creation, hyper-personalization, learning in flow of work, evolving roles.</div>
+          </div>
+          <div class="card-chevron">▼</div>
+        </div>
+        <div class="card-body">
+          <p>Key insight: L&D roles are evolving, not disappearing. AI absorbs repetitive production work (content creation, authoring); humans focus on strategy, facilitation, business alignment, impact measurement.</p>
+          <p>By Shannon Howard: "The most successful L&D teams aren't waiting for perfect answers. They're experimenting, learning by doing." Clean, connected data matters more than individual tools.</p>
+          <p><a href="https://www.intellum.com/resources/blog/2026-learning-and-development-trends" target="_blank">Read full trends →</a></p>
+        </div>
+      </div>
+
+      <div class="card" @click="cardOpen['article-4'] = !cardOpen['article-4']" :class="{ 'is-open': cardOpen['article-4'] }">
+        <div class="card-head">
+          <div style="flex: 1;">
+            <div class="card-source">SHRM</div>
+            <div class="card-title">Navigating AI in the Workplace: 2026</div>
+            <div class="card-teaser">66% of employees report their organization's L&D doesn't adequately support them in an AI-enabled world. Investment in people, not just tools, is table stakes.</div>
+          </div>
+          <div class="card-chevron">▼</div>
+        </div>
+        <div class="card-body">
+          <p>Successful AI transformations allocate 70% of effort to upskilling people, updating processes, and evolving culture. Nearly half of CEOs now cite employee talent initiatives as their biggest productivity driver, even above AI implementation itself.</p>
+          <p><a href="https://www.shrm.org/topics-tools/research/navigating-ai-in-the-workplace/full-report" target="_blank">View research →</a></p>
+        </div>
+      </div>
+
+      <div class="card" @click="cardOpen['article-5'] = !cardOpen['article-5']" :class="{ 'is-open': cardOpen['article-5'] }">
+        <div class="card-head">
+          <div style="flex: 1;">
+            <div class="card-source">RedThread Research</div>
+            <div class="card-title">Six Market Shifts Reshaping Learning Technology in 2026</div>
+            <div class="card-teaser">The 2026 learning tech market spans 461 vendors (up from 426 in 2023). Broader, bolder, blurrier—driven by agentic learning, AI-native platforms, governance, and skills data.</div>
+          </div>
+          <div class="card-chevron">▼</div>
+        </div>
+        <div class="card-body">
+          <p>RedThread's comprehensive scan of the learning tech market shows significant vendor growth and fundamental shifts in how learning technology is being architected and deployed. Agentic AI is moving beyond pilots into production.</p>
+          <p><a href="https://landing.redthreadresearch.com/six-market-shifts-reshaping-learning-technology-in-2026" target="_blank">Explore findings →</a></p>
+        </div>
+      </div>
+
+      <div class="card" @click="cardOpen['article-6'] = !cardOpen['article-6']" :class="{ 'is-open': cardOpen['article-6'] }">
+        <div class="card-head">
+          <div style="flex: 1;">
+            <div class="card-source">Enboarder</div>
+            <div class="card-title">AI Onboarding Tools Guide 2026</div>
+            <div class="card-teaser">Leading tools: Rippling (unified HR+IT automation), Enboarder (AI-native journeys), BambooHR, Leena AI (conversational), Trainual, Talmundo (mobile).</div>
+          </div>
+          <div class="card-chevron">▼</div>
+        </div>
+        <div class="card-body">
+          <p>Market overview: By end of 2026, Gartner estimates 40% of enterprise applications will use task-specific AI agents to orchestrate work. Onboarding is the first HR function where this shift is visible.</p>
+          <p>Key capabilities: AI agents act autonomously across sequential steps—triggering account creation, requesting docs, scheduling sessions, checking completion—ensuring tasks execute in the right order and at the right time.</p>
+          <p><a href="https://enboarder.com/blog/ai-onboarding-tool-guide-2026/" target="_blank">View market guide →</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div x-show="tab === 'lemonade'">
+      <div class="lemon-section">
+        <div class="subtitle">Signal + move: How Lemonade's engineering culture can lead on AI governance and enablement</div>
+
+        <div class="lemon-item" id="lemon-1">
+          <h3>🎯 Judgment at Scale</h3>
+          <p>As AI handles code review, pair programming, and test writing, junior engineers risk losing the opportunity to develop critical judgment. Design onboarding around this explicitly: teach "when to trust AI" and "when to challenge it," not just "how to use it."</p>
+          <p><span class="label-inline">Move:</span> Add a PR template field: "Why do you trust this suggestion?" Make judgment-building visible from day one.</p>
+        </div>
+
+        <div class="lemon-item" id="lemon-2">
+          <h3>🚀 Forward-Deployed Enablement</h3>
+          <p>Microsoft's model (embed 6,000 enablement specialists with clients) works for internal scale too. Rather than centralized L&D pushing content, embed learning practitioners directly with squads doing AI-intensive work—pair programming, code review, incident response.</p>
+          <p><span class="label-inline">Move:</span> Pilot embedded "AI enablement engineer" role in one squad. Measure ramp time, quality metrics, and retention.</p>
+        </div>
+
+        <div class="lemon-item" id="lemon-3">
+          <h3>⚖️ Governance as Hiring Signal</h3>
+          <p>Lemonade can differentiate talent acquisition by being clear about AI governance philosophy from day one. "We expect you to challenge AI, not just trust it" signals maturity and attracts senior engineers who care about judgment-driven culture.</p>
+          <p><span class="label-inline">Move:</span> Build AI governance questions into engineering interviews. Make it a hiring differentiator.</p>
+        </div>
+
+        <div class="lemon-item" id="lemon-4">
+          <h3>📊 Skills as Behavioral Signals</h3>
+          <p>Instead of self-reported skills surveys, mine GitHub activity (code complexity, review quality, learning velocity) + internal mobility signals. This reveals who's genuinely upskilling and ready for stretch roles.</p>
+          <p><span class="label-inline">Move:</span> Build a simple dashboard of GitHub signals for mobility conversations. Use it in career development discussions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="comments" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+    <div class="section-label">💭 Discussion & Feedback</div>
+    <div id="cusdis_thread" data-page-id="2026-06-29-main" data-app-id="8f88689d-bab5-4b25-b146-bca8c57b0dde" style="margin-bottom: 40px;"></div>
+  </section>
+</div>
+
+<footer>
+  L&D + AI Digest © 2026 | <a href="/">View all issues</a> | <a href="https://github.com/liranshaked-cloud/ld-ai-digest">GitHub</a>
+</footer>
+
+<script async src="https://cusdis.com/js/cusdis.es.js"></script>
+<script>
+  // Toggle card expand/collapse
+  document.querySelectorAll('.card-head, .case-head, .quote-card').forEach(el => {
+    if (el.classList.contains('quote-card')) return; // quotes don't toggle
+    el.addEventListener('click', (e) => {
+      const card = el.closest('.card') || el.closest('.case-card');
+      if (card) {
+        card.classList.toggle('is-open');
+        const chevron = el.querySelector('.card-chevron, .case-chevron');
+        if (chevron) chevron.style.transform = card.classList.contains('is-open') ? 'rotate(180deg)' : '';
+      }
+    });
+  });
+</script>
+</body>
+</html>

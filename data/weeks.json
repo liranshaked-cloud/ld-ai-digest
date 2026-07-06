@@ -69,5 +69,62 @@
         { "key": "2026-06-22-lemon-3", "label": "Lemonade Angle #3 — GitHub mobility signals", "url": "weekly/2026-06-22/index.html#lemon-3" }
       ]
     }
+    },
+    {
+      "id": "2026-06-29",
+      "label": "Week of Jun 29–Jul 5, 2026",
+      "path": "weekly/2026-06-29/index.html",
+      "theme": "The Governance Moment",
+      "quote": "AI has moved from experimentation to execution. The real advantage belongs to leaders who intentionally design human-AI collaboration.",
+      "tags": ["AI Governance", "Onboarding", "Forward-Deployed Engineering", "Skills-Based Organizations", "Learning Culture", "AI Adoption", "Agentic AI", "Human-AI Collaboration", "Organizational Design", "Employee Development"],
+      "companies": ["Microsoft", "Amazon", "Duolingo", "GitHub"],
+      "publishedAt": "2026-07-06",
+      "roles": ["AI Governance Officer", "Human-AI Collaboration Designer", "Learning Ecosystem Architect", "Skills & Culture Strategy Leader", "Onboarding Specialist (AI-augmented)", "Learning Impact Analyst"],
+      "tools": ["Amazon Quick", "Rippling", "Enboarder", "Leena AI", "GitHub Copilot"],
+      "methods": [
+        { "text": "Design human-AI collaboration into workflows from day one — don't add training layers on top of tools", "source": "Microsoft forward-deployed engineering model" },
+        { "text": "Shift L&D governance focus from 'what can AI do?' to 'what should it do?' — embed culture, ethics, judgment into enablement", "source": "iVentiv AI governance analysis" },
+        { "text": "Automate deterministic onboarding tasks with agentic AI; save human attention for mentoring and cultural integration", "source": "Amazon Quick, Enboarder onboarding platforms" },
+        { "text": "Build judgment-development into early career experiences — teach 'when to trust AI' and 'when to challenge it'", "source": "Lemonade Angle" },
+        { "text": "Mine GitHub activity, code review patterns, and real behavioral signals instead of self-reported skills surveys", "source": "Lemonade Angle" }
+      ],
+      "doThis": [
+        "Embed L&D practitioners directly with teams doing AI-intensive work, not in centralized training centers (Microsoft model)",
+        "Define your organization's AI governance framework early — decision rights, boundaries, oversight, accountability",
+        "Build 'why do you trust this?' and 'when to challenge AI' evaluation habits directly into workflows via PR templates or code review guides"
+      ],
+      "avoidThis": [
+        "Don't assume AI tool access equals adoption — governance, enablement, and culture work is the real blocker",
+        "Don't delegate AI governance to IT alone — orchestrate across culture, leadership, risk, HR, legal, brand",
+        "Don't treat onboarding automation as the final goal — use freed-up time for deeper mentoring and relationship-building",
+        "Don't rely on skills mapping alone — connect skills data to business outcomes, real deployment, and employee meaning-making"
+      ],
+      "articles": [
+        { "title": "Strategic Intelligence: HR Outlook 2026", "url": "https://brandonhall.com/brandon-hall-groups-strategic-intelligence-hr-outlook-2026-ld-progression-models-and-the-framework-that-connects-learning-to-performance/", "publisher": "Brandon Hall Group", "date": "2026-02-23", "tags": ["L&D Progression Model", "Learning-Performance Convergence", "HR Strategy"] },
+        { "title": "2026 L&D Trends: AI Governance, Skills-Based Organisations, Learning Culture", "url": "https://iventiv.com/news/2026-ld-trends-skills-based-organisations-ai-governance-and-learning-culture", "publisher": "iVentiv", "date": "2026-02-13", "tags": ["AI Governance", "Learning Culture", "Skills-Based Organizations"] },
+        { "title": "2026 L&D Trends: AI, Skills Analytics & What's Next", "url": "https://www.intellum.com/resources/blog/2026-learning-and-development-trends", "publisher": "Intellum", "date": "2025-12-18", "tags": ["AI Content Creation", "Hyper-Personalization", "Learning in Flow of Work"] },
+        { "title": "Navigating AI in the Workplace: 2026", "url": "https://www.shrm.org/topics-tools/research/navigating-ai-in-the-workplace/full-report", "publisher": "SHRM", "date": "2026-03-31", "tags": ["Employee Readiness", "Upskilling Investment", "AI Adoption Gap"] },
+        { "title": "Six Market Shifts Reshaping Learning Technology in 2026", "url": "https://landing.redthreadresearch.com/six-market-shifts-reshaping-learning-technology-in-2026", "publisher": "RedThread Research", "date": "2026-Q2", "tags": ["Vendor Market", "Agentic AI", "AI-Native Platforms"] },
+        { "title": "AI Onboarding Tools Guide 2026", "url": "https://enboarder.com/blog/ai-onboarding-tool-guide-2026/", "publisher": "Enboarder", "date": "2026-06-15", "tags": ["Onboarding Automation", "Agentic Workflows", "Time-to-Productivity"] }
+      ],
+      "likeableItems": [
+        { "key": "2026-06-29-stat-87pct", "label": "Stat: 87% L&D teams using AI", "url": "#" },
+        { "key": "2026-06-29-stat-67pct", "label": "Stat: 67% orgs plan AI-assisted onboarding", "url": "#" },
+        { "key": "2026-06-29-stat-48pct", "label": "Stat: 48% CLOs prioritize learning culture", "url": "#" },
+        { "key": "2026-06-29-stat-40pct", "label": "Stat: 40% CEOs cite AI adoption as priority", "url": "#" },
+        { "key": "2026-06-29-stat-82pct", "label": "Stat: 82% higher retention (structured onboarding)", "url": "#" },
+        { "key": "2026-06-29-stat-66pct", "label": "Stat: 66% employees say L&D inadequate", "url": "#" },
+        { "key": "2026-06-29-case-microsoft", "label": "Case: Microsoft ($2.5B forward-deployed)", "url": "weekly/2026-06-29/index.html#case-microsoft" },
+        { "key": "2026-06-29-case-amazon", "label": "Case: Amazon Quick (onboarding agents)", "url": "weekly/2026-06-29/index.html#case-amazon" },
+        { "key": "2026-06-29-case-duolingo", "label": "Case: Duolingo + GitHub (Copilot)", "url": "weekly/2026-06-29/index.html#case-duolingo" },
+        { "key": "2026-06-29-quote-cooke", "label": "Quote: Mike Cooke (Brandon Hall Group)", "url": "weekly/2026-06-29/index.html#quote-cooke" },
+        { "key": "2026-06-29-quote-howard", "label": "Quote: Shannon Howard (Intellum)", "url": "weekly/2026-06-29/index.html#quote-howard" },
+        { "key": "2026-06-29-quote-summers", "label": "Quote: Kerry Summers (iVentiv)", "url": "weekly/2026-06-29/index.html#quote-summers" },
+        { "key": "2026-06-29-lemon-1", "label": "Lemonade Angle #1 — Judgment at Scale", "url": "weekly/2026-06-29/index.html#lemon-1" },
+        { "key": "2026-06-29-lemon-2", "label": "Lemonade Angle #2 — Forward-Deployed Enablement", "url": "weekly/2026-06-29/index.html#lemon-2" },
+        { "key": "2026-06-29-lemon-3", "label": "Lemonade Angle #3 — Governance as Hiring Signal", "url": "weekly/2026-06-29/index.html#lemon-3" },
+        { "key": "2026-06-29-lemon-4", "label": "Lemonade Angle #4 — Skills as Behavioral Signals", "url": "weekly/2026-06-29/index.html#lemon-4" }
+      ]
+    }
   ]
 }

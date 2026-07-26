@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week of Jul 14–20, 2026 — The Reshape Imperative | L&D + AI Digest</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lmnd-pink: #FF0083; --lmnd-pink-tint: rgba(255,0,131,0.07); --lmnd-pink-tint-2: rgba(255,0,131,0.14);
+    --text-primary: #1F1F26; --text-muted: #6B6B75; --text-faint: #9999A2;
+    --surface: #FFFFFF; --surface-alt: #FAFAFB; --surface-sunken: #F4F4F6;
+    --border: #E8E8ED; --border-strong: #D6D6DC;
+    --shadow-sm: 0 1px 2px rgba(20,20,30,0.05); --shadow-md: 0 4px 18px rgba(20,20,30,0.06);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px;
+  }
+  [x-cloak] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: var(--text-primary); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--text-primary); }
+  [id] { scroll-margin-top: 64px; }
+  .icon { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; vertical-align: -3px; }
+
+  .like-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all .15s ease; }
+  .like-btn:hover:not(.liked) { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
+  .like-btn.liked { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); cursor: default; }
+  .like-btn .heart { font-size: 13px; }
+  .comment-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; margin-left: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all .15s ease; }
+  .comment-toggle:hover { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
+  .comment-toggle.open { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
+  .mini-comments { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-strong); }
+  #cusdis_thread iframe, .mini-comments iframe { zoom: 0.8; }
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--lmnd-pink); z-index: 200; transition: width 0.1s linear; }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 52px; }
+  .top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; text-decoration: none; }
+  .top-nav a:hover { color: var(--lmnd-pink); }
+  .week-nav { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--text-faint); font-weight: 700; }
+  .week-nav .arrow { color: var(--border-strong); font-weight: 900; pointer-events: none; }
+  .week-nav .arrow.enabled { color: var(--text-primary); pointer-events: auto; text-decoration: none; cursor: pointer; }
+  .week-nav .arrow.enabled:hover { color: var(--lmnd-pink); }
+  .slack-pill { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; transition: border-color .15s ease; }
+  .slack-pill:hover { border-color: var(--lmnd-pink); color: var(--text-primary); }
+  .header { background: var(--surface); padding: 52px 24px 40px; text-align: center; border-bottom: 1px solid var(--border); }
+  .brand-mark { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: var(--lmnd-pink); border-radius: 9px; color: white; font-weight: 900; font-size: 19px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(255,0,131,0.22); }
+  .header .issue-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 14px; }
+  .header h1 { font-size: clamp(30px, 4.8vw, 50px); font-weight: 900; margin-bottom: 14px; line-height: 1.12; letter-spacing: -0.01em; }
+  .header .theme-quote { font-size: 16px; color: var(--text-muted); font-style: italic; max-width: 480px; margin: 0 auto; line-height: 1.6; text-wrap: balance; }
+  .container { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+  .tldr { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin: 28px 0; }
+  .tldr-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; box-shadow: var(--shadow-sm); display: flex; gap: 12px; align-items: flex-start; text-decoration: none; color: inherit; transition: all .15s ease; cursor: pointer; }
+  .tldr-item:hover { border-color: var(--lmnd-pink); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .tldr-item .emoji { font-size: 20px; line-height: 1; }
+  .tldr-item p { font-size: 13.5px; color: #33333c; line-height: 1.55; }
+  .tldr-item strong { color: var(--lmnd-pink); }
+  .tldr-item .go { font-size: 11px; color: var(--text-faint); font-weight: 700; margin-top: 4px; display: block; }
+  .numbers-wrap { margin: 8px 0 28px; }
+  .numbers-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+  .bento-stat { grid-column: span 2; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow-sm); text-decoration: none; color: inherit; transition: all .15s ease; }
+  .bento-stat:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--lmnd-pink); }
+  .bento-stat .icon-wrap { width: 32px; height: 32px; border-radius: 9px; background: var(--lmnd-pink-tint); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; color: var(--lmnd-pink); }
+  .bento-stat .val { font-size: 34px; font-weight: 900; line-height: 1; margin-bottom: 8px; }
+  .bento-stat .lbl { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+  .bento-stat .src { font-size: 10.5px; font-weight: 700; color: var(--lmnd-pink); text-transform: uppercase; letter-spacing: 0.4px; }
+  .chart-card { grid-column: span 3; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 22px; box-shadow: var(--shadow-sm); }
+  .chart-card h4 { font-size: 12.5px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .chart-card .chart-hint { font-size: 11px; color: var(--text-faint); margin-bottom: 12px; }
+  .chart-card canvas { max-height: 220px; }
+  @media (max-width: 720px) { .bento-stat, .chart-card { grid-column: span 6; } }
+  .quiz-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm); margin-bottom: 28px; }
+  .quiz-box .quiz-kicker { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .quiz-question { font-weight: 900; font-size: 17px; margin-bottom: 16px; line-height: 1.4; }
+  .quiz-options { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
+  .quiz-opt { padding: 10px 20px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-weight: 800; font-size: 14px; cursor: pointer; transition: all .15s ease; font-family: inherit; }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--lmnd-pink); transform: translateY(-1px); }
+  .quiz-opt.correct { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
+  .quiz-opt.wrong { background: #fdecec; border-color: #e5a3a3; color: #b3261e; }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-reveal { font-size: 14px; color: #33333c; line-height: 1.65; padding-top: 16px; margin-top: 16px; border-top: 1px dashed var(--border-strong); }
+  .quiz-reveal a { font-weight: 700; }
+  .quiz-verdict { display: inline-flex; align-items: center; gap: 8px; font-weight: 900; font-size: 15px; padding: 6px 16px; border-radius: 999px; margin-bottom: 14px; }
+  .quiz-verdict.right { background: var(--lmnd-pink-tint); color: var(--lmnd-pink); }
+  .quiz-verdict.wrong { background: #fdecec; color: #b3261e; }
+  .tabs-wrap { margin-bottom: 40px; }
+  .tab-bar { display: flex; gap: 6px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px; margin-bottom: 22px; box-shadow: var(--shadow-sm); }
+  .tab-btn { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; padding: 10px 16px; border-radius: 999px; border: none; background: transparent; color: var(--text-muted); font-weight: 800; font-size: 13px; cursor: pointer; font-family: inherit; transition: all .15s ease; white-space: nowrap; }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active { background: var(--text-primary); color: white; }
+  @media (max-width: 700px) { .tab-bar { justify-content: flex-start; overflow-x: auto; } .tab-btn { flex: none; } }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .narrative { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+  .narrative h2 { font-size: 20px; font-weight: 900; margin-bottom: 14px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+  .narrative p { font-size: 15px; color: #33333c; margin-bottom: 12px; line-height: 1.75; }
+  .narrative a { font-weight: 700; }
+  .stat-hl { color: var(--lmnd-pink); font-weight: 900; }
+  .lead-in { font-weight: 900; color: var(--text-primary); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 14px; transition: box-shadow 0.2s ease; }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card-head { display: flex; gap: 16px; align-items: center; padding: 16px 20px; cursor: pointer; }
+  .card-head img { width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover; background: var(--surface-sunken); flex-shrink: 0; }
+  .card-head .ph { width: 56px; height: 56px; border-radius: var(--radius-sm); background: var(--surface-sunken); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-faint); }
+  .card-source { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
+  .card-title { font-size: 15.5px; font-weight: 900; line-height: 1.3; }
+  .card-teaser { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
+  .card-chevron { margin-left: auto; color: var(--text-faint); transition: transform .2s ease; flex-shrink: 0; }
+  .card.is-open .card-chevron { transform: rotate(180deg); }
+  .card-body { padding: 0 20px 22px 92px; }
+  .card-body p { font-size: 14px; color: #454550; line-height: 1.7; margin-bottom: 12px; }
+  .card-body a.readmore { font-weight: 700; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { font-size: 10.5px; font-weight: 700; background: var(--surface-sunken); color: var(--text-muted); padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border); }
+  .case-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 14px; overflow: hidden; }
+  .case-card .case-head { padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .case-card .case-co { font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 6px; }
+  .case-card h4 { font-size: 15.5px; font-weight: 900; }
+  .case-card .case-body { padding: 0 22px 22px; }
+  .case-card p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 8px; }
+  .case-card .case-result { font-size: 12.5px; font-weight: 800; background: var(--surface-sunken); border-radius: var(--radius-sm); padding: 8px 14px; display: inline-block; margin-top: 6px; }
+  .case-card .lesson { margin-top: 14px; padding: 12px 16px; background: var(--lmnd-pink-tint); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.6; }
+  .case-card .lesson strong { color: var(--lmnd-pink); }
+  .quote-context { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--lmnd-pink); margin-bottom: 8px; }
+  .quote-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lmnd-pink); border-radius: var(--radius-md); padding: 20px 24px; box-shadow: var(--shadow-sm); margin-bottom: 14px; display: flex; gap: 18px; }
+  .quote-avatar { width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0; object-fit: cover; background: var(--surface-sunken); }
+  .quote-avatar.initials { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: white; background: var(--lmnd-pink); }
+  .quote-text { font-size: 15px; color: #2a2a32; line-height: 1.6; margin-bottom: 10px; font-style: italic; }
+  .quote-author { font-size: 13.5px; font-weight: 900; }
+  .quote-role { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .quote-link { font-size: 11.5px; font-weight: 700; }
+  .domains-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 14px; }
+  .domain-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; box-shadow: var(--shadow-sm); }
+  .domain-card h4 { font-size: 14px; font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .domain-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 8px; }
+  .domain-card a { font-size: 12px; font-weight: 700; }
+  .domain-card .role-tag { display: inline-block; font-size: 10.5px; font-weight: 800; background: var(--lmnd-pink-tint); color: var(--lmnd-pink); padding: 2px 9px; border-radius: 999px; margin: 2px 4px 2px 0; }
+  .lemon-section { background: var(--surface); border-radius: var(--radius-lg); padding: 32px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+  .lemon-section .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 22px; font-style: italic; }
+  .lemon-item { margin-bottom: 16px; padding: 18px 20px; border-radius: var(--radius-md); background: var(--lmnd-pink-tint); border: 1px solid var(--lmnd-pink-tint-2); }
+  .lemon-item:last-child { margin-bottom: 0; }
+  .lemon-item h3 { font-size: 15px; font-weight: 900; color: var(--text-primary); margin-bottom: 8px; }
+  .lemon-item p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 6px; }
+  .lemon-item .label-inline { font-weight: 900; color: var(--lmnd-pink); text-transform: uppercase; font-size: 10px; letter-spacing: 0.6px; margin-right: 6px; }
+  footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
+</style>
+<script data-goatcounter="https://liran-shaked.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body x-data="{ tab: 'case-files' }" x-init="
+  const h = location.hash.replace('#','');
+  if (h.startsWith('lemon')) tab = 'lemonade';
+  else if (h.startsWith('quote')) tab = 'voices';
+  else if (h.startsWith('article')) tab = 'deep-dives';
+  else if (h.startsWith('case')) tab = 'case-files';
+  if (h) $nextTick(() => setTimeout(() => document.getElementById(h)?.scrollIntoView({behavior:'smooth', block:'center'}), 150));
+">
+
+<div class="progress-bar" id="progress-bar"></div>
+
+<nav class="top-nav">
+  <a href="../../index.html">← All Issues</a>
+  <div class="week-nav" id="week-nav">
+    <span class="arrow" id="prev-arrow">←</span>
+    <span>Week of Jul 14–20, 2026</span>
+    <span class="arrow" id="next-arrow">→</span>
+  </div>
+  <a class="slack-pill" href="https://team-lemonade.slack.com/archives/C0BDZT7EVAT" target="_blank" style="text-decoration:none; cursor:pointer;">📬 #ld-ai-digest on Slack</a>
+</nav>
+
+<div class="header">
+  <div class="brand-mark">L</div>
+  <div class="issue-label">Week of July 14–20, 2026</div>
+  <h1>The Reshape Imperative</h1>
+  <div class="theme-quote">AI is reshaping jobs faster than companies are redesigning work. That gap is L&D's mandate — not optional upskilling, but urgent role reinvention.</div>
+</div>
+
+<div class="container">
+
+<div class="tldr reveal">
+  <a class="tldr-item" href="#tabs-panel" @click="tab='case-files'"><span class="emoji">🕵️</span><div><p><strong>2 real case studies</strong> — Amazon's 7× upskilling overshoot, and the hidden bottleneck that AI-adopted engineering teams are hitting right now.</p><span class="go">Open Case Files →</span></div></a>
+  <a class="tldr-item" href="#tabs-panel" @click="tab='deep-dives'"><span class="emoji">📖</span><div><p><strong>5 articles</strong> — BCG's June 2026 survey, the "reshape vs. replace" report, LinkedIn on AI-proof skills, and Bright Horizons on the self-teach gap.</p><span class="go">Open Deep Dives →</span></div></a>
+  <a class="tldr-item" href="#tabs-panel" @click="tab='voices'"><span class="emoji">💬</span><div><p><strong>Real quotes</strong> from BCG's Vinciane Beauchene, Bright Horizons' Priya Krishnan, and LinkedIn's Aneesh Raman.</p><span class="go">Open Voices →</span></div></a>
+  <a class="tldr-item" href="#comments"><span class="emoji">👍</span><div><p><strong>Like anything?</strong> Every stat, case, and quote has its own reaction button.</p><span class="go">Jump to Comments →</span></div></a>
+</div>
+
+<div class="numbers-wrap reveal">
+  <div class="numbers-title"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> This Week In Numbers — click a card or bar for its source</div>
+  <div class="bento">
+    <a data-click-key="2026-07-14-stat-72pct" class="bento-stat" href="https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" target="_blank">
+      <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="val">72%</div>
+      <div class="lbl">of workers say AI has already changed skills expectations in their role</div>
+      <div class="src">BCG · Jun 2026 (14,000-person survey)</div>
+      <button class="like-btn" data-like-key="2026-07-14-stat-72pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
+      <button class="comment-toggle" data-comment-key="2026-07-14-stat-72pct" data-comment-title="Stat: 72% say AI changed skills expectations">💬 Comments</button>
+    </a>
+    <a data-click-key="2026-07-14-stat-42pct" class="bento-stat" href="https://investors.brighthorizons.com/news-releases/news-release-details/2026-workforce-outlook-employers-prioritize-ai-literacy-and" target="_blank">
+      <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+      <div class="val">42%</div>
+      <div class="lbl">say their employer expects them to learn AI on their own — no program, no support</div>
+      <div class="src">Bright Horizons 2026 Workforce Outlook</div>
+      <button class="like-btn" data-like-key="2026-07-14-stat-42pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
+      <button class="comment-toggle" data-comment-key="2026-07-14-stat-42pct" data-comment-title="Stat: 42% expected to self-teach AI">💬 Comments</button>
+    </a>
+    <a data-click-key="2026-07-14-stat-25pp" class="bento-stat" href="https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" target="_blank">
+      <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+      <div class="val">+25pp</div>
+      <div class="lbl">business impact lift for orgs with clear AI strategy vs. orgs that just added better tools (+5pp)</div>
+      <div class="src">BCG · Jun 2026</div>
+      <button class="like-btn" data-like-key="2026-07-14-stat-25pp"><span class="heart">👍</span> <span class="like-count">–</span></button>
+      <button class="comment-toggle" data-comment-key="2026-07-14-stat-25pp" data-comment-title="Stat: 25pp impact lift with clear AI strategy">💬 Comments</button>
+    </a>
+    <div class="chart-card">
+      <h4>AI at Work: Gains vs. New Burdens</h4>
+      <div class="chart-hint">67% enjoy AI — but 41% carry more cognitive load. Click a bar for the BCG source.</div>
+      <canvas id="bcgChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h4>Frontline AI Adoption Rate — YoY Surge</h4>
+      <div class="chart-hint">Regular frontline AI users jumped 23 points in one year. Redesigning the role is now urgent. Click for BCG source.</div>
+      <canvas id="frontlineChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-kicker"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg> Quick Gut Check</div>
+  <div class="quiz-question">Amazon set a goal in 2019 to upskill 100,000 employees by 2025. By how much did they overshoot that target?</div>
+  <div class="quiz-options" id="quiz-options">
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">2× (200,000)</button>
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">4× (400,000)</button>
+    <button class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true)">7× (700,000)</button>
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">10× (1,000,000)</button>
+  </div>
+  <div class="quiz-reveal" id="quiz-reveal" style="display:none;">
+    <div class="quiz-verdict" id="quiz-verdict"></div>
+    <div><strong>7× — 700,000 employees globally.</strong> That's 425,000 in the US and 275,000 across 13 other countries. Amazon didn't just hit the target; they redefined the scope. The $2.5B Future Ready 2030 initiative is the successor — now targeting 50 million people beyond Amazon's own workforce. Source: <a href="https://www.aboutamazon.com/news/workplace/amazon-employees-upskilling-education-training" target="_blank">Amazon upskilling report →</a></div>
+  </div>
+</div>
+
+<div class="tabs-wrap reveal" id="tabs-panel">
+  <div class="tab-bar">
+    <button class="tab-btn" :class="tab === 'case-files' && 'active'" @click="tab = 'case-files'">
+      <svg class="icon" viewBox="0 0 24 24"><path d="m21 21-4.3-4.3"/><circle cx="11" cy="11" r="8"/></svg> Case Files
+    </button>
+    <button class="tab-btn" :class="tab === 'deep-dives' && 'active'" @click="tab = 'deep-dives'">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg> Deep Dives
+    </button>
+    <button class="tab-btn" :class="tab === 'voices' && 'active'" @click="tab = 'voices'">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg> Voices
+    </button>
+    <button class="tab-btn" :class="tab === 'domains' && 'active'" @click="tab = 'domains'">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg> By Function
+    </button>
+    <button class="tab-btn" :class="tab === 'lemonade' && 'active'" @click="tab = 'lemonade'">
+      🍋 Lemonade Angle
+    </button>
+  </div>
+
+  <!-- CASE FILES -->
+  <div x-show="tab === 'case-files'" x-cloak x-transition>
+    <div class="case-card" x-data="{ open: true }">
+      <div class="case-head" @click="open = !open">
+        <div><div class="case-co">Amazon · Future Ready 2030 / aboutamazon.com</div><h4>A $2.5B bet on role reinvention: 700,000 employees upskilled, 7× the original target</h4></div>
+        <svg class="icon card-chevron" :style="open && 'transform:rotate(180deg)'" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="case-body" x-show="open" x-transition>
+        <p>In 2019 Amazon committed to upskill 100,000 employees by 2025. By the deadline, they had upskilled over <strong>700,000 globally</strong> — 425,000 in the US, 275,000 elsewhere across 13 countries — exceeding the original goal by 7×. The programs covered cybersecurity, software development, logistics tech, renewable energy, and mechatronics, offering flexibility around varying shift schedules. In October 2025, Amazon launched <strong>Future Ready 2030</strong> — a $2.5B commitment targeting 50 million people across the full career spectrum, not just Amazon employees.</p>
+        <p>Amazon's Career Choice program now covers up to 100% of tuition costs for employees in Europe, and AWS Skill Builder helps employees earn cloud and machine learning certifications without leaving their role. The program's philosophy: AI shifts the nature of every role in the company; the job of L&D is to close that gap before it becomes attrition.</p>
+        <span class="case-result">📈 700,000+ employees upskilled (7× original goal) · $2.5B committed through 2030 · 50M learners targeted externally</span>
+        <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Public corporate commitment, independently verified across multiple Amazon newsroom sources. <a data-click-key="2026-07-14-case-amazon" href="https://www.aboutamazon.com/news/workplace/amazon-employees-upskilling-education-training" target="_blank">Source →</a></p>
+        <div class="lesson">💡 <strong>L&D Lesson:</strong> Amazon didn't ask "how do we train for AI?" They asked "what does every role look like in 3 years, and what does someone need to stay valuable in it?" That's role redesign framed as employee benefit — not a compliance exercise. The 7× overshoot signals that when learning is genuinely useful and accessible, people use it.</div>
+        <button class="like-btn" data-like-key="2026-07-14-case-amazon"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-case-amazon" data-comment-title="Case: Amazon Future Ready 2030">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="case-card" x-data="{ open: false }">
+      <div class="case-head" @click="open = !open">
+        <div><div class="case-co">Faros AI Analysis · 10,000+ developers, 1,255 teams</div><h4>AI-adopted teams complete 21% more tasks — but PR review time jumped 91%</h4></div>
+        <svg class="icon card-chevron" :style="open && 'transform:rotate(180deg)'" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="case-body" x-show="open" x-transition>
+        <p>A large-scale analysis of engineering productivity data from Faros AI (covering 10,000+ developers across 1,255 teams) found a striking pattern: <strong>high-AI-adoption teams completed 21% more tasks</strong> than low-adoption teams. But PR review time increased by <strong>91%</strong> — nearly doubling.</p>
+        <p>The bottleneck shifted. AI makes code generation faster; it doesn't make senior engineers available to review it faster. The net result: higher task volume, longer cycle times, frustrated developers waiting days for code review. The problem isn't AI output — it's that teams didn't redesign the review workflow to match the new generation speed.</p>
+        <span class="case-result">📈 21% more tasks completed · 91% longer PR review time · Net result: output up, cycle time up, new bottleneck created</span>
+        <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Research from Faros AI, covering production engineering data from real teams. Company names not disclosed. <a data-click-key="2026-07-14-case-faros" href="https://www.getpanto.ai/blog/ai-coding-assistant-statistics" target="_blank">Via: AI Coding Statistics roundup →</a></p>
+        <div class="lesson">💡 <strong>L&D Lesson:</strong> AI adoption without workflow redesign creates new bottlenecks, not productivity gains. This is the "reshape" problem in miniature: you can enable individual contributors with AI tools all day, but if the human judgment step in the process isn't redesigned to scale, you've shifted the constraint, not removed it. What does your version of the 91% review bottleneck look like?</div>
+        <button class="like-btn" data-like-key="2026-07-14-case-faros"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-case-faros" data-comment-title="Case: Faros AI — PR review bottleneck">💬 Comments</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEEP DIVES -->
+  <div x-show="tab === 'deep-dives'" x-cloak x-transition>
+    <div class="narrative" style="margin-bottom:20px;">
+      <h2><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Reshape, Not Replace — And L&D Is the Gap Filler</h2>
+      <p><span class="lead-in">The headline:</span> BCG's June 2026 survey of 14,000 workers across 15 countries found that <span class="stat-hl">72% say AI has already changed their skills expectations</span>. A second BCG Henderson Institute report quantified the scope: <span class="stat-hl">50-55% of US jobs will be substantially changed by AI over the next 2-3 years</span>. Critically, BCG's framing is "reshaped, not replaced" — most workers stay in the same role, but face radically different expectations for how they work and what they produce.</p>
+      <p><span class="lead-in">The gap:</span> <span class="stat-hl">42% of employees</span> say their employer expects them to learn AI on their own (Bright Horizons 2026). That's not a training strategy — it's a signal that companies are letting reshape happen without L&D. Meanwhile, BCG finds that organizations with <strong>a clear AI strategy</strong> see a 25-percentage-point business impact lift vs. 5pp for organizations that just added better tools. The strategy gap is the learning gap.</p>
+      <p><span class="lead-in">What actually works:</span> BCG's data shows frontline AI adoption jumped 23 percentage points in one year to <span class="stat-hl">74% regular users</span>. Of those, 42% save at least one full workday per week via AI. But 41% also report increased cognitive load — more to manage, more to direct, more to verify. The emerging L&D job isn't just "teach people to use AI." It's "redesign the work so humans can apply judgment at scale, not just generate volume."</p>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div><div class="card-source">BCG · Jun 3, 2026 · 14,000 workers, 15 countries</div><div class="card-title">AI Is Reshaping Jobs Faster Than Companies Are Redesigning Work</div><div class="card-teaser">72% say skills expectations changed. 47% now spend more time directing AI than doing the actual work. Strategy beats tools by 25 percentage points.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>BCG's largest global AI-at-work survey to date finds that adoption has outrun redesign at most organizations. 47% of regular AI users now spend more time managing and directing AI than doing the work itself — a profound shift in what "doing the job" means. Organizations with workflow redesign are 24 percentage points more likely to see measurable business improvement than those who only added tools. The "AI honeymoon" — where novelty and cognitive challenge fuel initial enthusiasm — fades within a year without strategic clarity about how work should change.</p>
+        <a data-click-key="2026-07-14-article-bcg-reshape" class="readmore" href="https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" target="_blank">Read the BCG press release →</a>
+        <div class="card-tags"><span class="tag">Workflow Redesign</span><span class="tag">BCG Survey</span><span class="tag">AI Strategy</span><span class="tag">Frontline AI</span></div>
+        <button class="like-btn" data-like-key="2026-07-14-article-bcg-reshape"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-article-bcg-reshape" data-comment-title="Article: BCG — Reshaping Jobs Faster Than Work Redesign">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+        <div><div class="card-source">BCG Henderson Institute · 2026</div><div class="card-title">AI Will Reshape More Jobs Than It Replaces</div><div class="card-teaser">50-55% of US jobs substantially changed in 2-3 years. "Reshaping" means same role, different expectations — not displacement.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>The 21-page BCG Henderson Institute report categorizes AI's job impact into six role types. The key finding for L&D: the majority of impacted workers are in "Rebalanced Roles" — same title, same employer, but the work has shifted toward higher-value activities and away from routine execution. This isn't a layoff problem; it's a reskilling and redesign problem. Workforce planning implications flagged include succession depth, early-career pathway protection, and urgency of reskilling before the reshape creates a performance cliff.</p>
+        <a data-click-key="2026-07-14-article-bcg-replace" class="readmore" href="https://www.bcg.com/publications/2026/ai-will-reshape-more-jobs-than-it-replaces" target="_blank">Read the BCG Henderson Institute report →</a>
+        <div class="card-tags"><span class="tag">Job Transformation</span><span class="tag">Workforce Planning</span><span class="tag">Reskilling</span><span class="tag">BCG</span></div>
+        <button class="like-btn" data-like-key="2026-07-14-article-bcg-replace"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-article-bcg-replace" data-comment-title="Article: BCG — Reshape Not Replace">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <img src="https://www.bcg.com/Images/BCG-Logo-1200x630_tcm9-199544.jpg" alt="" onerror="this.style.display='none'"/>
+        <div><div class="card-source">BCG · 2026</div><div class="card-title">AI Has Made Work Reinvention a CEO Mandate</div><div class="card-teaser">72% of CEOs are now their company's chief AI decision-maker. CEOs spending 8+ hours/week building AI capabilities generate more measurable value.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>Nearly three-quarters of CEOs are now the primary decision-maker on AI — a figure that roughly doubled in a single year. CEO ownership raises the stakes for L&D: when the C-suite is driving the AI agenda, functional enablement needs to be connected to business outcomes, not just completion rates. BCG's finding that CEOs spending 8+ hours weekly on AI capability-building generate more measurable value is the most direct argument for prioritizing CLO-CEO alignment in 2026.</p>
+        <a data-click-key="2026-07-14-article-bcg-ceo" class="readmore" href="https://www.bcg.com/publications/2026/ai-has-made-work-reinvention-a-ceo-mandate" target="_blank">Read the BCG CEO mandate report →</a>
+        <div class="card-tags"><span class="tag">CEO Role</span><span class="tag">AI Leadership</span><span class="tag">Business Impact</span><span class="tag">BCG</span></div>
+        <button class="like-btn" data-like-key="2026-07-14-article-bcg-ceo"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-article-bcg-ceo" data-comment-title="Article: BCG — AI as CEO Mandate">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div><div class="card-source">Bright Horizons · Dec 2025 / 2026 Workforce Outlook</div><div class="card-title">42% of Employees Are Expected to Learn AI on Their Own</div><div class="card-teaser">34% feel unprepared. 79% know they need to build new skills. Only 17% use AI frequently. The gap is the employer's responsibility — not the employee's.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>The EdAssist by Bright Horizons 2026 Workforce Outlook surveyed 2,017 US full-time workers. The gap between awareness and action is striking: 42% expect significant role change due to AI within a year, yet only 17% use AI frequently today. When 42% say their employer leaves them to figure it out alone, that's not a learning preference — it's an organizational failure. The workers most likely to upskill are those with access to structured learning support; those without are most likely to feel unprepared and look elsewhere.</p>
+        <a data-click-key="2026-07-14-article-brighthorizons" class="readmore" href="https://investors.brighthorizons.com/news-releases/news-release-details/2026-workforce-outlook-employers-prioritize-ai-literacy-and" target="_blank">Read the Bright Horizons 2026 Workforce Outlook →</a>
+        <div class="card-tags"><span class="tag">AI Readiness</span><span class="tag">Upskilling Gap</span><span class="tag">Employee Expectations</span><span class="tag">Bright Horizons</span></div>
+        <button class="like-btn" data-like-key="2026-07-14-article-brighthorizons"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-article-brighthorizons" data-comment-title="Article: Bright Horizons 2026 Workforce Outlook">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zM11 11V7m4 4V7"/></svg></div>
+        <div><div class="card-source">CNBC / LinkedIn · Mar 31, 2026 · Ryan Roslansky &amp; Aneesh Raman</div><div class="card-title">LinkedIn CEO: Young Workers Can't Afford to Overlook These 5 Skills AI Can't Replace</div><div class="card-teaser">Compassion, creativity, communication, courage, curiosity — the "5Cs" that differentiate humans from AI output at scale.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>LinkedIn CEO Ryan Roslansky and Chief Economic Opportunity Officer Aneesh Raman co-authored research identifying the "5Cs" — Compassion, Creativity, Communication, Courage, Curiosity — as the human capabilities AI cannot replicate. Raman's data shows that job posts increasingly reference these as must-haves, not nice-to-haves. For L&D leaders, the practical implication: the fastest-growing skills in formal learning programs (GenAI, coding, data) are exactly the ones most susceptible to AI substitution. The skills with the longest shelf life are the ones almost nobody is formally building right now.</p>
+        <a data-click-key="2026-07-14-article-linkedin5c" class="readmore" href="https://www.cnbc.com/2026/03/31/ai-cant-replace-these-5-skills-says-linkedin-ceo-young-workers-need-them-now.html" target="_blank">Read the CNBC / LinkedIn piece →</a>
+        <div class="card-tags"><span class="tag">Human Skills</span><span class="tag">5Cs</span><span class="tag">LinkedIn</span><span class="tag">Future of Work</span></div>
+        <button class="like-btn" data-like-key="2026-07-14-article-linkedin5c"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-article-linkedin5c" data-comment-title="Article: LinkedIn CEO — 5 skills AI can't replace">💬 Comments</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOICES -->
+  <div x-show="tab === 'voices'" x-cloak x-transition>
+    <div class="quote-card">
+      <div class="quote-avatar initials">VB</div>
+      <div>
+        <div class="quote-context">On why individual productivity gains are only the beginning — and what L&D must solve next:</div>
+        <p class="quote-text">"The first wave of AI focused on individual productivity. The coming wave will need to transform collective work."</p>
+        <div class="quote-author">Vinciane Beauchene</div>
+        <div class="quote-role">Managing Director &amp; Partner, BCG</div>
+        <a data-click-key="2026-07-14-quote-beauchene" class="quote-link" href="https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" target="_blank">Source: BCG "AI Is Reshaping Jobs Faster Than Companies Are Redesigning Work," Jun 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-07-14-quote-beauchene"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-07-14-quote-beauchene" data-comment-title="Quote: Vinciane Beauchene (BCG)">💬 Comments</button></div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-avatar initials">PK</div>
+      <div>
+        <div class="quote-context">On why leaving employees to self-teach AI is a talent retention risk, not a learning strategy:</div>
+        <p class="quote-text">"AI is rewriting job descriptions fast. Employers who invest in education benefits and AI training now will build resilient, innovative teams."</p>
+        <div class="quote-author">Priya Krishnan</div>
+        <div class="quote-role">Chief Transformation &amp; Digital Officer, Bright Horizons</div>
+        <a data-click-key="2026-07-14-quote-krishnan" class="quote-link" href="https://investors.brighthorizons.com/news-releases/news-release-details/2026-workforce-outlook-employers-prioritize-ai-literacy-and" target="_blank">Source: Bright Horizons 2026 Workforce Outlook →</a>
+        <div><button class="like-btn" data-like-key="2026-07-14-quote-krishnan"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-07-14-quote-krishnan" data-comment-title="Quote: Priya Krishnan (Bright Horizons)">💬 Comments</button></div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-avatar initials">AR</div>
+      <div>
+        <div class="quote-context">On where human value migrates in a world where AI handles more of the execution:</div>
+        <p class="quote-text">"People skills are going to come more to the center of individual career growth, and people-to-people collaboration is going to come into the center more for company growth."</p>
+        <div class="quote-author">Aneesh Raman</div>
+        <div class="quote-role">Chief Economic Opportunity Officer, LinkedIn</div>
+        <a data-click-key="2026-07-14-quote-raman" class="quote-link" href="https://www.cnbc.com/2026/03/31/ai-cant-replace-these-5-skills-says-linkedin-ceo-young-workers-need-them-now.html" target="_blank">Source: CNBC / LinkedIn, March 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-07-14-quote-raman"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-07-14-quote-raman" data-comment-title="Quote: Aneesh Raman (LinkedIn)">💬 Comments</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMAINS -->
+  <div x-show="tab === 'domains'" x-cloak x-transition>
+    <div class="domains-grid">
+      <div class="domain-card">
+        <h4>💻 Tech / Product &amp; Engineering</h4>
+        <p>47% of regular AI users now spend more time directing and managing AI than doing the underlying work. For engineering teams, that means senior developers are becoming orchestrators — and they haven't been hired or enabled for that role yet.</p>
+        <span class="role-tag">AI Workflow Architect</span><span class="role-tag">Engineering Enablement Lead</span>
+        <p><a href="https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" target="_blank">BCG: "AI Is Reshaping Jobs Faster" →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🧑‍🤝‍🧑 People / HR</h4>
+        <p>"Reshape not replace" means HR must lead the redesign of roles that still exist — not just manage transitions for roles that don't. The practical move: job descriptions updated for a world where AI handles routine execution are the new onboarding baseline.</p>
+        <span class="role-tag">AI Workforce Architect</span><span class="role-tag">Role Redesign Strategist</span>
+        <p><a href="https://www.bcg.com/publications/2026/ai-will-reshape-more-jobs-than-it-replaces" target="_blank">BCG Henderson Institute: Reshape not replace →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🎧 Customer Success</h4>
+        <p>Frontline AI adoption is already at 74% regular users (up 23pp in one year). CS teams are using AI — the gap is that 52% have limited understanding of what agents are or what they can do. Customer-facing teams need clarity about AI's boundaries, not just its benefits.</p>
+        <span class="role-tag">AI-Augmented CS Lead</span><span class="role-tag">Customer Intelligence Analyst</span>
+        <p><a href="https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" target="_blank">BCG: Frontline AI data →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>📊 Data / Analytics</h4>
+        <p>42% of regular AI users save at least one full workday weekly. For data teams, that's a massive capacity unlock — but only if the freed time is directed toward higher-value work. Without intentional role redesign, saved time just becomes more of the same work faster.</p>
+        <span class="role-tag">Strategic Analytics Lead</span><span class="role-tag">AI-Enabled Insights Partner</span>
+        <p><a href="https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" target="_blank">BCG: One full workday saved per week →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🐞 QA</h4>
+        <p>The PR review bottleneck (91% longer review time on high-AI teams) hits QA hardest — test review becomes the constraint when generation is cheap. QA roles are shifting from "test execution" to "judgement bottleneck management": which AI outputs need deep human review, and which can be delegated?</p>
+        <span class="role-tag">AI QA Strategist</span><span class="role-tag">Judgment-Layer Engineer</span>
+        <p><a href="https://www.getpanto.ai/blog/ai-coding-assistant-statistics" target="_blank">Faros AI: PR review bottleneck data →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🎨 Design / UX</h4>
+        <p>LinkedIn's "5Cs" — compassion, creativity, communication, courage, curiosity — are exactly what design roles depend on. As AI generates more wireframes and copy variations, the human design advantage shifts to judgment and narrative: why this, for whom, to what end.</p>
+        <span class="role-tag">Design Strategy Lead</span><span class="role-tag">AI-Augmented Experience Designer</span>
+        <p><a href="https://www.cnbc.com/2026/03/31/ai-cant-replace-these-5-skills-says-linkedin-ceo-young-workers-need-them-now.html" target="_blank">LinkedIn CEO: 5 skills AI can't replace →</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEMONADE ANGLE -->
+  <div x-show="tab === 'lemonade'" x-cloak x-transition>
+    <div class="lemon-section">
+      <p class="subtitle">What this week means for Lemonade's product &amp; engineering L&D 🍋</p>
+      <div class="lemon-item" id="lemon-1">
+        <h3>🔄 1. Design for collective AI, not just individual AI</h3>
+        <p><span class="label-inline">The signal</span>BCG's Vinciane Beauchene: "The first wave of AI focused on individual productivity. The coming wave will need to transform collective work." At Lemonade, the Copilot/AI coding tool rollout has focused on individual devs. The next level is the team-level workflow.</p>
+        <p><span class="label-inline">The move</span>Run a single team-level exercise: map one squad's current AI usage and identify where human judgment is the bottleneck (code review, architecture decisions, incident triage). Then redesign that one step — not the whole process. BCG finds that workflow redesign outperforms tool access by 24 percentage points. Even one step redesigned at the team level beats ten individual developers using AI better.</p>
+        <button class="like-btn" data-like-key="2026-07-14-lemon-1"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-lemon-1" data-comment-title="Lemonade Angle #1 — Collective AI design">💬 Comments</button>
+      </div>
+      <div class="lemon-item" id="lemon-2">
+        <h3>⚖️ 2. Solve the judgment bottleneck before it becomes a retention issue</h3>
+        <p><span class="label-inline">The signal</span>PR review time jumping 91% on high-AI-adoption teams is the signal. Senior engineers who spend their days in review queues instead of building start to feel like bottlenecks, not contributors. That's an attrition risk, not just a process inefficiency.</p>
+        <p><span class="label-inline">The move</span>Create a lightweight "review triage" standard for Lemonade's engineering squads: which types of AI-generated code get fast-tracked vs. deep review (e.g., underwriting logic requires human review; boilerplate test scaffolding gets expedited). Make the triage criteria explicit and teachable. This is a learning design problem — the standard needs to be transferable, not locked in a senior engineer's head.</p>
+        <button class="like-btn" data-like-key="2026-07-14-lemon-2"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-lemon-2" data-comment-title="Lemonade Angle #2 — Review triage standard">💬 Comments</button>
+      </div>
+      <div class="lemon-item" id="lemon-3">
+        <h3>🎓 3. Don't let "figure it out yourself" be Lemonade's upskilling strategy</h3>
+        <p><span class="label-inline">The signal</span>42% of employees say their employer expects them to self-teach AI. At tech companies where individual autonomy is high, this can masquerade as empowerment — but the Bright Horizons data shows it correlates with feeling unprepared and undervalued, not empowered.</p>
+        <p><span class="label-inline">The move</span>For Lemonade's engineering team, replace "use AI however works for you" with a structured minimum: a 3-item AI practice (one prompt pattern, one anti-pattern, one review habit) introduced during the first two weeks of onboarding. Not a course — a standard. Baked into the onboarding flow, not assigned as optional reading. Small enough to complete, specific enough to matter.</p>
+        <button class="like-btn" data-like-key="2026-07-14-lemon-3"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-14-lemon-3" data-comment-title="Lemonade Angle #3 — AI minimum standard">💬 Comments</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="section-label" id="comments"><svg class="icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg> React &amp; Discuss</p>
+<div id="cusdis_thread"
+  data-host="https://cusdis.com"
+  data-app-id="8f88689d-bab5-4b25-b146-bca8c57b0dde"
+  data-page-id="weekly-2026-07-14"
+  data-page-url="https://ld-ai-digest.onrender.com/weekly/2026-07-14/index.html"
+  data-page-title="Week of Jul 14–20, 2026 — The Reshape Imperative"
+></div>
+<script async src="https://cusdis.com/js/cusdis.es.js"></script>
+
+</div><!-- /container -->
+
+<footer>
+  L&D + AI Weekly Digest · Week of July 14–20, 2026 · Curated for Lemonade · Sources linked throughout — nothing here is invented
+</footer>
+
+<script>
+fetch('../../data/weeks.json')
+  .then(r => r.json())
+  .then(data => {
+    const weeks = (data.weeks || []).slice().sort((a,b) => a.id.localeCompare(b.id));
+    const idx = weeks.findIndex(w => w.id === '2026-07-14');
+    const prev = weeks[idx - 1];
+    const next = weeks[idx + 1];
+    const prevEl = document.getElementById('prev-arrow');
+    const nextEl = document.getElementById('next-arrow');
+    if (prev) { prevEl.classList.add('enabled'); prevEl.onclick = () => location.href = '../../' + prev.path; prevEl.title = prev.label; }
+    if (next) { nextEl.classList.add('enabled'); nextEl.onclick = () => location.href = '../../' + next.path; nextEl.title = next.label; }
+  })
+  .catch(() => {});
+</script>
+
+<script>
+function answerQuiz(btn, isCorrect) {
+  const opts = document.querySelectorAll('#quiz-options .quiz-opt');
+  opts.forEach(o => {
+    o.disabled = true;
+    if (o.dataset.correct === 'true') o.classList.add('correct');
+    else if (o === btn) o.classList.add('wrong');
+  });
+  const verdict = document.getElementById('quiz-verdict');
+  verdict.textContent = isCorrect ? '✅ You got it — nice.' : '❌ Not quite — here\'s the real number:';
+  verdict.className = 'quiz-verdict ' + (isCorrect ? 'right' : 'wrong');
+  document.getElementById('quiz-reveal').style.display = 'block';
+}
+
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress-bar').style.width = scrolled + '%';
+});
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+const pink = '#FF0083', gray = '#E8E8ED', dark = '#1F1F26';
+
+new Chart(document.getElementById('bcgChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Improved\njob satisfaction', 'Save 1+ day\nper week', 'Increased\ncognitive load', 'More time managing\nAI than doing work'],
+    datasets: [{ data: [67, 42, 41, 47], backgroundColor: [pink, pink, gray, gray], borderRadius: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.raw + '% of regular AI users — click for BCG source' } } },
+    scales: { y: { max: 80, grid: { display: false }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } },
+    onClick: () => window.open('https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html', '_blank')
+  }
+});
+
+new Chart(document.getElementById('frontlineChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Regular frontline\nAI users (prior year)', 'Regular frontline\nAI users (2026)'],
+    datasets: [{ data: [51, 74], backgroundColor: [gray, pink], borderRadius: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.raw + '% — click for BCG source' } } },
+    scales: { y: { max: 100, grid: { display: false }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } },
+    onClick: () => window.open('https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html', '_blank')
+  }
+});
+</script>
+
+<script>
+(function () {
+  const NS = 'ld-ai-digest';
+  const LIKED_KEY = 'ld-ai-digest-liked';
+  const liked = JSON.parse(localStorage.getItem(LIKED_KEY) || '{}');
+  document.querySelectorAll('.like-btn').forEach(async (btn) => {
+    const key = btn.dataset.likeKey;
+    const countEl = btn.querySelector('.like-count');
+    if (liked[key]) btn.classList.add('liked');
+    try {
+      const r = await fetch(`https://abacus.jasoncameron.dev/get/${NS}/${key}`);
+      const d = await r.json();
+      countEl.textContent = d.value || 0;
+    } catch (e) { countEl.textContent = '–'; }
+    btn.addEventListener('click', async (evt) => {
+      evt.preventDefault(); evt.stopPropagation();
+      if (btn.classList.contains('liked')) return;
+      btn.classList.add('liked');
+      liked[key] = true;
+      localStorage.setItem(LIKED_KEY, JSON.stringify(liked));
+      try {
+        const r = await fetch(`https://abacus.jasoncameron.dev/hit/${NS}/${key}`);
+        const d = await r.json();
+        countEl.textContent = d.value;
+      } catch (e) {}
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const NS = 'ld-ai-digest';
+  document.querySelectorAll('[data-click-key]').forEach((link) => {
+    link.addEventListener('click', () => {
+      fetch(`https://abacus.jasoncameron.dev/hit/${NS}/click-${link.dataset.clickKey}`).catch(() => {});
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const APP_ID = '8f88689d-bab5-4b25-b146-bca8c57b0dde';
+  const pageBase = location.href.split('#')[0];
+  function tryRender(container, attempts) {
+    if (window.CUSDIS && typeof window.CUSDIS.renderTo === 'function') {
+      window.CUSDIS.renderTo(container);
+    } else if (attempts < 25) {
+      setTimeout(() => tryRender(container, attempts + 1), 200);
+    }
+  }
+  document.querySelectorAll('.comment-toggle').forEach((btn) => {
+    btn.addEventListener('click', (evt) => {
+      evt.preventDefault(); evt.stopPropagation();
+      const key = btn.dataset.commentKey;
+      let container = document.getElementById('mc-' + key);
+      if (container) {
+        const isHidden = container.style.display === 'none';
+        container.style.display = isHidden ? 'block' : 'none';
+        btn.classList.toggle('open', isHidden);
+        return;
+      }
+      container = document.createElement('div');
+      container.id = 'mc-' + key;
+      container.className = 'mini-comments';
+      container.setAttribute('data-host', 'https://cusdis.com');
+      container.setAttribute('data-app-id', APP_ID);
+      container.setAttribute('data-page-id', key);
+      container.setAttribute('data-page-url', pageBase + '#' + key);
+      container.setAttribute('data-page-title', btn.dataset.commentTitle || key);
+      btn.insertAdjacentElement('afterend', container);
+      btn.classList.add('open');
+      tryRender(container, 0);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

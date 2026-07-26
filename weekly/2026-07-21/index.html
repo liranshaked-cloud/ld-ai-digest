@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week of Jul 21–27, 2026 — AI-Native at Scale | L&D + AI Digest</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lmnd-pink: #FF0083; --lmnd-pink-tint: rgba(255,0,131,0.07); --lmnd-pink-tint-2: rgba(255,0,131,0.14);
+    --text-primary: #1F1F26; --text-muted: #6B6B75; --text-faint: #9999A2;
+    --surface: #FFFFFF; --surface-alt: #FAFAFB; --surface-sunken: #F4F4F6;
+    --border: #E8E8ED; --border-strong: #D6D6DC;
+    --shadow-sm: 0 1px 2px rgba(20,20,30,0.05); --shadow-md: 0 4px 18px rgba(20,20,30,0.06);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px;
+  }
+  [x-cloak] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: var(--text-primary); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--text-primary); }
+  [id] { scroll-margin-top: 64px; }
+  .icon { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; vertical-align: -3px; }
+
+  .like-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all .15s ease; }
+  .like-btn:hover:not(.liked) { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
+  .like-btn.liked { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); cursor: default; }
+  .like-btn .heart { font-size: 13px; }
+  .comment-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; margin-left: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all .15s ease; }
+  .comment-toggle:hover { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
+  .comment-toggle.open { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
+  .mini-comments { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-strong); }
+  #cusdis_thread iframe, .mini-comments iframe { zoom: 0.8; }
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--lmnd-pink); z-index: 200; transition: width 0.1s linear; }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 52px; }
+  .top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; text-decoration: none; }
+  .top-nav a:hover { color: var(--lmnd-pink); }
+  .week-nav { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--text-faint); font-weight: 700; }
+  .week-nav .arrow { color: var(--border-strong); font-weight: 900; pointer-events: none; }
+  .week-nav .arrow.enabled { color: var(--text-primary); pointer-events: auto; text-decoration: none; cursor: pointer; }
+  .week-nav .arrow.enabled:hover { color: var(--lmnd-pink); }
+  .slack-pill { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; transition: border-color .15s ease; }
+  .slack-pill:hover { border-color: var(--lmnd-pink); color: var(--text-primary); }
+  .header { background: var(--surface); padding: 52px 24px 40px; text-align: center; border-bottom: 1px solid var(--border); }
+  .brand-mark { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: var(--lmnd-pink); border-radius: 9px; color: white; font-weight: 900; font-size: 19px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(255,0,131,0.22); }
+  .header .issue-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 14px; }
+  .header h1 { font-size: clamp(30px, 4.8vw, 50px); font-weight: 900; margin-bottom: 14px; line-height: 1.12; letter-spacing: -0.01em; }
+  .header .theme-quote { font-size: 16px; color: var(--text-muted); font-style: italic; max-width: 480px; margin: 0 auto; line-height: 1.6; text-wrap: balance; }
+  .container { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+  .tldr { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin: 28px 0; }
+  .tldr-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; box-shadow: var(--shadow-sm); display: flex; gap: 12px; align-items: flex-start; text-decoration: none; color: inherit; transition: all .15s ease; cursor: pointer; }
+  .tldr-item:hover { border-color: var(--lmnd-pink); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .tldr-item .emoji { font-size: 20px; line-height: 1; }
+  .tldr-item p { font-size: 13.5px; color: #33333c; line-height: 1.55; }
+  .tldr-item strong { color: var(--lmnd-pink); }
+  .tldr-item .go { font-size: 11px; color: var(--text-faint); font-weight: 700; margin-top: 4px; display: block; }
+  .numbers-wrap { margin: 8px 0 28px; }
+  .numbers-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+  .bento-stat { grid-column: span 2; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow-sm); text-decoration: none; color: inherit; transition: all .15s ease; }
+  .bento-stat:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--lmnd-pink); }
+  .bento-stat .icon-wrap { width: 32px; height: 32px; border-radius: 9px; background: var(--lmnd-pink-tint); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; color: var(--lmnd-pink); }
+  .bento-stat .val { font-size: 34px; font-weight: 900; line-height: 1; margin-bottom: 8px; }
+  .bento-stat .lbl { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+  .bento-stat .src { font-size: 10.5px; font-weight: 700; color: var(--lmnd-pink); text-transform: uppercase; letter-spacing: 0.4px; }
+  .chart-card { grid-column: span 3; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 22px; box-shadow: var(--shadow-sm); }
+  .chart-card h4 { font-size: 12.5px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .chart-card .chart-hint { font-size: 11px; color: var(--text-faint); margin-bottom: 12px; }
+  .chart-card canvas { max-height: 220px; }
+  @media (max-width: 720px) { .bento-stat, .chart-card { grid-column: span 6; } }
+  .quiz-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm); margin-bottom: 28px; }
+  .quiz-box .quiz-kicker { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .quiz-question { font-weight: 900; font-size: 17px; margin-bottom: 16px; line-height: 1.4; }
+  .quiz-options { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
+  .quiz-opt { padding: 10px 20px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-weight: 800; font-size: 14px; cursor: pointer; transition: all .15s ease; font-family: inherit; }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--lmnd-pink); transform: translateY(-1px); }
+  .quiz-opt.correct { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
+  .quiz-opt.wrong { background: #fdecec; border-color: #e5a3a3; color: #b3261e; }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-reveal { font-size: 14px; color: #33333c; line-height: 1.65; padding-top: 16px; margin-top: 16px; border-top: 1px dashed var(--border-strong); }
+  .quiz-reveal a { font-weight: 700; }
+  .quiz-verdict { display: inline-flex; align-items: center; gap: 8px; font-weight: 900; font-size: 15px; padding: 6px 16px; border-radius: 999px; margin-bottom: 14px; }
+  .quiz-verdict.right { background: var(--lmnd-pink-tint); color: var(--lmnd-pink); }
+  .quiz-verdict.wrong { background: #fdecec; color: #b3261e; }
+  .tabs-wrap { margin-bottom: 40px; }
+  .tab-bar { display: flex; gap: 6px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px; margin-bottom: 22px; box-shadow: var(--shadow-sm); }
+  .tab-btn { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; padding: 10px 16px; border-radius: 999px; border: none; background: transparent; color: var(--text-muted); font-weight: 800; font-size: 13px; cursor: pointer; font-family: inherit; transition: all .15s ease; white-space: nowrap; }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active { background: var(--text-primary); color: white; }
+  @media (max-width: 700px) { .tab-bar { justify-content: flex-start; overflow-x: auto; } .tab-btn { flex: none; } }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .narrative { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+  .narrative h2 { font-size: 20px; font-weight: 900; margin-bottom: 14px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+  .narrative p { font-size: 15px; color: #33333c; margin-bottom: 12px; line-height: 1.75; }
+  .narrative a { font-weight: 700; }
+  .stat-hl { color: var(--lmnd-pink); font-weight: 900; }
+  .lead-in { font-weight: 900; color: var(--text-primary); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 14px; transition: box-shadow 0.2s ease; }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card-head { display: flex; gap: 16px; align-items: center; padding: 16px 20px; cursor: pointer; }
+  .card-head img { width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover; background: var(--surface-sunken); flex-shrink: 0; }
+  .card-head .ph { width: 56px; height: 56px; border-radius: var(--radius-sm); background: var(--surface-sunken); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-faint); }
+  .card-source { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
+  .card-title { font-size: 15.5px; font-weight: 900; line-height: 1.3; }
+  .card-teaser { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
+  .card-chevron { margin-left: auto; color: var(--text-faint); transition: transform .2s ease; flex-shrink: 0; }
+  .card.is-open .card-chevron { transform: rotate(180deg); }
+  .card-body { padding: 0 20px 22px 92px; }
+  .card-body p { font-size: 14px; color: #454550; line-height: 1.7; margin-bottom: 12px; }
+  .card-body a.readmore { font-weight: 700; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { font-size: 10.5px; font-weight: 700; background: var(--surface-sunken); color: var(--text-muted); padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border); }
+  .case-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 14px; overflow: hidden; }
+  .case-card .case-head { padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .case-card .case-co { font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 6px; }
+  .case-card h4 { font-size: 15.5px; font-weight: 900; }
+  .case-card .case-body { padding: 0 22px 22px; }
+  .case-card p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 8px; }
+  .case-card .case-result { font-size: 12.5px; font-weight: 800; background: var(--surface-sunken); border-radius: var(--radius-sm); padding: 8px 14px; display: inline-block; margin-top: 6px; }
+  .case-card .lesson { margin-top: 14px; padding: 12px 16px; background: var(--lmnd-pink-tint); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.6; }
+  .case-card .lesson strong { color: var(--lmnd-pink); }
+  .quote-context { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--lmnd-pink); margin-bottom: 8px; }
+  .quote-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lmnd-pink); border-radius: var(--radius-md); padding: 20px 24px; box-shadow: var(--shadow-sm); margin-bottom: 14px; display: flex; gap: 18px; }
+  .quote-avatar { width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0; object-fit: cover; background: var(--surface-sunken); }
+  .quote-avatar.initials { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: white; background: var(--lmnd-pink); }
+  .quote-text { font-size: 15px; color: #2a2a32; line-height: 1.6; margin-bottom: 10px; font-style: italic; }
+  .quote-author { font-size: 13.5px; font-weight: 900; }
+  .quote-role { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .quote-link { font-size: 11.5px; font-weight: 700; }
+  .domains-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 14px; }
+  .domain-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; box-shadow: var(--shadow-sm); }
+  .domain-card h4 { font-size: 14px; font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .domain-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 8px; }
+  .domain-card a { font-size: 12px; font-weight: 700; }
+  .domain-card .role-tag { display: inline-block; font-size: 10.5px; font-weight: 800; background: var(--lmnd-pink-tint); color: var(--lmnd-pink); padding: 2px 9px; border-radius: 999px; margin: 2px 4px 2px 0; }
+  .lemon-section { background: var(--surface); border-radius: var(--radius-lg); padding: 32px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+  .lemon-section .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 22px; font-style: italic; }
+  .lemon-item { margin-bottom: 16px; padding: 18px 20px; border-radius: var(--radius-md); background: var(--lmnd-pink-tint); border: 1px solid var(--lmnd-pink-tint-2); }
+  .lemon-item:last-child { margin-bottom: 0; }
+  .lemon-item h3 { font-size: 15px; font-weight: 900; color: var(--text-primary); margin-bottom: 8px; }
+  .lemon-item p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 6px; }
+  .lemon-item .label-inline { font-weight: 900; color: var(--lmnd-pink); text-transform: uppercase; font-size: 10px; letter-spacing: 0.6px; margin-right: 6px; }
+  footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
+</style>
+<script data-goatcounter="https://liran-shaked.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body x-data="{ tab: 'case-files' }" x-init="
+  const h = location.hash.replace('#','');
+  if (h.startsWith('lemon')) tab = 'lemonade';
+  else if (h.startsWith('quote')) tab = 'voices';
+  else if (h.startsWith('article')) tab = 'deep-dives';
+  else if (h.startsWith('case')) tab = 'case-files';
+  if (h) $nextTick(() => setTimeout(() => document.getElementById(h)?.scrollIntoView({behavior:'smooth', block:'center'}), 150));
+">
+
+<div class="progress-bar" id="progress-bar"></div>
+
+<nav class="top-nav">
+  <a href="../../index.html">← All Issues</a>
+  <div class="week-nav" id="week-nav">
+    <span class="arrow" id="prev-arrow">←</span>
+    <span>Week of Jul 21–27, 2026</span>
+    <span class="arrow" id="next-arrow">→</span>
+  </div>
+  <a class="slack-pill" href="https://team-lemonade.slack.com/archives/C0BDZT7EVAT" target="_blank" style="text-decoration:none; cursor:pointer;">📬 #ld-ai-digest on Slack</a>
+</nav>
+
+<div class="header">
+  <div class="brand-mark">L</div>
+  <div class="issue-label">Week of July 21–27, 2026</div>
+  <h1>AI-Native at Scale</h1>
+  <div class="theme-quote">The bolt-on AI era is ending. Workday + Sana went live this week — the first major LMS built AI-first, from the ground up. And new data shows what happens when AI adoption races ahead of understanding.</div>
+</div>
+
+<div class="container">
+
+<div class="tldr reveal">
+  <a class="tldr-item" href="#tabs-panel" @click="tab='case-files'"><span class="emoji">🕵️</span><div><p><strong>2 case studies</strong> — Josh Bersin Company moved a library in months not years. And 37% of employees now appear more competent than they actually are, thanks to AI.</p><span class="go">Open Case Files →</span></div></a>
+  <a class="tldr-item" href="#tabs-panel" @click="tab='deep-dives'"><span class="emoji">📖</span><div><p><strong>5 articles</strong> — Workday/Sana GA, TalentLMS Learning Debt, Synthesia adoption data, Go1 governance survey, and the retention link.</p><span class="go">Open Deep Dives →</span></div></a>
+  <a class="tldr-item" href="#tabs-panel" @click="tab='voices'"><span class="emoji">💬</span><div><p><strong>3 voices</strong> — Joel Hellermark (Workday), Josh Bersin, Dimitris Tsingos (TalentLMS) on what AI-native learning actually demands.</p><span class="go">Open Voices →</span></div></a>
+  <a class="tldr-item" href="#comments"><span class="emoji">👍</span><div><p><strong>Like anything?</strong> Every stat, case, and quote has its own reaction button.</p><span class="go">Jump to Comments →</span></div></a>
+</div>
+
+<div class="numbers-wrap reveal">
+  <div class="numbers-title"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> This Week In Numbers — click a card or bar for its source</div>
+  <div class="bento">
+    <a data-click-key="2026-07-21-stat-98pct" class="bento-stat" href="https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" target="_blank">
+      <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></div>
+      <div class="val">98%</div>
+      <div class="lbl">faster course creation — Workday Learning / Sana converts static material to interactive AI courses in hours, not weeks</div>
+      <div class="src">Workday + Sana · GA Jul 22, 2026</div>
+      <button class="like-btn" data-like-key="2026-07-21-stat-98pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
+      <button class="comment-toggle" data-comment-key="2026-07-21-stat-98pct" data-comment-title="Stat: 98% faster course creation (Workday/Sana)">💬 Comments</button>
+    </a>
+    <a data-click-key="2026-07-21-stat-87pct" class="bento-stat" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">
+      <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/></svg></div>
+      <div class="val">87%</div>
+      <div class="lbl">of L&D teams now using AI for training and development — only 2% have no plans to adopt</div>
+      <div class="src">Synthesia AI in L&D Report 2026</div>
+      <button class="like-btn" data-like-key="2026-07-21-stat-87pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
+      <button class="comment-toggle" data-comment-key="2026-07-21-stat-87pct" data-comment-title="Stat: 87% of L&D teams using AI (Synthesia)">💬 Comments</button>
+    </a>
+    <a data-click-key="2026-07-21-stat-59pct" class="bento-stat" href="https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" target="_blank">
+      <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+      <div class="val">59%</div>
+      <div class="lbl">of employees use AI to complete tasks they were never trained to do — "Learning Debt" is accumulating invisibly</div>
+      <div class="src">TalentLMS Learning Debt Report · Jul 15, 2026</div>
+      <button class="like-btn" data-like-key="2026-07-21-stat-59pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
+      <button class="comment-toggle" data-comment-key="2026-07-21-stat-59pct" data-comment-title="Stat: 59% use AI for tasks they weren't trained for">💬 Comments</button>
+    </a>
+    <div class="chart-card">
+      <h4>What L&D Teams Report Gaining From AI</h4>
+      <div class="chart-hint">88% save time, but fewer see real business impact. Click a bar for the Synthesia source.</div>
+      <canvas id="synthesiaChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h4>Where Learning Debt Shows Up</h4>
+      <div class="chart-hint">When AI masks a skill gap, these are the consequences employees report. Click for the TalentLMS source.</div>
+      <canvas id="debtChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-kicker"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg> Quick Gut Check</div>
+  <div class="quiz-question">TalentLMS's July 2026 Learning Debt Report found that a significant share of employees delivered work they couldn't explain, because AI filled the gap. What percentage?</div>
+  <div class="quiz-options" id="quiz-options">
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">12%</button>
+    <button class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true)">29%</button>
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">44%</button>
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">61%</button>
+  </div>
+  <div class="quiz-reveal" id="quiz-reveal" style="display:none;">
+    <div class="quiz-verdict" id="quiz-verdict"></div>
+    <div><strong>29% delivered work they couldn't explain.</strong> The full picture from TalentLMS: 59% used AI for tasks they weren't trained for, 37% say AI makes them appear more competent than they are, and 47% stayed silent about skill gaps rather than surfacing them. Employees with learning debt are 6× more likely to make preventable mistakes. Source: <a href="https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" target="_blank">TalentLMS Learning Debt Report, Jul 2026 →</a></div>
+  </div>
+</div>
+
+<div class="tabs-wrap reveal" id="tabs-panel">
+  <div class="tab-bar">
+    <button class="tab-btn" :class="tab === 'case-files' && 'active'" @click="tab = 'case-files'">
+      <svg class="icon" viewBox="0 0 24 24"><path d="m21 21-4.3-4.3"/><circle cx="11" cy="11" r="8"/></svg> Case Files
+    </button>
+    <button class="tab-btn" :class="tab === 'deep-dives' && 'active'" @click="tab = 'deep-dives'">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg> Deep Dives
+    </button>
+    <button class="tab-btn" :class="tab === 'voices' && 'active'" @click="tab = 'voices'">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg> Voices
+    </button>
+    <button class="tab-btn" :class="tab === 'domains' && 'active'" @click="tab = 'domains'">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg> By Function
+    </button>
+    <button class="tab-btn" :class="tab === 'lemonade' && 'active'" @click="tab = 'lemonade'">
+      🍋 Lemonade Angle
+    </button>
+  </div>
+
+  <!-- CASE FILES -->
+  <div x-show="tab === 'case-files'" x-cloak x-transition>
+    <div class="case-card" x-data="{ open: true }">
+      <div class="case-head" @click="open = !open">
+        <div><div class="case-co">The Josh Bersin Company + Accenture · Workday Learning / Sana, GA Jul 22, 2026</div><h4>Moving an entire learning library from static to AI-native: months, not years</h4></div>
+        <svg class="icon card-chevron" :style="open && 'transform:rotate(180deg)'" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="case-body" x-show="open" x-transition>
+        <p>When Josh Bersin's company shifted to Sana (now Workday Learning, powered by Sana), the challenge was the same one every large organization faces: a library of valuable but static PDFs, slide decks, and recorded courses that nobody was actually using. The conversion didn't take a year-long content redesign. Using Sana's AI-native authoring, <strong>thousands of learners moved into an interactive, always-on environment and a large library of programs was converted into interactive courses in months rather than years.</strong></p>
+        <p>At Accenture, the rationale was similar but at a different scale: a global workforce that needed to continuously build capabilities without the sequential market-by-market delays of traditional LMS rollouts. Workday Learning's AI-powered auto-translation and automated assignment logic let the company run <strong>simultaneous global learning campaigns</strong> rather than staging them across 12-month deployment windows.</p>
+        <p>Platform-level outcomes reported at GA: <strong>3x higher learner engagement</strong> vs. legacy LMS systems, <strong>5x faster compliance reporting</strong>, and content creation timelines compressed from multi-week production cycles to hours. The core unlock is not the content format — it's that AI tutors can now provide in-the-moment, role-specific support that a static course cannot.</p>
+        <span class="case-result">📈 Months not years · 3× engagement vs. legacy LMS · 5× faster compliance reporting · 98% faster content creation</span>
+        <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Source: Workday newsroom, July 22, 2026 GA press release — customer quotes from Josh Bersin and Colin Anderson (Accenture COO, HR). <a data-click-key="2026-07-21-case-workday" href="https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" target="_blank">Source →</a></p>
+        <div class="lesson">💡 <strong>L&D Lesson:</strong> The biggest barrier to library modernization isn't budget — it's the assumption that every piece of content needs to be manually rebuilt. AI-native authoring flips that: existing material becomes the input, not the obstacle. If your organization is sitting on a library of valuable-but-inaccessible content, this is the architecture that changes the math.</div>
+        <button class="like-btn" data-like-key="2026-07-21-case-workday"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-case-workday" data-comment-title="Case: Josh Bersin Co + Accenture on Workday/Sana">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="case-card" x-data="{ open: false }">
+      <div class="case-head" @click="open = !open">
+        <div><div class="case-co">TalentLMS Learning Debt Report · Jul 15, 2026 · Survey of 1,000+ employees</div><h4>"Learning Debt": the skill gaps AI is hiding — and what happens when they surface</h4></div>
+        <svg class="icon card-chevron" :style="open && 'transform:rotate(180deg)'" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="case-body" x-show="open" x-transition>
+        <p>TalentLMS's July 2026 report introduces the concept of "Learning Debt" — unaddressed training needs that accumulate invisibly when AI tools allow employees to complete work they don't actually understand. The pattern: <strong>59% of employees use AI to complete tasks they were never trained for</strong>. The AI delivers a plausible output; the employee submits it. The skill gap doesn't appear in any training record — but it shows up in work quality.</p>
+        <p><strong>37% say AI makes them appear more competent than they actually are.</strong> <strong>29% delivered work they couldn't explain</strong> if asked. <strong>47% stayed silent about their skill gaps</strong> rather than flagging them to their manager. <strong>28% of managers don't know how often their team members are struggling</strong> — because the AI output looks fine.</p>
+        <p>When the debt surfaces, the consequences are concrete: employees with significant learning debt are <strong>6× more likely to make preventable mistakes</strong>. The top impacts reported: 65% cite work quality as the first thing that suffers, 50% point to productivity loss, and 48% say it weakens overall performance.</p>
+        <span class="case-result">⚠️ 6× more preventable mistakes · 37% appear more competent than they are · 47% hide their gaps · 65% see work quality decline</span>
+        <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Source: TalentLMS Learning Debt Report, published July 15, 2026. Exact sample size not disclosed in press release; methodology available from TalentLMS directly. <a data-click-key="2026-07-21-case-talentlms" href="https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" target="_blank">Source →</a></p>
+        <div class="lesson">💡 <strong>L&D Lesson:</strong> Learning debt is a silent risk, not a visible one. It doesn't show up in your LMS completion data. It doesn't show up in performance reviews until it's too late. The only way to surface it is to design for understanding — not just output. Code review rituals, explain-back questions, and explicit "how did you get here?" conversations are L&D interventions, not management overhead.</div>
+        <button class="like-btn" data-like-key="2026-07-21-case-talentlms"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-case-talentlms" data-comment-title="Case: TalentLMS Learning Debt Report">💬 Comments</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEEP DIVES -->
+  <div x-show="tab === 'deep-dives'" x-cloak x-transition>
+    <div class="narrative" style="margin-bottom:20px;">
+      <h2><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Two Signals Pointing the Same Direction</h2>
+      <p><span class="lead-in">The GA story:</span> Workday Learning, powered by Sana, went generally available on July 22, 2026. It's the first major LMS from a Tier 1 HCM vendor that's built AI-first — not a layer of AI features bolted onto an existing system, but a learning architecture where the AI tutor, the content engine, and the skills data are the same thing. The practical claim: <span class="stat-hl">98% faster content creation</span>, <span class="stat-hl">3× higher learner engagement</span> vs. legacy LMS, and for the first time, learning operations connected directly to HCM data (skills, roles, retention). Go1's June 2026 survey of 950 cross-functional leaders confirms the trend: 80% of IT leaders encountered AI/learning tools deployed without IT review in the past year. Learning technology is becoming an enterprise infrastructure decision — meaning L&D doesn't own it alone anymore.</p>
+      <p><span class="lead-in">The debt story:</span> While platforms go AI-native, TalentLMS's Learning Debt Report surfaces what happens at the individual level when AI adoption outpaces training: <span class="stat-hl">59% use AI for tasks they weren't trained for</span>, <span class="stat-hl">37% appear more competent than they are</span>, and <span class="stat-hl">employees with learning debt are 6× more likely to make preventable mistakes</span>. These two stories — more powerful platforms, more hidden gaps — aren't a contradiction. They're the same week's news because they're the same problem: AI capability has raced ahead of the L&D infrastructure designed to support it.</p>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <div><div class="card-source">Workday Newsroom · Jul 22, 2026</div><div class="card-title">Workday Learning, Powered by Sana, Now Generally Available</div><div class="card-teaser">AI-native from the ground up: personal tutor, automated content creation, skills-aligned learning paths tied to HCM data — 98% faster creation, 3× engagement, 5× faster compliance reporting.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>The July 22 GA announcement is a structural market signal, not a product update. For years, LMS vendors have added AI features to existing architectures. Workday Learning + Sana is the first GA product from a Tier 1 vendor that inverts that logic: AI is the foundation. Course creation, skill mapping, learning path assignment, and compliance reporting all run through an AI layer connected to Workday HCM's people data. For L&D teams, this changes what "evaluation criteria" means: you're not asking whether a platform has AI features; you're asking whether its intelligence layer has access to your actual workforce data.</p>
+        <a data-click-key="2026-07-21-article-workday" class="readmore" href="https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" target="_blank">Read the Workday GA press release →</a>
+        <div class="card-tags"><span class="tag">AI-Native LMS</span><span class="tag">Workday</span><span class="tag">Sana</span><span class="tag">HCM Integration</span><span class="tag">Content Creation</span></div>
+        <button class="like-btn" data-like-key="2026-07-21-article-workday"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-article-workday" data-comment-title="Article: Workday Learning / Sana GA">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+        <div><div class="card-source">TalentLMS / Epignosis · Jul 15, 2026</div><div class="card-title">Learning Debt Report: AI Use May Be Masking Skill Gaps</div><div class="card-teaser">6× more preventable mistakes when learning debt accumulates. 59% use AI for tasks they weren't trained for. 29% delivered work they couldn't explain. The gap is invisible until it isn't.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>The learning debt concept is powerful because it reframes AI adoption risk from "will AI replace jobs?" to "are we building real capability or just appearance of capability?" The data is sobering: when employees use AI to complete tasks they haven't learned, the output may look fine to a manager — 28% of managers don't know how often their team is struggling — but performance issues surface as mistakes, quality drops, and silent productivity losses. The L&D implication: completion metrics and AI usage metrics can both look healthy while learning debt accumulates. The only countermeasure is designing for understanding, not output.</p>
+        <a data-click-key="2026-07-21-article-learningdebt" class="readmore" href="https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" target="_blank">Read the TalentLMS Learning Debt Report →</a>
+        <div class="card-tags"><span class="tag">Learning Debt</span><span class="tag">AI Risk</span><span class="tag">Skill Gaps</span><span class="tag">TalentLMS</span></div>
+        <button class="like-btn" data-like-key="2026-07-21-article-learningdebt"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-article-learningdebt" data-comment-title="Article: TalentLMS Learning Debt Report">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M15 10l4.553-2.069A1 1 0 0 1 21 8.87v6.26a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z"/></svg></div>
+        <div><div class="card-source">Synthesia · 2026 AI in L&D Report</div><div class="card-title">AI in Learning & Development Report 2026</div><div class="card-teaser">87% adoption but only 41% see business impact. Speed is the gateway drug — value is still being figured out. The gap between "saves time" and "changes outcomes" is L&D's next frontier.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>Synthesia's 2026 report shows an L&D field that's deep into adoption and still figuring out value creation. 88% report value via time saved on content creation; 84% cite speed as the top incentive. But only 45% report financial benefits and 41% say AI is contributing to business impact. The gap is telling: speed is the first thing you feel; impact is the last thing you can prove. Top AI use cases are text-to-speech (63%), quiz generation (60%), and video creation (52%). The majority (65%+) routinely use AI to create learning materials — meaning AI-generated content is now the norm, not the exception, in most L&D teams.</p>
+        <a data-click-key="2026-07-21-article-synthesia" class="readmore" href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">Read the Synthesia AI in L&D Report →</a>
+        <div class="card-tags"><span class="tag">Adoption Data</span><span class="tag">Content Creation</span><span class="tag">Business Impact</span><span class="tag">Synthesia</span></div>
+        <button class="like-btn" data-like-key="2026-07-21-article-synthesia"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-article-synthesia" data-comment-title="Article: Synthesia AI in L&D 2026">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div><div class="card-source">Go1 · Jun 2026 · 950 cross-functional leaders, US/UK/Australia</div><div class="card-title">Confidence in L&D Is Rising, But AI Is Making Learning Tech an Enterprise Decision</div><div class="card-teaser">80% of IT leaders found shadow AI/learning tools deployed without review. Learning tech is now enterprise infrastructure — HR no longer decides alone.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>Go1's cross-functional survey is a direct signal that L&D's domain is expanding in ways L&D didn't design. 77% of IT leaders, 64% of Finance leaders, and 52% of Legal leaders report greater confidence in the L&D function — but that confidence comes with increased ownership: 88% of IT leaders and 82% of Finance leaders say they now have more influence over learning tech decisions than before. 80% of IT leaders encountered AI/learning tools deployed without IT review in the past year — shadow AI in the L&D stack. For L&D teams, this is either a threat or an opportunity: your platform decisions now have IT, Legal, Finance, and procurement stakeholders whether you invited them or not.</p>
+        <a data-click-key="2026-07-21-article-go1" class="readmore" href="https://www.prnewswire.com/news-releases/confidence-in-ld-is-rising-but-ai-is-making-learning-tech-an-enterprise-decision-302795909.html" target="_blank">Read the Go1 survey findings →</a>
+        <div class="card-tags"><span class="tag">Enterprise Governance</span><span class="tag">Shadow AI</span><span class="tag">L&D Influence</span><span class="tag">Go1</span></div>
+        <button class="like-btn" data-like-key="2026-07-21-article-go1"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-article-go1" data-comment-title="Article: Go1 — Learning Tech as Enterprise Decision">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div><div class="card-source">TalentLMS · 2026 Annual L&D Benchmark Report</div><div class="card-title">Training Is Key to Retention — But Heavy Workloads Block It</div><div class="card-teaser">73% say they'd stay longer if they got better training. 41% say their role evolved faster than the company's ability to train them. The gap is widening while AI accelerates role change.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>TalentLMS's annual benchmark report finds that the training-retention link is clearer than ever — 73% confirm that better training would make them stay longer — but execution keeps failing. 41% say their role evolved faster than their company's training capabilities. 86% pick up new skills by figuring things out on the job (which, when AI is in the picture, is exactly where learning debt accumulates). Employee satisfaction with training hit 84% in 2025 — a multi-year high — but the gap between what roles demand and what training delivers continues to widen as AI reshapes job expectations faster than L&D cycles can respond.</p>
+        <a data-click-key="2026-07-21-article-talentlms-benchmark" class="readmore" href="https://www.talentlms.com/research/learning-development-report-2026" target="_blank">Read the TalentLMS 2026 L&D Benchmark Report →</a>
+        <div class="card-tags"><span class="tag">Retention</span><span class="tag">Training Gap</span><span class="tag">Benchmark</span><span class="tag">TalentLMS</span></div>
+        <button class="like-btn" data-like-key="2026-07-21-article-talentlms-benchmark"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-article-talentlms-benchmark" data-comment-title="Article: TalentLMS 2026 L&D Benchmark">💬 Comments</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOICES -->
+  <div x-show="tab === 'voices'" x-cloak x-transition>
+    <div class="quote-card">
+      <div class="quote-avatar initials">JH</div>
+      <div>
+        <div class="quote-context">On the distinction between compliance completion and actual skill development — the problem AI-native design is built to solve:</div>
+        <p class="quote-text">"Checking the box isn't the same as building a skill. With a personal AI tutor, interactive quizzes, and learning tailored to each employee's role and skills, Workday Learning, powered by Sana, turns required training into engaging experiences employees can apply in their day-to-day work."</p>
+        <div class="quote-author">Joel Hellermark</div>
+        <div class="quote-role">Chief AI Officer, Workday (formerly CEO &amp; Founder, Sana)</div>
+        <a data-click-key="2026-07-21-quote-hellermark" class="quote-link" href="https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" target="_blank">Source: Workday GA Press Release, Jul 22, 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-07-21-quote-hellermark"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-07-21-quote-hellermark" data-comment-title="Quote: Joel Hellermark (Workday)">💬 Comments</button></div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <img class="quote-avatar" src="https://joshbersin.com/wp-content/uploads/2018/07/josh_bersin_color5.jpg" alt="Josh Bersin" onerror="this.outerHTML='&lt;div class=\'quote-avatar initials\'&gt;JB&lt;/div&gt;'"/>
+      <div>
+        <div class="quote-context">On what an AI-first learning architecture actually means in practice — from someone who shipped one:</div>
+        <p class="quote-text">"At The Josh Bersin Company, we shifted our learning business to an AI-first model using Sana, moving thousands of learners into an interactive, always-on environment and converting a large library of programs into interactive courses in months rather than years. Now integrated into Workday Learning, Sana gives companies an extraordinary opportunity to modernize large learning libraries into AI-fueled personal experiences and maintain enterprise governance standards."</p>
+        <div class="quote-author">Josh Bersin</div>
+        <div class="quote-role">Global Industry Analyst &amp; CEO, The Josh Bersin Company</div>
+        <a data-click-key="2026-07-21-quote-bersin" class="quote-link" href="https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" target="_blank">Source: Workday GA Press Release, Jul 22, 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-07-21-quote-bersin"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-07-21-quote-bersin" data-comment-title="Quote: Josh Bersin (Josh Bersin Company)">💬 Comments</button></div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-avatar initials">DT</div>
+      <div>
+        <div class="quote-context">On how AI is creating a new category of invisible risk — skill appearance without skill substance:</div>
+        <p class="quote-text">"AI is blurring the line between learning and doing. When employees use AI to get tasks done without truly building the underlying skill, they may appear capable on the surface while accumulating gaps underneath — and that's a risk to organizational performance that doesn't show up in any dashboard."</p>
+        <div class="quote-author">Dimitris Tsingos</div>
+        <div class="quote-role">CEO, Epignosis (TalentLMS parent company)</div>
+        <a data-click-key="2026-07-21-quote-tsingos" class="quote-link" href="https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" target="_blank">Source: TalentLMS Learning Debt Report, Jul 15, 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-07-21-quote-tsingos"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-07-21-quote-tsingos" data-comment-title="Quote: Dimitris Tsingos (TalentLMS/Epignosis)">💬 Comments</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMAINS -->
+  <div x-show="tab === 'domains'" x-cloak x-transition>
+    <div class="domains-grid">
+      <div class="domain-card">
+        <h4>💻 Tech / Product &amp; Engineering</h4>
+        <p>59% use AI for tasks they weren't trained for — in engineering, that's code patterns, architecture decisions, and debugging paths that get shipped without the developer building a mental model. Learning debt in code is the hardest to catch because the AI output compiles just fine.</p>
+        <span class="role-tag">AI Capability Engineer</span><span class="role-tag">Code Learning Designer</span>
+        <p><a href="https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" target="_blank">TalentLMS: Learning Debt →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🧑‍🤝‍🧑 People / HR</h4>
+        <p>The Go1 finding that L&D confidence is rising — even as IT, Finance, and Legal are claiming more influence over platform decisions — means HRBP and L&D roles need to expand their stakeholder map. Learning platform decisions now require cross-functional alignment, not just L&D sign-off.</p>
+        <span class="role-tag">Learning Technology Strategist</span><span class="role-tag">AI Learning Governance Lead</span>
+        <p><a href="https://www.prnewswire.com/news-releases/confidence-in-ld-is-rising-but-ai-is-making-learning-tech-an-enterprise-decision-302795909.html" target="_blank">Go1: Learning Tech as Enterprise Decision →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🎧 Customer Success</h4>
+        <p>73% of employees say they'd stay longer with better training — for CS teams with high turnover risk, this is a direct retention lever, not a nice-to-have. AI-powered learning libraries that convert product knowledge into always-on coaching (the Workday/Sana model) are now a realistic CS enablement strategy.</p>
+        <span class="role-tag">CS Enablement Architect</span><span class="role-tag">AI-Powered Customer Coach</span>
+        <p><a href="https://www.talentlms.com/research/learning-development-report-2026" target="_blank">TalentLMS Benchmark: Training + retention →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>📊 Data / Analytics</h4>
+        <p>87% of L&D teams now use AI, but only 41% see business impact — for data teams building internal learning dashboards, this is the measurement gap that matters most. Completion and speed are outputs; the input that drives retention and performance is still hard to quantify.</p>
+        <span class="role-tag">Learning Analytics Lead</span><span class="role-tag">People Data Strategist</span>
+        <p><a href="https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" target="_blank">Synthesia: AI in L&D Report →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🐞 QA</h4>
+        <p>Learning debt shows up in QA as a precision problem: the developer appeared competent during code review, but the underlying logic pattern came from AI the developer didn't understand. QA is often where learning debt becomes visible — after it's already in prod.</p>
+        <span class="role-tag">AI QA Risk Analyst</span><span class="role-tag">Learning Debt Detective</span>
+        <p><a href="https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" target="_blank">TalentLMS: Learning Debt →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🎨 Design / UX</h4>
+        <p>98% faster content creation is real — but speed without design judgment produces AI-generated filler, not learning experiences. The AI-native design opportunity is using that speed to iterate faster on learning quality, not to eliminate the iteration step entirely.</p>
+        <span class="role-tag">AI Learning Experience Designer</span><span class="role-tag">AI Content Strategist</span>
+        <p><a href="https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" target="_blank">Workday/Sana: 98% faster creation →</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEMONADE ANGLE -->
+  <div x-show="tab === 'lemonade'" x-cloak x-transition>
+    <div class="lemon-section">
+      <p class="subtitle">What this week means for Lemonade's product &amp; engineering L&D 🍋</p>
+      <div class="lemon-item" id="lemon-1">
+        <h3>🧠 1. Run a learning debt audit before it finds you</h3>
+        <p><span class="label-inline">The signal</span>TalentLMS: 37% of employees appear more competent than they are. 28% of managers don't know how often their team is struggling. In a fast-moving engineering org, this gap looks like confidently-shipped code that nobody can fully explain.</p>
+        <p><span class="label-inline">The move</span>Add one question to Lemonade's code review template: "Briefly explain the core logic of your most significant change — not what it does, but how it works." This isn't a test — it's a forcing function. Engineers who've built real understanding write one sentence. Engineers with learning debt get stuck. The delta is diagnostic data for L&D, not punishment for the developer. Pair it with a no-judgment flag: "I used AI here and want to go deeper" as an accepted review comment. Surface the debt before it accumulates.</p>
+        <button class="like-btn" data-like-key="2026-07-21-lemon-1"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-lemon-1" data-comment-title="Lemonade Angle #1 — Learning debt audit">💬 Comments</button>
+      </div>
+      <div class="lemon-item" id="lemon-2">
+        <h3>🗺️ 2. Map the AI tools already in use before building the training</h3>
+        <p><span class="label-inline">The signal</span>Go1: 80% of IT leaders found AI/learning tools deployed without IT review. The shadow AI problem in L&D mirrors the shadow AI problem in engineering generally: people adopt what works, then tell no one.</p>
+        <p><span class="label-inline">The move</span>Before designing any AI enablement program at Lemonade, run a tool census first: send a 5-question Typeform to Lemonade's engineering org asking what AI tools they actually use daily (not what's officially approved). Cross-reference with what's licensed. The gap between those two lists is your real curriculum. You can't train people to use tools well if you don't know which tools they're using. The inventory is the first deliverable, not the last.</p>
+        <button class="like-btn" data-like-key="2026-07-21-lemon-2"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-lemon-2" data-comment-title="Lemonade Angle #2 — AI tool census">💬 Comments</button>
+      </div>
+      <div class="lemon-item" id="lemon-3">
+        <h3>⚙️ 3. When evaluating any L&D tool: ask if the AI is foundational or cosmetic</h3>
+        <p><span class="label-inline">The signal</span>Workday/Sana's GA marks a real architecture shift. The difference between a bolt-on AI feature (a "generate with AI" button) and an AI-native architecture (AI tutor + skills data + content engine as the same system) is not a marketing distinction — it's an outcomes distinction. 3× engagement vs. legacy LMS is the result of one, not the other.</p>
+        <p><span class="label-inline">The move</span>The next time Lemonade evaluates any L&D or enablement tool, add one mandatory question to the vendor evaluation: "Show us how your AI layer connects to real employee data (role, skills, previous completions). Not a demo — a live instance with real or realistic data." A bolt-on AI feature can't answer this. An AI-native architecture answers it in the first 60 seconds. This filters out the feature theater and surfaces the systems that can actually do what Workday/Sana is claiming.</p>
+        <button class="like-btn" data-like-key="2026-07-21-lemon-3"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-21-lemon-3" data-comment-title="Lemonade Angle #3 — AI-native vs bolt-on evaluation">💬 Comments</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="section-label" id="comments"><svg class="icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg> React &amp; Discuss</p>
+<div id="cusdis_thread"
+  data-host="https://cusdis.com"
+  data-app-id="8f88689d-bab5-4b25-b146-bca8c57b0dde"
+  data-page-id="weekly-2026-07-21"
+  data-page-url="https://ld-ai-digest.onrender.com/weekly/2026-07-21/index.html"
+  data-page-title="Week of Jul 21–27, 2026 — AI-Native at Scale"
+></div>
+<script async src="https://cusdis.com/js/cusdis.es.js"></script>
+
+</div><!-- /container -->
+
+<footer>
+  L&D + AI Weekly Digest · Week of July 21–27, 2026 · Curated for Lemonade · Sources linked throughout — nothing here is invented
+</footer>
+
+<script>
+fetch('../../data/weeks.json')
+  .then(r => r.json())
+  .then(data => {
+    const weeks = (data.weeks || []).slice().sort((a,b) => a.id.localeCompare(b.id));
+    const idx = weeks.findIndex(w => w.id === '2026-07-21');
+    const prev = weeks[idx - 1];
+    const next = weeks[idx + 1];
+    const prevEl = document.getElementById('prev-arrow');
+    const nextEl = document.getElementById('next-arrow');
+    if (prev) { prevEl.classList.add('enabled'); prevEl.onclick = () => location.href = '../../' + prev.path; prevEl.title = prev.label; }
+    if (next) { nextEl.classList.add('enabled'); nextEl.onclick = () => location.href = '../../' + next.path; nextEl.title = next.label; }
+  })
+  .catch(() => {});
+</script>
+
+<script>
+function answerQuiz(btn, isCorrect) {
+  const opts = document.querySelectorAll('#quiz-options .quiz-opt');
+  opts.forEach(o => {
+    o.disabled = true;
+    if (o.dataset.correct === 'true') o.classList.add('correct');
+    else if (o === btn) o.classList.add('wrong');
+  });
+  const verdict = document.getElementById('quiz-verdict');
+  verdict.textContent = isCorrect ? '✅ Got it — unsettling number, right?' : '❌ Not quite — here\'s the real figure:';
+  verdict.className = 'quiz-verdict ' + (isCorrect ? 'right' : 'wrong');
+  document.getElementById('quiz-reveal').style.display = 'block';
+}
+
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress-bar').style.width = scrolled + '%';
+});
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+const pink = '#FF0083', gray = '#E8E8ED';
+
+new Chart(document.getElementById('synthesiaChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Time saved on\ncreation', 'Speed as\nincentive', 'Financial\nbenefits', 'Business\nimpact', 'Learner\nsatisfaction'],
+    datasets: [{ data: [88, 84, 45, 41, 40], backgroundColor: [pink, pink, gray, gray, gray], borderRadius: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.raw + '% of L&D teams report this — click for source' } } },
+    scales: { y: { max: 100, grid: { display: false }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } },
+    onClick: () => window.open('https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026', '_blank')
+  }
+});
+
+new Chart(document.getElementById('debtChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Work quality\nimpact', 'Productivity\nloss', 'Weaker\nperformance'],
+    datasets: [{ data: [65, 50, 48], backgroundColor: [pink, pink, gray], borderRadius: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.raw + '% cite this as consequence of learning debt — click for source' } } },
+    scales: { y: { max: 80, grid: { display: false }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } },
+    onClick: () => window.open('https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html', '_blank')
+  }
+});
+</script>
+
+<script>
+(function () {
+  const NS = 'ld-ai-digest';
+  const LIKED_KEY = 'ld-ai-digest-liked';
+  const liked = JSON.parse(localStorage.getItem(LIKED_KEY) || '{}');
+  document.querySelectorAll('.like-btn').forEach(async (btn) => {
+    const key = btn.dataset.likeKey;
+    const countEl = btn.querySelector('.like-count');
+    if (liked[key]) btn.classList.add('liked');
+    try {
+      const r = await fetch(`https://abacus.jasoncameron.dev/get/${NS}/${key}`);
+      const d = await r.json();
+      countEl.textContent = d.value || 0;
+    } catch (e) { countEl.textContent = '–'; }
+    btn.addEventListener('click', async (evt) => {
+      evt.preventDefault(); evt.stopPropagation();
+      if (btn.classList.contains('liked')) return;
+      btn.classList.add('liked');
+      liked[key] = true;
+      localStorage.setItem(LIKED_KEY, JSON.stringify(liked));
+      try {
+        const r = await fetch(`https://abacus.jasoncameron.dev/hit/${NS}/${key}`);
+        const d = await r.json();
+        countEl.textContent = d.value;
+      } catch (e) {}
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const NS = 'ld-ai-digest';
+  document.querySelectorAll('[data-click-key]').forEach((link) => {
+    link.addEventListener('click', () => {
+      fetch(`https://abacus.jasoncameron.dev/hit/${NS}/click-${link.dataset.clickKey}`).catch(() => {});
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const APP_ID = '8f88689d-bab5-4b25-b146-bca8c57b0dde';
+  const pageBase = location.href.split('#')[0];
+  function tryRender(container, attempts) {
+    if (window.CUSDIS && typeof window.CUSDIS.renderTo === 'function') {
+      window.CUSDIS.renderTo(container);
+    } else if (attempts < 25) {
+      setTimeout(() => tryRender(container, attempts + 1), 200);
+    }
+  }
+  document.querySelectorAll('.comment-toggle').forEach((btn) => {
+    btn.addEventListener('click', (evt) => {
+      evt.preventDefault(); evt.stopPropagation();
+      const key = btn.dataset.commentKey;
+      let container = document.getElementById('mc-' + key);
+      if (container) {
+        const isHidden = container.style.display === 'none';
+        container.style.display = isHidden ? 'block' : 'none';
+        btn.classList.toggle('open', isHidden);
+        return;
+      }
+      container = document.createElement('div');
+      container.id = 'mc-' + key;
+      container.className = 'mini-comments';
+      container.setAttribute('data-host', 'https://cusdis.com');
+      container.setAttribute('data-app-id', APP_ID);
+      container.setAttribute('data-page-id', key);
+      container.setAttribute('data-page-url', pageBase + '#' + key);
+      container.setAttribute('data-page-title', btn.dataset.commentTitle || key);
+      btn.insertAdjacentElement('afterend', container);
+      btn.classList.add('open');
+      tryRender(container, 0);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -13,13 +13,13 @@
       "tools": ["GitHub Copilot", "GitHub Codespaces", "DX (getdx.com)", "Synthesia", "TalentLMS", "Eightfold AI"],
       "methods": [
         { "text": "Remove environment-setup friction (Codespaces) instead of running a training program", "source": "Duolingo case study" },
-        { "text": "Reframe the goal from \"adoption\" to \"frequent, effective use\" (12+ days/month), backed by 2-day workshops + recurring office hours", "source": "Booking.com case study" },
+        { "text": "Reframe the goal from 'adoption' to 'frequent, effective use' (12+ days/month), backed by 2-day workshops + recurring office hours", "source": "Booking.com case study" },
         { "text": "Pair new hires with a mentor on real backlog tasks for 3-4 weeks instead of toy onboarding projects", "source": "Stripe case study" },
         { "text": "Build a retrieval layer over existing Slack/runbooks/PR history instead of writing new onboarding content", "source": "Lemonade Angle, via Bersin's Dynamic Enablement model" },
         { "text": "Mine real work-sample signals (GitHub activity, review patterns) instead of self-reported skills surveys", "source": "IBM/Eightfold AI, via Reworked" }
       ],
       "doThis": [
-        "Build the \"why do you trust this?\" evaluation habit directly into the workflow (e.g. a PR template field), not a separate training module",
+        "Build the 'why do you trust this?' evaluation habit directly into the workflow (e.g. a PR template field), not a separate training module",
         "Mine real behavioral signals (GitHub activity, usage data) for skills/mobility data instead of asking people to self-report",
         "Teach AI fluency (using AI for real advantage) — most 2026 programs stop at literacy (safe baseline use), which is the wrong finish line"
       ],
@@ -123,6 +123,162 @@
         { "key": "2026-06-29-lemon-2", "label": "Lemonade Angle #2 — Forward-Deployed Enablement", "url": "weekly/2026-06-29/index.html#lemon-2" },
         { "key": "2026-06-29-lemon-3", "label": "Lemonade Angle #3 — Governance as Hiring Signal", "url": "weekly/2026-06-29/index.html#lemon-3" },
         { "key": "2026-06-29-lemon-4", "label": "Lemonade Angle #4 — Skills as Behavioral Signals", "url": "weekly/2026-06-29/index.html#lemon-4" }
+      ]
+    },
+    {
+      "id": "2026-07-07",
+      "label": "Week of Jul 7–13, 2026",
+      "path": "weekly/2026-07-07/index.html",
+      "theme": "The Measurement Moment",
+      "quote": "L&D tech's #1 priority just flipped from content creation to analytics. Adoption is table stakes — now prove it works.",
+      "tags": ["Analytics", "Measurement", "Internal Mobility", "AI Maturity", "Developer Enablement", "Skills Atlas", "Agentic AI", "HR 2030", "Benchmarks", "L&D Tech Market"],
+      "companies": ["Schneider Electric", "Coursera", "Boye & Company", "ATD", "RedThread Research", "Josh Bersin Company"],
+      "publishedAt": "2026-07-13",
+      "roles": ["AI Engineering Coach", "Developer Enablement Lead", "L&D Analytics Lead", "Learning Impact Strategist", "CS Enablement Lead", "Customer Education Strategist", "Analytics Engineer", "AI-Augmented Analyst", "AI QA Strategist", "Evaluation Engineer", "Learning Experience Designer", "AI UX Strategist"],
+      "tools": ["GitHub Copilot", "Gloat", "Coursera for Business", "Galileo (Bersin)"],
+      "methods": [
+        { "text": "Treat GitHub behavioral signals (commits, code review patterns, PR frequency) as a skills atlas instead of relying on self-reported surveys", "source": "Schneider Electric Open Talent Market case" },
+        { "text": "Build a shared AI skill library specific to your codebase context (not generic copilot tips) with week-2 and week-6 checkpoint conversations", "source": "100-dev team structured AI enablement study" },
+        { "text": "Define behavioral change metrics at week 1, 4, and 12 before building any L&D program — measure behavior, not completion rates", "source": "Lemonade Angle, ATD measurement gap" }
+      ],
+      "doThis": [
+        "Prioritize analytics and measurement as your L&D tech evaluation criteria — the market already has",
+        "Design internal mobility programs by removing policy friction first (tenure lock-in, manager approval gates), then adding the tool",
+        "Target senior engineers specifically in AI enablement — they often have the highest ingrained resistance to AI-assisted workflows"
+      ],
+      "avoidThis": [
+        "Don't measure L&D success by completion rates and seat hours — the market abandoned that scorecard in 2023",
+        "Don't give tool access without a structured practice path — the 11-week unstructured ramp is real and most give up before it pays off",
+        "Don't trust vendor feature claims without probing execution depth — 69% of L&D tech vendors now claim the same positioning"
+      ],
+      "articles": [
+        { "title": "State of L&D 2026: High-Performing Organizations Are Rewriting How L&D Works", "url": "https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html", "publisher": "RedThread Research", "date": "2026-06", "tags": ["Market Shift", "Analytics", "Vendor Landscape"] },
+        { "title": "Highlights from ATD's 2026 State of the Industry Report", "url": "https://www.td.org/content/atd-blog/highlights-from-atd-s-2026-state-of-the-industry-report", "publisher": "ATD", "date": "2026-Q2", "tags": ["Benchmark Data", "Learning Hours", "ROI"] },
+        { "title": "Agentic AI Is the Fastest-Growing Skill — Coursera Job Skills Report 2026", "url": "https://blog.coursera.org/introducing-courseras-job-skills-report-2026-the-most-critical-skills-the-worlds-learners-need-this-year/", "publisher": "Coursera", "date": "2026", "tags": ["Agentic AI", "Skills Demand", "GenAI"] },
+        { "title": "HR 2030: The Global HR Excellence Certification", "url": "https://joshbersin.com/2026/06/the-josh-bersin-institute-hr-2030-and-the-global-hr-excellence-certification/", "publisher": "Josh Bersin", "date": "2026-06", "tags": ["HR 2030", "Agentic HR", "Galileo"] },
+        { "title": "AI Engineering Maturity: What 1,300 Engineers Actually Told Us About Working With AI", "url": "https://www.boye-co.com/blog/2026/6/ai-engineering-maturity-what-1300-engineers-told-us-about-how-they-really-work-with-ai", "publisher": "Boye & Company", "date": "2026-06", "tags": ["Engineering Maturity", "AI Adoption", "Developer Enablement"] }
+      ],
+      "likeableItems": [
+        { "key": "2026-07-07-stat-83pct", "label": "Stat: 83% vendors prioritize analytics", "url": "https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" },
+        { "key": "2026-07-07-stat-167hrs", "label": "Stat: 16.7 avg learning hours, spend down 33%", "url": "https://www.td.org/content/atd-blog/highlights-from-atd-s-2026-state-of-the-industry-report" },
+        { "key": "2026-07-07-stat-234pct", "label": "Stat: 234% GenAI enrollment growth", "url": "https://blog.coursera.org/introducing-courseras-job-skills-report-2026-the-most-critical-skills-the-worlds-learners-need-this-year/" },
+        { "key": "2026-07-07-case-schneider", "label": "Case: Schneider Electric (Open Talent Market)", "url": "https://www.modernexecutivesolutions.com/articles/how-schneider-electric-built-an-internal-talent-market-nearly-all-its-employees-use" },
+        { "key": "2026-07-07-case-devteam", "label": "Case: 100-Dev Team (structured AI program)", "url": "https://www.digitalapplied.com/blog/case-study-ai-coding-rollout-100-dev-team-quarterly-data-2026" },
+        { "key": "2026-07-07-article-redthread", "label": "Article: RedThread Research State of L&D 2026", "url": "https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" },
+        { "key": "2026-07-07-article-atd", "label": "Article: ATD 2026 State of the Industry", "url": "https://www.td.org/content/atd-blog/highlights-from-atd-s-2026-state-of-the-industry-report" },
+        { "key": "2026-07-07-article-coursera", "label": "Article: Coursera Job Skills Report 2026", "url": "https://blog.coursera.org/introducing-courseras-job-skills-report-2026-the-most-critical-skills-the-worlds-learners-need-this-year/" },
+        { "key": "2026-07-07-article-bersin-hr2030", "label": "Article: Bersin HR 2030", "url": "https://joshbersin.com/2026/06/the-josh-bersin-institute-hr-2030-and-the-global-hr-excellence-certification/" },
+        { "key": "2026-07-07-article-boyeco", "label": "Article: AI Engineering Maturity (1,300 engineers)", "url": "https://www.boye-co.com/blog/2026/6/ai-engineering-maturity-what-1300-engineers-told-us-about-how-they-really-work-with-ai" },
+        { "key": "2026-07-07-quote-djohnson", "label": "Quote: Dani Johnson (RedThread)", "url": "https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" },
+        { "key": "2026-07-07-quote-etheridge", "label": "Quote: Chisom Etheridge (RedThread)", "url": "https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" },
+        { "key": "2026-07-07-quote-bersin", "label": "Quote: Josh Bersin (HR 2030)", "url": "https://joshbersin.com/2026/06/the-josh-bersin-institute-hr-2030-and-the-global-hr-excellence-certification/" },
+        { "key": "2026-07-07-lemon-1", "label": "Lemonade Angle #1 — Behavioral skills atlas", "url": "weekly/2026-07-07/index.html#lemon-1" },
+        { "key": "2026-07-07-lemon-2", "label": "Lemonade Angle #2 — Compress the AI ramp", "url": "weekly/2026-07-07/index.html#lemon-2" },
+        { "key": "2026-07-07-lemon-3", "label": "Lemonade Angle #3 — Measure before building", "url": "weekly/2026-07-07/index.html#lemon-3" }
+      ]
+    },
+    {
+      "id": "2026-07-14",
+      "label": "Week of Jul 14–20, 2026",
+      "path": "weekly/2026-07-14/index.html",
+      "theme": "The Reshape Imperative",
+      "quote": "AI is reshaping jobs faster than companies are redesigning work. That gap is L&D's mandate — not optional upskilling, but urgent role reinvention.",
+      "tags": ["Job Reshaping", "Workflow Redesign", "Collective AI", "Frontline AI", "Skills Gap", "Amazon Upskilling", "Review Bottleneck", "Human Skills", "BCG", "Bright Horizons", "LinkedIn"],
+      "companies": ["Amazon", "Faros AI", "BCG", "Bright Horizons", "LinkedIn"],
+      "publishedAt": "2026-07-20",
+      "roles": ["AI Workflow Architect", "Engineering Enablement Lead", "AI Workforce Architect", "Role Redesign Strategist", "AI-Augmented CS Lead", "Customer Intelligence Analyst", "Strategic Analytics Lead", "AI-Enabled Insights Partner", "AI QA Strategist", "Judgment-Layer Engineer", "Design Strategy Lead", "AI-Augmented Experience Designer"],
+      "tools": ["Faros AI", "GitHub Copilot", "Amazon Career Choice", "AWS Skill Builder"],
+      "methods": [
+        { "text": "Map one squad's AI usage and identify the human judgment bottleneck, then redesign that single step rather than the whole workflow", "source": "BCG 'AI Is Reshaping Jobs Faster' survey, Jun 2026" },
+        { "text": "Create explicit AI review triage criteria (which code gets fast-tracked vs. deep review) as a teachable, transferable standard", "source": "Faros AI productivity analysis — 91% longer review time" },
+        { "text": "Replace 'use AI however works for you' with a 3-item AI practice minimum (one prompt pattern, one anti-pattern, one review habit) embedded in onboarding — not a course, a standard", "source": "Lemonade Angle, Bright Horizons 42% self-teach gap" }
+      ],
+      "doThis": [
+        "Design for team-level workflow redesign, not just individual AI access — BCG finds 25pp higher business impact with clear AI strategy vs. tools alone",
+        "Create a review triage standard so AI adoption doesn't just shift the constraint to senior engineer review queues",
+        "Embed a structured minimum AI practice standard in onboarding from week one — not optional, not a course"
+      ],
+      "avoidThis": [
+        "Don't measure only AI task volume — also track cycle time and bottleneck location (the 91% review time finding is the tell)",
+        "Don't let 'figure it out yourself' be your AI upskilling strategy — 42% of workers are already experiencing this gap",
+        "Don't focus only on individual productivity — BCG's data shows collective workflow redesign is what drives business outcomes, not individual tool access"
+      ],
+      "articles": [
+        { "title": "AI Is Reshaping Jobs Faster Than Companies Are Redesigning Work", "url": "https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html", "publisher": "BCG", "date": "2026-06-03", "tags": ["Workflow Redesign", "BCG Survey", "AI Strategy", "Frontline AI"] },
+        { "title": "AI Will Reshape More Jobs Than It Replaces", "url": "https://www.bcg.com/publications/2026/ai-will-reshape-more-jobs-than-it-replaces", "publisher": "BCG Henderson Institute", "date": "2026", "tags": ["Job Transformation", "Workforce Planning", "Reskilling"] },
+        { "title": "AI Has Made Work Reinvention a CEO Mandate", "url": "https://www.bcg.com/publications/2026/ai-has-made-work-reinvention-a-ceo-mandate", "publisher": "BCG", "date": "2026", "tags": ["CEO Role", "AI Leadership", "Business Impact"] },
+        { "title": "2026 Workforce Outlook: Employers Prioritize AI Literacy", "url": "https://investors.brighthorizons.com/news-releases/news-release-details/2026-workforce-outlook-employers-prioritize-ai-literacy-and", "publisher": "Bright Horizons", "date": "2025-12", "tags": ["AI Readiness", "Upskilling Gap", "Employee Expectations"] },
+        { "title": "LinkedIn CEO: Young Workers Can't Afford to Overlook These 5 Skills AI Can't Replace", "url": "https://www.cnbc.com/2026/03/31/ai-cant-replace-these-5-skills-says-linkedin-ceo-young-workers-need-them-now.html", "publisher": "CNBC / LinkedIn", "date": "2026-03-31", "tags": ["Human Skills", "5Cs", "LinkedIn", "Future of Work"] }
+      ],
+      "likeableItems": [
+        { "key": "2026-07-14-stat-72pct", "label": "Stat: 72% say AI changed skills expectations", "url": "https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" },
+        { "key": "2026-07-14-stat-42pct", "label": "Stat: 42% expected to self-teach AI", "url": "https://investors.brighthorizons.com/news-releases/news-release-details/2026-workforce-outlook-employers-prioritize-ai-literacy-and" },
+        { "key": "2026-07-14-stat-25pp", "label": "Stat: 25pp impact lift with clear AI strategy", "url": "https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" },
+        { "key": "2026-07-14-case-amazon", "label": "Case: Amazon Future Ready 2030", "url": "https://www.aboutamazon.com/news/workplace/amazon-employees-upskilling-education-training" },
+        { "key": "2026-07-14-case-faros", "label": "Case: Faros AI — PR review bottleneck", "url": "https://www.getpanto.ai/blog/ai-coding-assistant-statistics" },
+        { "key": "2026-07-14-article-bcg-reshape", "label": "Article: BCG — Reshaping Jobs Faster", "url": "https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" },
+        { "key": "2026-07-14-article-bcg-replace", "label": "Article: BCG — Reshape Not Replace", "url": "https://www.bcg.com/publications/2026/ai-will-reshape-more-jobs-than-it-replaces" },
+        { "key": "2026-07-14-article-bcg-ceo", "label": "Article: BCG — AI as CEO Mandate", "url": "https://www.bcg.com/publications/2026/ai-has-made-work-reinvention-a-ceo-mandate" },
+        { "key": "2026-07-14-article-brighthorizons", "label": "Article: Bright Horizons 2026 Workforce Outlook", "url": "https://investors.brighthorizons.com/news-releases/news-release-details/2026-workforce-outlook-employers-prioritize-ai-literacy-and" },
+        { "key": "2026-07-14-article-linkedin5c", "label": "Article: LinkedIn CEO — 5 skills AI can't replace", "url": "https://www.cnbc.com/2026/03/31/ai-cant-replace-these-5-skills-says-linkedin-ceo-young-workers-need-them-now.html" },
+        { "key": "2026-07-14-quote-beauchene", "label": "Quote: Vinciane Beauchene (BCG)", "url": "https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" },
+        { "key": "2026-07-14-quote-krishnan", "label": "Quote: Priya Krishnan (Bright Horizons)", "url": "https://investors.brighthorizons.com/news-releases/news-release-details/2026-workforce-outlook-employers-prioritize-ai-literacy-and" },
+        { "key": "2026-07-14-quote-raman", "label": "Quote: Aneesh Raman (LinkedIn)", "url": "https://www.cnbc.com/2026/03/31/ai-cant-replace-these-5-skills-says-linkedin-ceo-young-workers-need-them-now.html" },
+        { "key": "2026-07-14-lemon-1", "label": "Lemonade Angle #1 — Collective AI design", "url": "weekly/2026-07-14/index.html#lemon-1" },
+        { "key": "2026-07-14-lemon-2", "label": "Lemonade Angle #2 — Review triage standard", "url": "weekly/2026-07-14/index.html#lemon-2" },
+        { "key": "2026-07-14-lemon-3", "label": "Lemonade Angle #3 — AI minimum standard", "url": "weekly/2026-07-14/index.html#lemon-3" }
+      ]
+    },
+    {
+      "id": "2026-07-21",
+      "label": "Week of Jul 21–27, 2026",
+      "path": "weekly/2026-07-21/index.html",
+      "theme": "AI-Native at Scale",
+      "quote": "The bolt-on AI era is ending. AI-native learning architecture is now generally available — and new data shows what happens when AI adoption races ahead of understanding.",
+      "tags": ["AI-Native LMS", "Workday", "Sana", "Learning Debt", "Shadow Competence", "Enterprise Governance", "Skill Gaps", "Content Creation", "Learning Architecture", "Measurement", "Onboarding"],
+      "companies": ["Workday", "Sana", "Josh Bersin Company", "Accenture", "TalentLMS", "Epignosis", "Go1", "Synthesia"],
+      "publishedAt": "2026-07-26",
+      "roles": ["AI Capability Engineer", "Code Learning Designer", "Learning Technology Strategist", "AI Learning Governance Lead", "CS Enablement Architect", "AI-Powered Customer Coach", "Learning Analytics Lead", "People Data Strategist", "AI QA Risk Analyst", "AI Learning Experience Designer", "AI Content Strategist"],
+      "tools": ["Workday Learning", "Sana", "TalentLMS", "Go1", "Synthesia"],
+      "methods": [
+        { "text": "Add 'explain the core logic of your most significant change' to code review template to surface learning debt before it accumulates", "source": "TalentLMS Learning Debt Report, Jul 2026" },
+        { "text": "Run a 5-question AI tool census to map what tools are actually in use before designing any AI training program", "source": "Go1 survey — 80% of IT leaders found shadow AI tools; Lemonade Angle" },
+        { "text": "During L&D platform evaluation, require a live demo showing AI layer connected to real employee data — not a slideshow, a running instance", "source": "Workday/Sana GA analysis; Lemonade Angle" }
+      ],
+      "doThis": [
+        "Run a learning debt audit — add an 'explain the logic' field to code review to surface hidden skill gaps before they cause mistakes",
+        "Map what AI tools are actually in use before designing any training — the gap between licensed and actually used is your real curriculum",
+        "Evaluate AI learning platforms by asking if the AI is foundational (connected to real HR data) or cosmetic (a 'generate with AI' button)"
+      ],
+      "avoidThis": [
+        "Don't measure AI adoption by completion rates alone — 59% use AI for tasks they were never trained for, invisible in any LMS report",
+        "Don't leave AI upskilling to self-discovery — learning debt accumulates when AI appearance substitutes for real understanding",
+        "Don't buy an LMS based on AI feature marketing — ask whether its intelligence layer connects to your actual workforce and skills data"
+      ],
+      "articles": [
+        { "title": "Workday Learning, Powered by Sana, Now Generally Available", "url": "https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html", "publisher": "Workday", "date": "2026-07-22", "tags": ["AI-Native LMS", "Workday", "Sana", "HCM Integration"] },
+        { "title": "TalentLMS Learning Debt Report: AI Use May Be Masking Skill Gaps", "url": "https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html", "publisher": "TalentLMS / Epignosis", "date": "2026-07-15", "tags": ["Learning Debt", "AI Risk", "Skill Gaps"] },
+        { "title": "AI in Learning & Development Report 2026", "url": "https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026", "publisher": "Synthesia", "date": "2026", "tags": ["Adoption Data", "Content Creation", "Business Impact"] },
+        { "title": "Confidence in L&D Is Rising, But AI Is Making Learning Tech an Enterprise Decision", "url": "https://www.prnewswire.com/news-releases/confidence-in-ld-is-rising-but-ai-is-making-learning-tech-an-enterprise-decision-302795909.html", "publisher": "Go1", "date": "2026-06", "tags": ["Enterprise Governance", "Shadow AI", "L&D Influence"] },
+        { "title": "TalentLMS Annual L&D Benchmark Report 2026", "url": "https://www.talentlms.com/research/learning-development-report-2026", "publisher": "TalentLMS", "date": "2026", "tags": ["Retention", "Training Gap", "Benchmark"] }
+      ],
+      "likeableItems": [
+        { "key": "2026-07-21-stat-98pct", "label": "Stat: 98% faster course creation (Workday/Sana)", "url": "https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" },
+        { "key": "2026-07-21-stat-87pct", "label": "Stat: 87% L&D teams using AI (Synthesia)", "url": "https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" },
+        { "key": "2026-07-21-stat-59pct", "label": "Stat: 59% use AI for tasks they weren't trained for", "url": "https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" },
+        { "key": "2026-07-21-case-workday", "label": "Case: Josh Bersin Co + Accenture on Workday/Sana", "url": "https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" },
+        { "key": "2026-07-21-case-talentlms", "label": "Case: TalentLMS Learning Debt Report", "url": "https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" },
+        { "key": "2026-07-21-article-workday", "label": "Article: Workday Learning / Sana GA", "url": "https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" },
+        { "key": "2026-07-21-article-learningdebt", "label": "Article: TalentLMS Learning Debt Report", "url": "https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" },
+        { "key": "2026-07-21-article-synthesia", "label": "Article: Synthesia AI in L&D 2026", "url": "https://www.synthesia.io/reports/ai-in-learning-and-development-report-2026" },
+        { "key": "2026-07-21-article-go1", "label": "Article: Go1 — Learning Tech as Enterprise Decision", "url": "https://www.prnewswire.com/news-releases/confidence-in-ld-is-rising-but-ai-is-making-learning-tech-an-enterprise-decision-302795909.html" },
+        { "key": "2026-07-21-article-talentlms-benchmark", "label": "Article: TalentLMS 2026 L&D Benchmark", "url": "https://www.talentlms.com/research/learning-development-report-2026" },
+        { "key": "2026-07-21-quote-hellermark", "label": "Quote: Joel Hellermark (Workday)", "url": "https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" },
+        { "key": "2026-07-21-quote-bersin", "label": "Quote: Josh Bersin (Workday/Sana)", "url": "https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" },
+        { "key": "2026-07-21-quote-tsingos", "label": "Quote: Dimitris Tsingos (TalentLMS/Epignosis)", "url": "https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" },
+        { "key": "2026-07-21-lemon-1", "label": "Lemonade Angle #1 — Learning debt audit", "url": "weekly/2026-07-21/index.html#lemon-1" },
+        { "key": "2026-07-21-lemon-2", "label": "Lemonade Angle #2 — AI tool census", "url": "weekly/2026-07-21/index.html#lemon-2" },
+        { "key": "2026-07-21-lemon-3", "label": "Lemonade Angle #3 — AI-native vs bolt-on evaluation", "url": "weekly/2026-07-21/index.html#lemon-3" }
       ]
     }
   ]

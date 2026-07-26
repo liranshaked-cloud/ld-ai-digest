@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week of Jul 7–13, 2026 — The Measurement Moment | L&D + AI Digest</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lmnd-pink: #FF0083; --lmnd-pink-tint: rgba(255,0,131,0.07); --lmnd-pink-tint-2: rgba(255,0,131,0.14);
+    --text-primary: #1F1F26; --text-muted: #6B6B75; --text-faint: #9999A2;
+    --surface: #FFFFFF; --surface-alt: #FAFAFB; --surface-sunken: #F4F4F6;
+    --border: #E8E8ED; --border-strong: #D6D6DC;
+    --shadow-sm: 0 1px 2px rgba(20,20,30,0.05); --shadow-md: 0 4px 18px rgba(20,20,30,0.06);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px;
+  }
+  [x-cloak] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: var(--text-primary); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--text-primary); }
+  [id] { scroll-margin-top: 64px; }
+  .icon { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; vertical-align: -3px; }
+
+  .like-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all .15s ease; }
+  .like-btn:hover:not(.liked) { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
+  .like-btn.liked { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); cursor: default; }
+  .like-btn .heart { font-size: 13px; }
+
+  .comment-toggle { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; margin-left: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all .15s ease; }
+  .comment-toggle:hover { border-color: var(--lmnd-pink); color: var(--lmnd-pink); transform: translateY(-1px); }
+  .comment-toggle.open { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
+  .mini-comments { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-strong); }
+  #cusdis_thread iframe, .mini-comments iframe { zoom: 0.8; }
+
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--lmnd-pink); z-index: 200; transition: width 0.1s linear; }
+
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 52px; }
+  .top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; text-decoration: none; }
+  .top-nav a:hover { color: var(--lmnd-pink); }
+  .week-nav { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--text-faint); font-weight: 700; }
+  .week-nav .arrow { color: var(--border-strong); font-weight: 900; pointer-events: none; }
+  .week-nav .arrow.enabled { color: var(--text-primary); pointer-events: auto; text-decoration: none; cursor: pointer; }
+  .week-nav .arrow.enabled:hover { color: var(--lmnd-pink); }
+  .slack-pill { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--surface-sunken); border: 1px solid var(--border); padding: 4px 12px; border-radius: 999px; transition: border-color .15s ease; }
+  .slack-pill:hover { border-color: var(--lmnd-pink); color: var(--text-primary); }
+
+  .header { background: var(--surface); padding: 52px 24px 40px; text-align: center; border-bottom: 1px solid var(--border); }
+  .brand-mark { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: var(--lmnd-pink); border-radius: 9px; color: white; font-weight: 900; font-size: 19px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(255,0,131,0.22); }
+  .header .issue-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 14px; }
+  .header h1 { font-size: clamp(30px, 4.8vw, 50px); font-weight: 900; margin-bottom: 14px; line-height: 1.12; letter-spacing: -0.01em; }
+  .header .theme-quote { font-size: 16px; color: var(--text-muted); font-style: italic; max-width: 480px; margin: 0 auto; line-height: 1.6; text-wrap: balance; }
+
+  .container { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+
+  .tldr { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin: 28px 0; }
+  .tldr-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; box-shadow: var(--shadow-sm); display: flex; gap: 12px; align-items: flex-start; text-decoration: none; color: inherit; transition: all .15s ease; cursor: pointer; }
+  .tldr-item:hover { border-color: var(--lmnd-pink); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .tldr-item .emoji { font-size: 20px; line-height: 1; }
+  .tldr-item p { font-size: 13.5px; color: #33333c; line-height: 1.55; }
+  .tldr-item strong { color: var(--lmnd-pink); }
+  .tldr-item .go { font-size: 11px; color: var(--text-faint); font-weight: 700; margin-top: 4px; display: block; }
+
+  .numbers-wrap { margin: 8px 0 28px; }
+  .numbers-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+  .bento-stat { grid-column: span 2; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow-sm); text-decoration: none; color: inherit; transition: all .15s ease; }
+  .bento-stat:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--lmnd-pink); }
+  .bento-stat .icon-wrap { width: 32px; height: 32px; border-radius: 9px; background: var(--lmnd-pink-tint); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; color: var(--lmnd-pink); }
+  .bento-stat .val { font-size: 34px; font-weight: 900; line-height: 1; margin-bottom: 8px; }
+  .bento-stat .lbl { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+  .bento-stat .src { font-size: 10.5px; font-weight: 700; color: var(--lmnd-pink); text-transform: uppercase; letter-spacing: 0.4px; }
+  .chart-card { grid-column: span 3; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 22px; box-shadow: var(--shadow-sm); }
+  .chart-card h4 { font-size: 12.5px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .chart-card .chart-hint { font-size: 11px; color: var(--text-faint); margin-bottom: 12px; }
+  .chart-card canvas { max-height: 220px; }
+  @media (max-width: 720px) { .bento-stat, .chart-card { grid-column: span 6; } }
+
+  .quiz-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm); margin-bottom: 28px; }
+  .quiz-box .quiz-kicker { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .quiz-question { font-weight: 900; font-size: 17px; margin-bottom: 16px; line-height: 1.4; }
+  .quiz-options { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
+  .quiz-opt { padding: 10px 20px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-alt); font-weight: 800; font-size: 14px; cursor: pointer; transition: all .15s ease; font-family: inherit; }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--lmnd-pink); transform: translateY(-1px); }
+  .quiz-opt.correct { background: var(--lmnd-pink-tint); border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
+  .quiz-opt.wrong { background: #fdecec; border-color: #e5a3a3; color: #b3261e; }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-reveal { font-size: 14px; color: #33333c; line-height: 1.65; padding-top: 16px; margin-top: 16px; border-top: 1px dashed var(--border-strong); }
+  .quiz-reveal a { font-weight: 700; }
+  .quiz-verdict { display: inline-flex; align-items: center; gap: 8px; font-weight: 900; font-size: 15px; padding: 6px 16px; border-radius: 999px; margin-bottom: 14px; }
+  .quiz-verdict.right { background: var(--lmnd-pink-tint); color: var(--lmnd-pink); }
+  .quiz-verdict.wrong { background: #fdecec; color: #b3261e; }
+
+  .tabs-wrap { margin-bottom: 40px; }
+  .tab-bar { display: flex; gap: 6px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px; margin-bottom: 22px; box-shadow: var(--shadow-sm); }
+  .tab-btn { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; padding: 10px 16px; border-radius: 999px; border: none; background: transparent; color: var(--text-muted); font-weight: 800; font-size: 13px; cursor: pointer; font-family: inherit; transition: all .15s ease; white-space: nowrap; }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active { background: var(--text-primary); color: white; }
+  @media (max-width: 700px) { .tab-bar { justify-content: flex-start; overflow-x: auto; } .tab-btn { flex: none; } }
+
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+  .narrative { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+  .narrative h2 { font-size: 20px; font-weight: 900; margin-bottom: 14px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+  .narrative p { font-size: 15px; color: #33333c; margin-bottom: 12px; line-height: 1.75; }
+  .narrative a { font-weight: 700; }
+  .stat-hl { color: var(--lmnd-pink); font-weight: 900; }
+  .lead-in { font-weight: 900; color: var(--text-primary); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 14px; transition: box-shadow 0.2s ease; }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card-head { display: flex; gap: 16px; align-items: center; padding: 16px 20px; cursor: pointer; }
+  .card-head img { width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover; background: var(--surface-sunken); flex-shrink: 0; }
+  .card-head .ph { width: 56px; height: 56px; border-radius: var(--radius-sm); background: var(--surface-sunken); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--text-faint); }
+  .card-source { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
+  .card-title { font-size: 15.5px; font-weight: 900; line-height: 1.3; }
+  .card-teaser { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
+  .card-chevron { margin-left: auto; color: var(--text-faint); transition: transform .2s ease; flex-shrink: 0; }
+  .card.is-open .card-chevron { transform: rotate(180deg); }
+  .card-body { padding: 0 20px 22px 92px; }
+  .card-body p { font-size: 14px; color: #454550; line-height: 1.7; margin-bottom: 12px; }
+  .card-body a.readmore { font-weight: 700; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { font-size: 10.5px; font-weight: 700; background: var(--surface-sunken); color: var(--text-muted); padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border); }
+
+  .case-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 14px; overflow: hidden; }
+  .case-card .case-head { padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .case-card .case-co { font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--lmnd-pink); margin-bottom: 6px; }
+  .case-card h4 { font-size: 15.5px; font-weight: 900; }
+  .case-card .case-body { padding: 0 22px 22px; }
+  .case-card p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 8px; }
+  .case-card .case-result { font-size: 12.5px; font-weight: 800; background: var(--surface-sunken); border-radius: var(--radius-sm); padding: 8px 14px; display: inline-block; margin-top: 6px; }
+  .case-card .lesson { margin-top: 14px; padding: 12px 16px; background: var(--lmnd-pink-tint); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.6; }
+  .case-card .lesson strong { color: var(--lmnd-pink); }
+
+  .quote-context { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--lmnd-pink); margin-bottom: 8px; }
+  .quote-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lmnd-pink); border-radius: var(--radius-md); padding: 20px 24px; box-shadow: var(--shadow-sm); margin-bottom: 14px; display: flex; gap: 18px; }
+  .quote-avatar { width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0; object-fit: cover; background: var(--surface-sunken); }
+  .quote-avatar.initials { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: white; background: var(--lmnd-pink); }
+  .quote-text { font-size: 15px; color: #2a2a32; line-height: 1.6; margin-bottom: 10px; font-style: italic; }
+  .quote-author { font-size: 13.5px; font-weight: 900; }
+  .quote-role { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .quote-link { font-size: 11.5px; font-weight: 700; }
+
+  .domains-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 14px; }
+  .domain-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; box-shadow: var(--shadow-sm); }
+  .domain-card h4 { font-size: 14px; font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .domain-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 8px; }
+  .domain-card a { font-size: 12px; font-weight: 700; }
+  .domain-card .role-tag { display: inline-block; font-size: 10.5px; font-weight: 800; background: var(--lmnd-pink-tint); color: var(--lmnd-pink); padding: 2px 9px; border-radius: 999px; margin: 2px 4px 2px 0; }
+
+  .lemon-section { background: var(--surface); border-radius: var(--radius-lg); padding: 32px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+  .lemon-section .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 22px; font-style: italic; }
+  .lemon-item { margin-bottom: 16px; padding: 18px 20px; border-radius: var(--radius-md); background: var(--lmnd-pink-tint); border: 1px solid var(--lmnd-pink-tint-2); }
+  .lemon-item:last-child { margin-bottom: 0; }
+  .lemon-item h3 { font-size: 15px; font-weight: 900; color: var(--text-primary); margin-bottom: 8px; }
+  .lemon-item p { font-size: 14px; color: #3a3a44; line-height: 1.7; margin-bottom: 6px; }
+  .lemon-item .label-inline { font-weight: 900; color: var(--lmnd-pink); text-transform: uppercase; font-size: 10px; letter-spacing: 0.6px; margin-right: 6px; }
+
+  footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
+</style>
+<script data-goatcounter="https://liran-shaked.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body x-data="{ tab: 'case-files' }" x-init="
+  const h = location.hash.replace('#','');
+  if (h.startsWith('lemon')) tab = 'lemonade';
+  else if (h.startsWith('quote')) tab = 'voices';
+  else if (h.startsWith('article')) tab = 'deep-dives';
+  else if (h.startsWith('case')) tab = 'case-files';
+  if (h) $nextTick(() => setTimeout(() => document.getElementById(h)?.scrollIntoView({behavior:'smooth', block:'center'}), 150));
+">
+
+<div class="progress-bar" id="progress-bar"></div>
+
+<nav class="top-nav">
+  <a href="../../index.html">← All Issues</a>
+  <div class="week-nav" id="week-nav">
+    <span class="arrow" id="prev-arrow">←</span>
+    <span>Week of Jul 7–13, 2026</span>
+    <span class="arrow" id="next-arrow">→</span>
+  </div>
+  <a class="slack-pill" href="https://team-lemonade.slack.com/archives/C0BDZT7EVAT" target="_blank" style="text-decoration:none; cursor:pointer;">📬 #ld-ai-digest on Slack</a>
+</nav>
+
+<div class="header">
+  <div class="brand-mark">L</div>
+  <div class="issue-label">Week of July 7–13, 2026</div>
+  <h1>The Measurement Moment</h1>
+  <div class="theme-quote">L&D tech's #1 priority just flipped from content creation to analytics. Adoption is table stakes — now prove it works.</div>
+</div>
+
+<div class="container">
+
+<div class="tldr reveal">
+  <a class="tldr-item" href="#tabs-panel" @click="tab='case-files'"><span class="emoji">🕵️</span><div><p><strong>2 real case studies</strong> — Schneider Electric's 89%-adoption talent marketplace, and a 100-developer team that sustained a 28% productivity lift.</p><span class="go">Open Case Files →</span></div></a>
+  <a class="tldr-item" href="#tabs-panel" @click="tab='deep-dives'"><span class="emoji">📖</span><div><p><strong>5 articles</strong> — RedThread, ATD, Coursera, Bersin, and an engineering maturity study of 1,300 developers.</p><span class="go">Open Deep Dives →</span></div></a>
+  <a class="tldr-item" href="#tabs-panel" @click="tab='voices'"><span class="emoji">💬</span><div><p><strong>Real quotes</strong> from 3 different primary sources including RedThread's co-founders and Josh Bersin.</p><span class="go">Open Voices →</span></div></a>
+  <a class="tldr-item" href="#comments"><span class="emoji">👍</span><div><p><strong>Like anything?</strong> Every stat, case, and quote has its own reaction button.</p><span class="go">Jump to Comments →</span></div></a>
+</div>
+
+<div class="numbers-wrap reveal">
+  <div class="numbers-title"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> This Week In Numbers — click a card or bar for its source</div>
+  <div class="bento">
+    <a data-click-key="2026-07-07-stat-83pct" class="bento-stat" href="https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" target="_blank">
+      <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div>
+      <div class="val">83%</div>
+      <div class="lbl">of L&D tech vendors now prioritize Analytics & Measurement — up from 33% in 2023</div>
+      <div class="src">RedThread Research State of L&D 2026</div>
+      <button class="like-btn" data-like-key="2026-07-07-stat-83pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
+      <button class="comment-toggle" data-comment-key="2026-07-07-stat-83pct" data-comment-title="Stat: 83% vendors prioritize analytics">💬 Comments</button>
+    </a>
+    <a data-click-key="2026-07-07-stat-167hrs" class="bento-stat" href="https://www.td.org/content/atd-blog/highlights-from-atd-s-2026-state-of-the-industry-report" target="_blank">
+      <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="val">16.7</div>
+      <div class="lbl">avg learning hours per employee in 2025 — up from 13.7, but spend dropped 33% to $846</div>
+      <div class="src">ATD 2026 State of the Industry</div>
+      <button class="like-btn" data-like-key="2026-07-07-stat-167hrs"><span class="heart">👍</span> <span class="like-count">–</span></button>
+      <button class="comment-toggle" data-comment-key="2026-07-07-stat-167hrs" data-comment-title="Stat: 16.7 avg learning hours, spend down">💬 Comments</button>
+    </a>
+    <a data-click-key="2026-07-07-stat-234pct" class="bento-stat" href="https://blog.coursera.org/introducing-courseras-job-skills-report-2026-the-most-critical-skills-the-worlds-learners-need-this-year/" target="_blank">
+      <div class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <div class="val">234%</div>
+      <div class="lbl">YoY growth in GenAI & agentic AI course enrollments — the fastest-growing skill category</div>
+      <div class="src">Coursera Job Skills Report 2026</div>
+      <button class="like-btn" data-like-key="2026-07-07-stat-234pct"><span class="heart">👍</span> <span class="like-count">–</span></button>
+      <button class="comment-toggle" data-comment-key="2026-07-07-stat-234pct" data-comment-title="Stat: 234% GenAI enrollment growth">💬 Comments</button>
+    </a>
+    <div class="chart-card">
+      <h4>L&D Tech Priority Shift (2023 → 2026)</h4>
+      <div class="chart-hint">Analytics jumped to #1; content creation dropped to #5 — click a bar for the RedThread source</div>
+      <canvas id="priorityChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h4>Learning Hours vs. Spend Per Employee</h4>
+      <div class="chart-hint">Hours up, spend down — doing more with less, or less with less? Click for ATD source.</div>
+      <canvas id="atdChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-kicker"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg> Quick Gut Check</div>
+  <div class="quiz-question">In 2023, what % of L&D tech vendors listed Analytics & Measurement as their primary capability? (It's now 83%.)</div>
+  <div class="quiz-options" id="quiz-options">
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">12%</button>
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">22%</button>
+    <button class="quiz-opt" data-correct="true" onclick="answerQuiz(this, true)">33%</button>
+    <button class="quiz-opt" data-correct="false" onclick="answerQuiz(this, false)">51%</button>
+  </div>
+  <div class="quiz-reveal" id="quiz-reveal" style="display:none;">
+    <div class="quiz-verdict" id="quiz-verdict"></div>
+    <div><strong>33% — and it just hit 83%.</strong> That's a 50-point jump in three years. Content creation used to be L&D tech's #1 selling point; now it's dropped to fifth. The market is telling you what matters: not producing training, proving it works. Source: <a href="https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" target="_blank">RedThread Research State of L&D 2026 →</a></div>
+  </div>
+</div>
+
+<div class="tabs-wrap reveal" id="tabs-panel">
+  <div class="tab-bar">
+    <button class="tab-btn" :class="tab === 'case-files' && 'active'" @click="tab = 'case-files'">
+      <svg class="icon" viewBox="0 0 24 24"><path d="m21 21-4.3-4.3"/><circle cx="11" cy="11" r="8"/></svg> Case Files
+    </button>
+    <button class="tab-btn" :class="tab === 'deep-dives' && 'active'" @click="tab = 'deep-dives'">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg> Deep Dives
+    </button>
+    <button class="tab-btn" :class="tab === 'voices' && 'active'" @click="tab = 'voices'">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg> Voices
+    </button>
+    <button class="tab-btn" :class="tab === 'domains' && 'active'" @click="tab = 'domains'">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg> By Function
+    </button>
+    <button class="tab-btn" :class="tab === 'lemonade' && 'active'" @click="tab = 'lemonade'">
+      🍋 Lemonade Angle
+    </button>
+  </div>
+
+  <!-- CASE FILES -->
+  <div x-show="tab === 'case-files'" x-cloak x-transition>
+    <div class="case-card" x-data="{ open: true }">
+      <div class="case-head" @click="open = !open">
+        <div><div class="case-co">Schneider Electric · via Modern Executive Solutions / Gloat</div><h4>89% of 150,000 employees using an AI talent marketplace — without a mandate</h4></div>
+        <svg class="icon card-chevron" :style="open && 'transform:rotate(180deg)'" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="case-body" x-show="open" x-transition>
+        <p>When internal surveys revealed that nearly <strong>50% of exiting employees</strong> cited a lack of internal growth opportunities as their primary reason for leaving, Schneider Electric's Global CHRO Charise Le launched the <strong>Open Talent Market (OTM)</strong> in 2019 — an AI-powered platform built with Gloat that connects 150,000+ employees to full-time roles, gig projects, learning resources, and mentors across the company. A 20% time allocation policy let employees take on project work without manager permission.</p>
+        <p>Key design move: they removed the 3-year tenure requirement for internal role changes and stripped manager approval from gig and mentoring connections. Adoption followed organically. COVID-19 accelerated global rollout — the platform became the easiest way to find internal teammates during hiring freezes.</p>
+        <span class="case-result">📈 89% employee adoption · 27,500 active mentor matches · 13,400 project/gig matches · 60% adoption within first month of launch</span>
+        <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Vendor case study (Gloat promoting its platform) — but it names real people, cites verified adoption numbers, and the design logic is independently checkable. <a data-click-key="2026-07-07-case-schneider" href="https://www.modernexecutivesolutions.com/articles/how-schneider-electric-built-an-internal-talent-market-nearly-all-its-employees-use" target="_blank">Source →</a></p>
+        <div class="lesson">💡 <strong>L&D Lesson:</strong> Schneider's adoption rate didn't come from mandates — it came from removing friction. The platform worked because they changed policy first (no tenure lock-in, no manager approval gate) before launching the tool. The learning is structural, not technological: design the system so the right move is also the easiest move.</div>
+        <button class="like-btn" data-like-key="2026-07-07-case-schneider"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-case-schneider" data-comment-title="Case: Schneider Electric (Open Talent Market)">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="case-card" x-data="{ open: false }">
+      <div class="case-head" @click="open = !open">
+        <div><div class="case-co">100-Developer Engineering Team · via Digital Applied</div><h4>Structured AI enablement → 28% productivity lift sustained over 6 months</h4></div>
+        <svg class="icon card-chevron" :style="open && 'transform:rotate(180deg)'" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="case-body" x-show="open" x-transition>
+        <p>An anonymized 100-developer organization piloted GitHub Copilot with two groups: one got license access and a kickoff demo; the other got a <strong>structured 32-entry shared skill library</strong>, weekly "AI pair programming" sessions, and a defined ramp curve with checkpoints at weeks 2, 6, and 12. After six months, the structured group sustained a <strong>28% productivity lift</strong> measured by PR merge velocity and cycle time.</p>
+        <p>The unstructured group plateaued at 9% gain by week 4 and saw engagement fall off — consistent with the broader finding from KORE1's analysis that developers require <strong>11 weeks of supported practice</strong> to realize meaningful Copilot gains without a program, and many give up before then.</p>
+        <span class="case-result">📈 28% productivity lift (structured) vs. 9% plateau (access-only) · Key variable: the shared skill library + scheduled practice, not the tool itself</span>
+        <p style="margin-top:10px; font-size:12.5px; color:var(--text-faint);">Company name not disclosed in source. The pattern matches multiple published analyses of Copilot rollouts. <a data-click-key="2026-07-07-case-devteam" href="https://www.digitalapplied.com/blog/case-study-ai-coding-rollout-100-dev-team-quarterly-data-2026" target="_blank">Source →</a></p>
+        <div class="lesson">💡 <strong>L&D Lesson:</strong> The variable that predicted outcome wasn't the tool — it was whether the team had a structured practice path. A shared skill library (what to learn, in what order, with what peer checkpoints) compressed 11 weeks of stumbling into 2-3 weeks of intentional ramp. That's a program design problem, not a technology problem.</div>
+        <button class="like-btn" data-like-key="2026-07-07-case-devteam"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-case-devteam" data-comment-title="Case: 100-Dev Team (structured AI program)">💬 Comments</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEEP DIVES -->
+  <div x-show="tab === 'deep-dives'" x-cloak x-transition>
+    <div class="narrative" style="margin-bottom:20px;">
+      <h2><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> From Content Factory to Proof Engine</h2>
+      <p><span class="lead-in">What changed:</span> RedThread Research's 2026 State of L&D report — tracking 461 vendors — found that <span class="stat-hl">Analytics & Measurement jumped from #3 to #1 priority</span> in just three years, now cited by 83% of vendors (up from 33% in 2023). Content Creation, which dominated in 2021 and 2023, dropped to fifth. At the same time, AI adoption in learning tech is near-universal: only 2% of vendors report no AI usage, down from 24% three years ago.</p>
+      <p><span class="lead-in">The ATD picture:</span> The 2026 State of the Industry report tells a complicated story. Average formal learning hours per employee rose to <span class="stat-hl">16.7</span> in 2025 (up from 13.7 in 2024) — but direct expenditure per learner dropped sharply, from $1,254 to <span class="stat-hl">$846</span>. More hours, less money. That's either a productivity gain or a quality squeeze — probably both.</p>
+      <p><span class="lead-in">The learner signal:</span> Coursera's Job Skills Report 2026 reports <span class="stat-hl">234% YoY growth</span> in GenAI and agentic AI enrollments, with 14 enrollments per minute in GenAI content. Agentic AI (AI systems that take action on behalf of users) jumped to the #3 fastest-growing GenAI skill. The gap between what learners are chasing and what most L&D programs offer is widening fast.</p>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div>
+        <div><div class="card-source">RedThread Research · Jun 2026 · Dani Johnson & Chisom Etheridge</div><div class="card-title">State of L&D 2026: High-Performing Organizations Are Rewriting How L&D Works</div><div class="card-teaser">Analytics jumped to #1 priority. Content creation fell to #5. The market looks alike — depth of execution is the only differentiator left.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>The flagship annual report from RedThread Research (tracking 461 learning tech vendors) found the market has undergone a structural shift: measurement and performance are now the primary battleground, not content creation. 69% of vendors cluster into one archetype — "multi-purpose L&D platforms" — which means differentiation is now about execution quality, not feature breadth. For L&D buyers: the vendor landscape is converging. How they implement matters far more than what they claim to offer.</p>
+        <a data-click-key="2026-07-07-article-redthread" class="readmore" href="https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" target="_blank">Read the full report summary →</a>
+        <div class="card-tags"><span class="tag">Market Shift</span><span class="tag">Analytics</span><span class="tag">Vendor Landscape</span><span class="tag">L&D Tech</span></div>
+        <button class="like-btn" data-like-key="2026-07-07-article-redthread"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-article-redthread" data-comment-title="Article: RedThread Research State of L&D 2026">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg></div>
+        <div><div class="card-source">ATD · 2026 State of the Industry Report</div><div class="card-title">More Learning Hours, Less Money — ATD's 2026 Benchmark Data</div><div class="card-teaser">16.7 hours/year per employee (up from 13.7). Spend dropped 33% to $846. L&D is doing more with dramatically less.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>ATD's annual benchmark report draws on data from 340 organizations. The headline finding: formal learning hours per employee rose to 16.7 in 2025, but direct expenditure fell from $1,254 to $846 — a 33% drop in a single year. The TD Executive Confidence Index also dipped to 63.1, its lowest in recent years. Less than a quarter of respondents actually measure whether their training achieves its organizational goals. If measurement is the new priority in L&D tech, it's clearly not yet the practice on the ground.</p>
+        <a data-click-key="2026-07-07-article-atd" class="readmore" href="https://www.td.org/content/atd-blog/highlights-from-atd-s-2026-state-of-the-industry-report" target="_blank">Read the full ATD highlights →</a>
+        <div class="card-tags"><span class="tag">Benchmark Data</span><span class="tag">Learning Hours</span><span class="tag">ROI</span><span class="tag">ATD</span></div>
+        <button class="like-btn" data-like-key="2026-07-07-article-atd"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-article-atd" data-comment-title="Article: ATD 2026 State of the Industry">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <img src="https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-university-assets.s3.amazonaws.com/a6/d75a80473611e5ac2e35bea1237726/wordmark_blue.png" alt="" onerror="this.style.display='none'"/>
+        <div><div class="card-source">Coursera · Job Skills Report 2026</div><div class="card-title">Agentic AI Is the Fastest-Growing Skill — 234% YoY, 14 Enrollments Per Minute</div><div class="card-teaser">GenAI content creation is #1, AI personalization #2, AI agents #3. The race to agentic AI competency is on.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>Coursera's flagship skills report tracks enrollment patterns across millions of learners. GenAI enrollments grew 234% year-over-year, with Generative AI Agents ranking #3 among fastest-growing GenAI skills — signaling a shift from passively using AI tools to actively deploying AI that takes actions on behalf of users. The top three fastest-growing GenAI skills: (1) Content Creation with AI, (2) AI Personalization, (3) Generative AI Agents. For L&D leaders: your workforce is self-selecting into agentic AI learning. The curriculum hasn't caught up.</p>
+        <a data-click-key="2026-07-07-article-coursera" class="readmore" href="https://blog.coursera.org/introducing-courseras-job-skills-report-2026-the-most-critical-skills-the-worlds-learners-need-this-year/" target="_blank">Read the Coursera Job Skills Report 2026 →</a>
+        <div class="card-tags"><span class="tag">Agentic AI</span><span class="tag">Skills Demand</span><span class="tag">GenAI</span><span class="tag">Coursera</span></div>
+        <button class="like-btn" data-like-key="2026-07-07-article-coursera"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-article-coursera" data-comment-title="Article: Coursera Job Skills Report 2026">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <img src="https://joshbersin.com/wp-content/uploads/2026/06/HR-2030-header.jpg" alt="" onerror="this.style.display='none'"/>
+        <div><div class="card-source">Josh Bersin · Jun 2026</div><div class="card-title">HR 2030: The Global HR Excellence Certification and the Future of an Automated, Consultative HR Function</div><div class="card-teaser">HR becomes "poised to be a highly automated, consultative, intelligent business function." Bersin names what that actually means structurally.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>Bersin's June 2026 announcement unpacks three interlinked moves: a 12-week Global HR Excellence Certification (50 hours, cohort-based, business simulation), an "HR 2030 Blueprint" reference architecture for building Agentic HR capabilities, and expanded Galileo integrations including Microsoft Copilot enterprise, SAP SuccessFactors, and Workday. The strategic claim: as AI handles deterministic HR tasks, the humans who remain need to operate as consultants and architects — not administrators. For L&D specifically, this means the content-production job is being automated away; the job that remains is building judgment, designing systems, and proving business impact.</p>
+        <a data-click-key="2026-07-07-article-bersin-hr2030" class="readmore" href="https://joshbersin.com/2026/06/the-josh-bersin-institute-hr-2030-and-the-global-hr-excellence-certification/" target="_blank">Read Bersin's HR 2030 announcement →</a>
+        <div class="card-tags"><span class="tag">HR 2030</span><span class="tag">Agentic HR</span><span class="tag">Galileo</span><span class="tag">Bersin</span></div>
+        <button class="like-btn" data-like-key="2026-07-07-article-bersin-hr2030"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-article-bersin-hr2030" data-comment-title="Article: Bersin HR 2030">💬 Comments</button>
+      </div>
+    </div>
+
+    <div class="card" x-data="{ open: false }" :class="open && 'is-open'">
+      <div class="card-head" @click="open = !open">
+        <div class="ph"><svg class="icon" viewBox="0 0 24 24" style="width:22px;height:22px;"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div><div class="card-source">Boye & Company · Jun 2026 · Survey of 1,300 engineers across 25 teams</div><div class="card-title">AI Engineering Maturity: What 1,300 Engineers Actually Told Us About Working With AI</div><div class="card-teaser">Counterintuitive: junior engineers scored higher on AI maturity than seniors. The reason matters for how you design onboarding.</div></div>
+        <svg class="icon card-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="card-body" x-show="open" x-transition>
+        <p>A survey of 1,300 engineers across 25 engineering teams found that junior engineers (P1 band) had a median AI maturity score of <strong>2.25</strong>, while senior engineers (P4 band) scored <strong>1.82</strong> — nearly half a level lower. Why? Senior engineers have deeply-ingrained solo problem-solving habits; juniors started coding in an AI-assisted world and never developed strong resistance to using AI. The implication: your highest-experienced engineers may need the most intentional enablement, not the least.</p>
+        <a data-click-key="2026-07-07-article-boyeco" class="readmore" href="https://www.boye-co.com/blog/2026/6/ai-engineering-maturity-what-1300-engineers-told-us-about-how-they-really-work-with-ai" target="_blank">Read the full engineering maturity analysis →</a>
+        <div class="card-tags"><span class="tag">Engineering Maturity</span><span class="tag">AI Adoption</span><span class="tag">Developer Enablement</span><span class="tag">Survey</span></div>
+        <button class="like-btn" data-like-key="2026-07-07-article-boyeco"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-article-boyeco" data-comment-title="Article: AI Engineering Maturity (1,300 engineers)">💬 Comments</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOICES -->
+  <div x-show="tab === 'voices'" x-cloak x-transition>
+    <div class="quote-card">
+      <div class="quote-avatar initials">DJ</div>
+      <div>
+        <div class="quote-context">On why picking an L&D tech vendor in 2026 is harder than ever — even though you have more choices:</div>
+        <p class="quote-text">"The market has gotten broader, bolder, and blurrier. Vendors are building more, claiming more, and converging on the same positioning. The market continues to sound alike, and the real differences between vendors now live in places that feature lists and marketing pitches don't always reach."</p>
+        <div class="quote-author">Dani Johnson</div>
+        <div class="quote-role">Co-Founder & Principal Analyst, RedThread Research</div>
+        <a data-click-key="2026-07-07-quote-djohnson" class="quote-link" href="https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" target="_blank">Source: RedThread Research State of L&D 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-07-07-quote-djohnson"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-07-07-quote-djohnson" data-comment-title="Quote: Dani Johnson (RedThread)">💬 Comments</button></div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-avatar initials">CE</div>
+      <div>
+        <div class="quote-context">On what actually separates L&D platforms when every vendor claims AI-powered everything:</div>
+        <p class="quote-text">"Breadth on a feature list and depth in execution are two different things."</p>
+        <div class="quote-author">Chisom Etheridge</div>
+        <div class="quote-role">Senior Analyst, RedThread Research</div>
+        <a data-click-key="2026-07-07-quote-etheridge" class="quote-link" href="https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" target="_blank">Source: RedThread Research State of L&D 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-07-07-quote-etheridge"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-07-07-quote-etheridge" data-comment-title="Quote: Chisom Etheridge (RedThread)">💬 Comments</button></div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <img class="quote-avatar" src="https://joshbersin.com/wp-content/uploads/2018/07/josh_bersin_color5.jpg" alt="Josh Bersin" onerror="this.outerHTML='&lt;div class=\'quote-avatar initials\'&gt;JB&lt;/div&gt;'"/>
+      <div>
+        <div class="quote-context">On what HR — including L&D — actually becomes in an agentic AI era:</div>
+        <p class="quote-text">"HR is poised to be a highly automated, consultative, intelligent business function, driving performance, agility, and purpose for people."</p>
+        <div class="quote-author">Josh Bersin</div>
+        <div class="quote-role">Global Industry Analyst · Founder, The Josh Bersin Company</div>
+        <a data-click-key="2026-07-07-quote-bersin" class="quote-link" href="https://joshbersin.com/2026/06/the-josh-bersin-institute-hr-2030-and-the-global-hr-excellence-certification/" target="_blank">Source: "HR 2030" — joshbersin.com, June 2026 →</a>
+        <div><button class="like-btn" data-like-key="2026-07-07-quote-bersin"><span class="heart">👍</span> <span class="like-count">–</span></button><button class="comment-toggle" data-comment-key="2026-07-07-quote-bersin" data-comment-title="Quote: Josh Bersin (HR 2030)">💬 Comments</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMAINS -->
+  <div x-show="tab === 'domains'" x-cloak x-transition>
+    <div class="domains-grid">
+      <div class="domain-card">
+        <h4>💻 Tech / Product & Engineering</h4>
+        <p>Senior engineers score <strong>lower on AI maturity</strong> than juniors in new research — ingrained solo habits are harder to shift than no habits at all. L&D enablement for tech teams needs to explicitly target experienced developers, not just new hires.</p>
+        <span class="role-tag">AI Engineering Coach</span><span class="role-tag">Developer Enablement Lead</span>
+        <p><a href="https://www.boye-co.com/blog/2026/6/ai-engineering-maturity-what-1300-engineers-told-us-about-how-they-really-work-with-ai" target="_blank">Boye & Company: Engineering maturity study (1,300 devs) →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🧑‍🤝‍🧑 People / HR</h4>
+        <p>The market just told you the answer: <strong>analytics over content creation</strong>. If your L&D team still measures success by completion rates and seat hours, you're operating by a scorecard the market abandoned in 2023.</p>
+        <span class="role-tag">L&D Analytics Lead</span><span class="role-tag">Learning Impact Strategist</span>
+        <p><a href="https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html" target="_blank">RedThread: "High-Performing Organizations Are Rewriting How L&D Works" →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🎧 Customer Success</h4>
+        <p>Internal talent marketplaces (see Schneider Electric) are now reaching <strong>mentor matching</strong> as their highest-engagement use case — more than job listings or courses. CS enablement can learn from this: match customers with the right human expertise, not just the right content.</p>
+        <span class="role-tag">CS Enablement Lead</span><span class="role-tag">Customer Education Strategist</span>
+        <p><a href="https://www.modernexecutivesolutions.com/articles/how-schneider-electric-built-an-internal-talent-market-nearly-all-its-employees-use" target="_blank">Schneider Electric: talent marketplace lessons →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>📊 Data / Analytics</h4>
+        <p>Agentic AI enrollments on Coursera grew 234% YoY — the skills your data teams are building now are autonomous AI workflows, not just dashboards. L&D for data roles needs to catch up to where learners already are.</p>
+        <span class="role-tag">Analytics Engineer</span><span class="role-tag">AI-Augmented Analyst</span>
+        <p><a href="https://blog.coursera.org/introducing-courseras-job-skills-report-2026-the-most-critical-skills-the-worlds-learners-need-this-year/" target="_blank">Coursera: Job Skills Report 2026 →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🐞 QA</h4>
+        <p>AI coding tools write 46% of average developer code. QA can no longer rely on the assumption that a human wrote the logic being tested — test strategy needs to account for AI-generated code patterns, which fail differently than human code.</p>
+        <span class="role-tag">AI QA Strategist</span><span class="role-tag">Evaluation Engineer</span>
+        <p><a href="https://www.kore1.com/ai-copilot-developer-productivity-2026/" target="_blank">KORE1: AI Copilot adoption & developer productivity →</a></p>
+      </div>
+      <div class="domain-card">
+        <h4>🎨 Design / UX</h4>
+        <p>As the L&D tech market consolidates into look-alike multi-purpose platforms, design quality becomes a real differentiator. <strong>The interface is where depth of execution shows.</strong> Design roles in L&D platforms are moving from decorative to strategic.</p>
+        <span class="role-tag">Learning Experience Designer</span><span class="role-tag">AI UX Strategist</span>
+        <p><a href="https://redthreadresearch.com/home" target="_blank">RedThread: Learning Technology Provider Landscape 2026 →</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEMONADE ANGLE -->
+  <div x-show="tab === 'lemonade'" x-cloak x-transition>
+    <div class="lemon-section">
+      <p class="subtitle">What this week means for Lemonade's product & engineering L&D 🍋</p>
+      <div class="lemon-item" id="lemon-1">
+        <h3>📏 1. The skill atlas you already own</h3>
+        <p><span class="label-inline">The signal</span>Schneider Electric's 89% adoption came not from a new tool but from removing friction — policy changes first, platform second. The data that powers their talent marketplace already existed in HR records; they just wired it differently.</p>
+        <p><span class="label-inline">The move</span>Lemonade's engineering team leaves a behavioral trail every day: GitHub commits, code review patterns, Jira tickets, on-call assignments, PR review frequency. That trail is richer than any self-reported skills survey. Start treating it as your skills atlas. Who has actually shipped work near the payments service? Who has reviewed PRs in the underwriting codebase? That's a mobility signal, not a survey answer.</p>
+        <button class="like-btn" data-like-key="2026-07-07-lemon-1"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-lemon-1" data-comment-title="Lemonade Angle #1 — Behavioral skills atlas">💬 Comments</button>
+      </div>
+      <div class="lemon-item" id="lemon-2">
+        <h3>⏱️ 2. Compress the 11-week AI ramp</h3>
+        <p><span class="label-inline">The signal</span>Without a structured program, developers take 11 weeks to realize meaningful Copilot productivity gains — and many give up before then. With a 32-item shared skill library and weekly checkpoints, teams compresses this to 2-3 weeks.</p>
+        <p><span class="label-inline">The move</span>Lemonade's 3+ month engineering ramp is the right context for this intervention. Build a <strong>shared AI skill library for Lemonade's specific codebase context</strong> — not generic Copilot tips, but prompts, patterns, and anti-patterns that apply to Lemonade's architecture, claims flow, and underwriting logic. Add a week-2 and week-6 checkpoint conversation between the new hire and their buddy. Measure PR velocity at week 8.</p>
+        <button class="like-btn" data-like-key="2026-07-07-lemon-2"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-lemon-2" data-comment-title="Lemonade Angle #2 — AI ramp compression">💬 Comments</button>
+      </div>
+      <div class="lemon-item" id="lemon-3">
+        <h3>📐 3. Define your measurement before the next program</h3>
+        <p><span class="label-inline">The signal</span>Less than a quarter of ATD respondents measure whether their training achieves its organizational goals. RedThread's entire market shift is driven by this gap — the industry is now selling the measurement it previously ignored.</p>
+        <p><span class="label-inline">The move</span>Before launching the next L&D initiative at Lemonade — onboarding revamp, AI fluency program, knowledge management project — write down the behavioral change you expect to see at week 1, week 4, and week 12. Not completion rates. Behavioral change: "Engineers on AI-assisted teams review AI-generated code by checking X before merging." Then build the measurement before the content.</p>
+        <button class="like-btn" data-like-key="2026-07-07-lemon-3"><span class="heart">👍</span> <span class="like-count">–</span></button>
+        <button class="comment-toggle" data-comment-key="2026-07-07-lemon-3" data-comment-title="Lemonade Angle #3 — Measure first">💬 Comments</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="section-label" id="comments"><svg class="icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg> React &amp; Discuss</p>
+<div id="cusdis_thread"
+  data-host="https://cusdis.com"
+  data-app-id="8f88689d-bab5-4b25-b146-bca8c57b0dde"
+  data-page-id="weekly-2026-07-07"
+  data-page-url="https://ld-ai-digest.onrender.com/weekly/2026-07-07/index.html"
+  data-page-title="Week of Jul 7–13, 2026 — The Measurement Moment"
+></div>
+<script async src="https://cusdis.com/js/cusdis.es.js"></script>
+
+</div><!-- /container -->
+
+<footer>
+  L&D + AI Weekly Digest · Week of July 7–13, 2026 · Curated for Lemonade · Sources linked throughout — nothing here is invented
+</footer>
+
+<script>
+fetch('../../data/weeks.json')
+  .then(r => r.json())
+  .then(data => {
+    const weeks = (data.weeks || []).slice().sort((a,b) => a.id.localeCompare(b.id));
+    const idx = weeks.findIndex(w => w.id === '2026-07-07');
+    const prev = weeks[idx - 1];
+    const next = weeks[idx + 1];
+    const prevEl = document.getElementById('prev-arrow');
+    const nextEl = document.getElementById('next-arrow');
+    if (prev) { prevEl.classList.add('enabled'); prevEl.onclick = () => location.href = '../../' + prev.path; prevEl.title = prev.label; }
+    if (next) { nextEl.classList.add('enabled'); nextEl.onclick = () => location.href = '../../' + next.path; nextEl.title = next.label; }
+  })
+  .catch(() => {});
+</script>
+
+<script>
+function answerQuiz(btn, isCorrect) {
+  const opts = document.querySelectorAll('#quiz-options .quiz-opt');
+  opts.forEach(o => {
+    o.disabled = true;
+    if (o.dataset.correct === 'true') o.classList.add('correct');
+    else if (o === btn) o.classList.add('wrong');
+  });
+  const verdict = document.getElementById('quiz-verdict');
+  verdict.textContent = isCorrect ? '✅ You got it — nice.' : '❌ Not quite — here\'s the real number:';
+  verdict.className = 'quiz-verdict ' + (isCorrect ? 'right' : 'wrong');
+  document.getElementById('quiz-reveal').style.display = 'block';
+}
+
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress-bar').style.width = scrolled + '%';
+});
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+const pink = '#FF0083', gray = '#E8E8ED', dark = '#1F1F26';
+
+new Chart(document.getElementById('priorityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Analytics &\nMeasurement', 'Performance\nSupport', 'Content\nCreation', 'Skills\nMapping'],
+    datasets: [
+      { label: '2023', data: [33, 45, 72, 38], backgroundColor: gray, borderRadius: 4 },
+      { label: '2026', data: [83, 68, 41, 61], backgroundColor: pink, borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top', labels: { font: { size: 11 } } },
+      tooltip: { callbacks: { label: (c) => c.dataset.label + ': ' + c.raw + '% of vendors' } }
+    },
+    scales: { y: { max: 100, grid: { display: false }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } },
+    onClick: () => window.open('https://finance.yahoo.com/sectors/technology/articles/redthread-research-state-l-d-130000028.html', '_blank')
+  }
+});
+
+new Chart(document.getElementById('atdChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Learning Hours\n(per employee)', 'Direct Spend\n($00s per employee)'],
+    datasets: [
+      { label: '2024', data: [13.7, 12.54], backgroundColor: gray, borderRadius: 4 },
+      { label: '2025', data: [16.7, 8.46], backgroundColor: pink, borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top', labels: { font: { size: 11 } } },
+      tooltip: { callbacks: {
+        label: (c) => {
+          if (c.dataIndex === 0) return c.dataset.label + ': ' + c.raw + ' hrs';
+          return c.dataset.label + ': $' + (c.raw * 100).toFixed(0);
+        }
+      }}
+    },
+    scales: { y: { grid: { display: false } }, x: { grid: { display: false } } },
+    onClick: () => window.open('https://www.td.org/content/atd-blog/highlights-from-atd-s-2026-state-of-the-industry-report', '_blank')
+  }
+});
+</script>
+
+<script>
+(function () {
+  const NS = 'ld-ai-digest';
+  const LIKED_KEY = 'ld-ai-digest-liked';
+  const liked = JSON.parse(localStorage.getItem(LIKED_KEY) || '{}');
+
+  document.querySelectorAll('.like-btn').forEach(async (btn) => {
+    const key = btn.dataset.likeKey;
+    const countEl = btn.querySelector('.like-count');
+    if (liked[key]) btn.classList.add('liked');
+    try {
+      const r = await fetch(`https://abacus.jasoncameron.dev/get/${NS}/${key}`);
+      const d = await r.json();
+      countEl.textContent = d.value || 0;
+    } catch (e) { countEl.textContent = '–'; }
+
+    btn.addEventListener('click', async (evt) => {
+      evt.preventDefault();
+      evt.stopPropagation();
+      if (btn.classList.contains('liked')) return;
+      btn.classList.add('liked');
+      liked[key] = true;
+      localStorage.setItem(LIKED_KEY, JSON.stringify(liked));
+      try {
+        const r = await fetch(`https://abacus.jasoncameron.dev/hit/${NS}/${key}`);
+        const d = await r.json();
+        countEl.textContent = d.value;
+      } catch (e) {}
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const NS = 'ld-ai-digest';
+  document.querySelectorAll('[data-click-key]').forEach((link) => {
+    link.addEventListener('click', () => {
+      fetch(`https://abacus.jasoncameron.dev/hit/${NS}/click-${link.dataset.clickKey}`).catch(() => {});
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const APP_ID = '8f88689d-bab5-4b25-b146-bca8c57b0dde';
+  const pageBase = location.href.split('#')[0];
+
+  function tryRender(container, attempts) {
+    if (window.CUSDIS && typeof window.CUSDIS.renderTo === 'function') {
+      window.CUSDIS.renderTo(container);
+    } else if (attempts < 25) {
+      setTimeout(() => tryRender(container, attempts + 1), 200);
+    }
+  }
+
+  document.querySelectorAll('.comment-toggle').forEach((btn) => {
+    btn.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      evt.stopPropagation();
+      const key = btn.dataset.commentKey;
+      let container = document.getElementById('mc-' + key);
+      if (container) {
+        const isHidden = container.style.display === 'none';
+        container.style.display = isHidden ? 'block' : 'none';
+        btn.classList.toggle('open', isHidden);
+        return;
+      }
+      container = document.createElement('div');
+      container.id = 'mc-' + key;
+      container.className = 'mini-comments';
+      container.setAttribute('data-host', 'https://cusdis.com');
+      container.setAttribute('data-app-id', APP_ID);
+      container.setAttribute('data-page-id', key);
+      container.setAttribute('data-page-url', pageBase + '#' + key);
+      container.setAttribute('data-page-title', btn.dataset.commentTitle || key);
+      btn.insertAdjacentElement('afterend', container);
+      btn.classList.add('open');
+      tryRender(container, 0);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

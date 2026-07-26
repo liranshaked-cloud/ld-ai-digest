@@ -30,6 +30,14 @@
     { "name": "HR Brew", "url": "https://www.hr-brew.com", "category": "Trade Press" },
     { "name": "360Learning", "url": "https://360learning.com", "category": "Vendor Blog" },
     { "name": "Sana Labs", "url": "https://sanalabs.com", "category": "Vendor Blog" },
-    { "name": "BCG", "url": "https://www.bcg.com", "category": "Analyst / Consulting" }
+    { "name": "BCG", "url": "https://www.bcg.com", "category": "Analyst / Consulting" },
+    { "name": "BCG Henderson Institute", "url": "https://www.bcg.com/bcg-henderson-institute", "category": "Analyst / Consulting" },
+    { "name": "Bright Horizons (EdAssist)", "url": "https://www.brighthorizons.com", "category": "Primary Research" },
+    { "name": "Boye & Company", "url": "https://www.boye-co.com", "category": "Analyst Firm" },
+    { "name": "Go1", "url": "https://www.go1.com", "category": "Vendor Research" },
+    { "name": "Workday Newsroom", "url": "https://newsroom.workday.com", "category": "Vendor Press" },
+    { "name": "Sana Labs", "url": "https://www.sanalabs.com", "category": "Vendor Blog" },
+    { "name": "Faros AI", "url": "https://www.farosai.com", "category": "Vendor Research" },
+    { "name": "Coursera Blog / Job Skills Report", "url": "https://blog.coursera.org", "category": "Primary Research" }
   ]
 }

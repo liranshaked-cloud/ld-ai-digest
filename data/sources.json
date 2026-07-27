@@ -38,6 +38,25 @@
     { "name": "Workday Newsroom", "url": "https://newsroom.workday.com", "category": "Vendor Press" },
     { "name": "Sana Labs", "url": "https://www.sanalabs.com", "category": "Vendor Blog" },
     { "name": "Faros AI", "url": "https://www.farosai.com", "category": "Vendor Research" },
-    { "name": "Coursera Blog / Job Skills Report", "url": "https://blog.coursera.org", "category": "Primary Research" }
+    { "name": "Coursera Blog / Job Skills Report", "url": "https://blog.coursera.org", "category": "Primary Research" },
+    { "name": "Intercom Engineering Blog", "url": "https://www.intercom.com/blog/engineering", "category": "SaaS Engineering" },
+    { "name": "Shopify Engineering Blog", "url": "https://shopify.engineering", "category": "SaaS Engineering" },
+    { "name": "Figma Engineering Blog", "url": "https://www.figma.com/blog/section/engineering", "category": "SaaS Engineering" },
+    { "name": "Vercel Blog", "url": "https://vercel.com/blog", "category": "SaaS Engineering" },
+    { "name": "Atlassian Team Anywhere / Engineering", "url": "https://www.atlassian.com/blog/teamwork", "category": "SaaS Engineering" },
+    { "name": "Linear Blog", "url": "https://linear.app/blog", "category": "SaaS / Scale-up" },
+    { "name": "Retool Blog", "url": "https://retool.com/blog", "category": "SaaS / Scale-up" },
+    { "name": "Zapier Blog (Engineering & Teams)", "url": "https://zapier.com/blog/tag/engineering", "category": "SaaS / Scale-up" },
+    { "name": "First Round Review", "url": "https://review.firstround.com", "category": "Startup / Scale-up" },
+    { "name": "a16z / Andreessen Horowitz", "url": "https://a16z.com/topic/ai", "category": "VC / Enterprise AI" },
+    { "name": "Reforge Blog", "url": "https://www.reforge.com/blog", "category": "Product / L&D" },
+    { "name": "Product Talk (Teresa Torres)", "url": "https://www.producttalk.org/blog", "category": "Product / L&D" },
+    { "name": "Plaid Blog", "url": "https://plaid.com/blog/engineering", "category": "FinTech Engineering" },
+    { "name": "Brex Blog (Engineering)", "url": "https://medium.com/brex-tech", "category": "FinTech Engineering" },
+    { "name": "Lemonade Tech Blog", "url": "https://makers.lemonade.com", "category": "InsurTech (self)" },
+    { "name": "Root Insurance Tech Blog", "url": "https://root.engineering", "category": "InsurTech" },
+    { "name": "Wefox Tech Blog", "url": "https://tech.wefox.com", "category": "InsurTech" },
+    { "name": "Airbnb Engineering Blog", "url": "https://medium.com/airbnb-engineering", "category": "Tech Scale-up" },
+    { "name": "HubSpot Product & Engineering", "url": "https://product.hubspot.com", "category": "SaaS Engineering" }
   ]
 }

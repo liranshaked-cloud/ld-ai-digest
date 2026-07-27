@@ -110,7 +110,7 @@
 
   /* TABS */
   .tabs-wrap { margin-bottom: 40px; }
-  .tab-bar { display: flex; gap: 6px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px; margin-bottom: 22px; box-shadow: var(--shadow-sm); }
+  .tab-bar { display: flex; gap: 6px; flex-wrap: wrap; background: rgba(255,255,255,0.95); backdrop-filter: blur(6px); border: 1px solid var(--border); border-radius: 999px; padding: 6px; margin-bottom: 22px; box-shadow: var(--shadow-sm); position: sticky; top: 55px; z-index: 90; }
   .tab-btn { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; padding: 10px 16px; border-radius: 999px; border: none; background: transparent; color: var(--text-muted); font-weight: 800; font-size: 13px; cursor: pointer; font-family: inherit; transition: all .15s ease; white-space: nowrap; }
   .tab-btn:hover { color: var(--text-primary); }
   .tab-btn.active { background: var(--text-primary); color: white; }

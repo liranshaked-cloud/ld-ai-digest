@@ -96,6 +96,16 @@ a:hover { text-decoration: underline; }
 .tool-chip:hover { border-color: var(--lmnd-pink); color: var(--lmnd-pink); text-decoration: none; }
 .tools-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-faint); margin-top: 18px; margin-bottom: 8px; }
 
+/* SEARCH */
+.search-wrap { padding: 10px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.search-input { width: 100%; max-width: 420px; padding: 9px 14px 9px 36px; border: 1px solid var(--border); border-radius: 999px; font-size: 13.5px; font-family: inherit; background: var(--surface-sunken); outline: none; color: var(--text-primary); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 11px center; transition: border-color .15s; }
+.search-input:focus { border-color: var(--lmnd-pink); }
+.search-input::placeholder { color: var(--text-faint); }
+
+/* TOOL CATEGORIES */
+.tool-cat-group { margin-bottom: 28px; }
+.tool-cat-label { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--text-faint); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
 /* APPENDIX */
 .appendix-header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
 .appendix-header h2 { font-size: 13px; font-weight: 700; color: var(--text-muted); }
@@ -139,6 +149,9 @@ footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--t
   <div class="meta" id="header-meta">Loading…</div>
 </div>
 
+<div class="search-wrap">
+  <input type="search" class="search-input" id="trends-search" placeholder="Search methods, tools, roles…" autocomplete="off">
+</div>
 <nav class="section-nav" id="section-nav">
   <a href="#topic-adoption" data-section="topic-adoption">Adoption</a>
   <a href="#topic-governance" data-section="topic-governance">Governance</a>
@@ -489,7 +502,48 @@ fetch('../data/weeks.json')
     }
 
     buildPills('roles', 'roles-cloud', null);
-    buildPills('tools', 'tools-cloud', data.toolUrls || {});
+
+    // TOOLS — grouped by category
+    (function() {
+      const CAT = {
+        'GitHub Copilot':'AI Coding','GitHub Codespaces':'AI Coding',
+        'Synthesia':'AI Content','Galileo (Bersin)':'AI Content',
+        'TalentLMS':'Learning Platforms','Workday Learning':'Learning Platforms',
+        'Sana':'Learning Platforms','Go1':'Learning Platforms',
+        'Coursera for Business':'Learning Platforms','AWS Skill Builder':'Learning Platforms',
+        'Amazon Quick':'AI Productivity',
+        'DX (getdx.com)':'Developer Experience','Faros AI':'Developer Experience',
+        'Enboarder':'Onboarding & Enablement','Leena AI':'Onboarding & Enablement','Amazon Career Choice':'Onboarding & Enablement',
+        'Eightfold AI':'Talent & Mobility','Gloat':'Talent & Mobility','Rippling':'Talent & Mobility',
+      };
+      const CAT_ORDER = ['AI Coding','AI Content','AI Productivity','Developer Experience','Learning Platforms','Onboarding & Enablement','Talent & Mobility','Other'];
+      const counts = {}, firstSeen = {}, lastSeen = {};
+      weeks.forEach(w => (w.tools||[]).forEach(t => {
+        counts[t] = (counts[t]||0)+1;
+        if (!firstSeen[t]) firstSeen[t] = w;
+        lastSeen[t] = w;
+      }));
+      const prevSet = new Set(prevWeeks.flatMap(w => w.tools||[]));
+      const urlMap = data.toolUrls || {};
+      const byCategory = {};
+      Object.keys(counts).forEach(name => {
+        const cat = CAT[name] || 'Other';
+        (byCategory[cat] = byCategory[cat] || []).push(name);
+      });
+      const el = document.getElementById('tools-cloud');
+      el.innerHTML = CAT_ORDER.filter(c => byCategory[c]).map(cat => {
+        const pills = byCategory[cat].sort((a,b) => counts[b]-counts[a]).map(name => {
+          const isNew = !prevSet.has(name);
+          const isTrend = lastSeen[name]?.id === latestWeek?.id;
+          const url = urlMap[name];
+          const inner = url ? `<a href="${url}" target="_blank">${name} ↗</a>` : name;
+          const badges = (isNew?'<span class="pill-new">NEW</span>':'')+(isTrend&&!isNew?'<span class="pill-trending">🔥</span>':'');
+          const cnt = counts[name]>1?`<span class="pill-count">×${counts[name]}</span>`:'';
+          return `<div class="pill-item">${inner}${badges}${cnt}<div class="pill-first">first seen: ${firstSeen[name]?.label||''}</div></div>`;
+        }).join('');
+        return `<div class="tool-cat-group"><div class="tool-cat-label">${cat}</div><div class="pill-cloud">${pills}</div></div>`;
+      }).join('');
+    })();
 
     // COMPANIES CHART
     const companyCounts = {}, companyWeeks = {};
@@ -527,6 +581,28 @@ fetch('../data/weeks.json')
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   })
   .catch(() => { document.getElementById('header-meta').textContent = 'Data unavailable'; });
+
+// SEARCH — filter methods, tools, roles live
+document.getElementById('trends-search').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  document.querySelectorAll('.app-item').forEach(el => {
+    el.style.display = !q || el.innerText.toLowerCase().includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.pill-item').forEach(el => {
+    el.style.display = !q || el.innerText.toLowerCase().includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.tool-cat-group').forEach(g => {
+    const anyVisible = [...g.querySelectorAll('.pill-item')].some(p => p.style.display !== 'none');
+    g.style.display = anyVisible ? '' : 'none';
+  });
+  document.querySelectorAll('.app-topic-group').forEach(g => {
+    const anyVisible = [...g.querySelectorAll('.app-item')].some(p => p.style.display !== 'none');
+    g.style.display = anyVisible ? '' : 'none';
+  });
+  document.querySelectorAll('.rec-card').forEach(card => {
+    card.style.opacity = !q || card.innerText.toLowerCase().includes(q) ? '' : '0.3';
+  });
+});
 
 // SECTION NAV — highlight active section as you scroll
 (function() {

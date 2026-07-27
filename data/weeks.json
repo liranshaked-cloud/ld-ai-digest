@@ -59,7 +59,7 @@
       "tags": ["AI Adoption", "Critical Thinking", "Skills Gap", "Internal Mobility", "AI Literacy", "Trust", "Onboarding", "Case Study", "Enablement", "QA", "Design", "Data", "Customer Success", "Vendor Claims", "Career Development", "Flow of Work", "LinkedIn", "Leadership"],
       "companies": ["Mastercard", "IBM", "Eightfold AI", "Duolingo", "Booking.com", "Stripe", "GitHub", "Synthesia", "Medtronic", "BCG"],
       "publishedAt": "2026-07-01",
-      "roles": ["Engineering Enablement Manager", "AI Enablement Engineer", "AI Enablement Lead", "AI Literacy & Change Lead", "CS Enablement Lead", "Customer Solutions Architect", "Analytics Engineer", "AI-Augmented Analyst", "Evaluation Engineer", "AI Assurance Architect", "AI UX Designer", "Design Ops"],
+      "roles": ["Artificial Intelligence Engineer", "Big Data Specialist", "Workforce Development Manager", "Platform Engineer", "Learning Specialist", "Security Management Specialist"],
       "tools": ["GitHub Copilot", "GitHub Codespaces", "DX (getdx.com)", "Synthesia", "TalentLMS", "Eightfold AI"],
       "methods": [
         { "text": "Remove environment-setup friction (Codespaces) instead of running a training program", "source": "Duolingo case study", "sourceUrl": "https://github.com/customer-stories/duolingo" },
@@ -128,7 +128,7 @@
       "tags": ["AI Governance", "Onboarding", "Forward-Deployed Engineering", "Skills-Based Organizations", "Learning Culture", "AI Adoption", "Agentic AI", "Human-AI Collaboration", "Organizational Design", "Employee Development"],
       "companies": ["Microsoft", "Amazon", "Duolingo", "GitHub"],
       "publishedAt": "2026-07-06",
-      "roles": ["AI Governance Officer", "Human-AI Collaboration Designer", "Learning Ecosystem Architect", "Skills & Culture Strategy Leader", "Onboarding Specialist (AI-augmented)", "Learning Impact Analyst"],
+      "roles": ["Artificial Intelligence Engineer", "Artificial Intelligence Consultant", "Big Data Specialist", "Workforce Development Manager", "Learning Specialist", "AI and Machine Learning Specialist"],
       "tools": ["Amazon Quick", "Rippling", "Enboarder", "Leena AI", "GitHub Copilot"],
       "methods": [
         { "text": "Design human-AI collaboration into workflows from day one — don't add training layers on top of tools", "source": "Microsoft forward-deployed engineering model", "sourceUrl": "https://www.cnbc.com/2026/07/02/microsoft-commits-2point5-billion-6000-employees-ai-implementation-unit.html" },
@@ -184,7 +184,7 @@
       "tags": ["Analytics", "Measurement", "Internal Mobility", "AI Maturity", "Developer Enablement", "Skills Atlas", "Agentic AI", "HR 2030", "Benchmarks", "L&D Tech Market"],
       "companies": ["Schneider Electric", "Coursera", "Boye & Company", "ATD", "RedThread Research", "Josh Bersin Company"],
       "publishedAt": "2026-07-13",
-      "roles": ["AI Engineering Coach", "Developer Enablement Lead", "L&D Analytics Lead", "Learning Impact Strategist", "CS Enablement Lead", "Customer Education Strategist", "Analytics Engineer", "AI-Augmented Analyst", "AI QA Strategist", "Evaluation Engineer", "Learning Experience Designer", "AI UX Strategist"],
+      "roles": ["Artificial Intelligence Engineer", "Artificial Intelligence Consultant", "Artificial Intelligence Researcher", "Workforce Development Manager", "Learning Specialist", "Big Data Specialist", "Platform Engineer"],
       "tools": ["GitHub Copilot", "Gloat", "Coursera for Business", "Galileo (Bersin)"],
       "methods": [
         { "text": "Treat GitHub behavioral signals (commits, code review patterns, PR frequency) as a skills atlas instead of relying on self-reported surveys", "source": "Schneider Electric Open Talent Market case", "sourceUrl": "https://www.modernexecutivesolutions.com/articles/how-schneider-electric-built-an-internal-talent-market-nearly-all-its-employees-use" },
@@ -236,7 +236,7 @@
       "tags": ["Job Reshaping", "Workflow Redesign", "Collective AI", "Frontline AI", "Skills Gap", "Amazon Upskilling", "Review Bottleneck", "Human Skills", "BCG", "Bright Horizons", "LinkedIn"],
       "companies": ["Amazon", "Faros AI", "BCG", "Bright Horizons", "LinkedIn"],
       "publishedAt": "2026-07-20",
-      "roles": ["AI Workflow Architect", "Engineering Enablement Lead", "AI Workforce Architect", "Role Redesign Strategist", "AI-Augmented CS Lead", "Customer Intelligence Analyst", "Strategic Analytics Lead", "AI-Enabled Insights Partner", "AI QA Strategist", "Judgment-Layer Engineer", "Design Strategy Lead", "AI-Augmented Experience Designer"],
+      "roles": ["Artificial Intelligence Engineer", "Artificial Intelligence Consultant", "Artificial Intelligence Researcher", "Workforce Development Manager", "Big Data Specialist", "Security Management Specialist", "Human Resources Onboarding Specialist"],
       "tools": ["Faros AI", "GitHub Copilot", "Amazon Career Choice", "AWS Skill Builder"],
       "methods": [
         { "text": "Map one squad's AI usage and identify the human judgment bottleneck, then redesign that single step rather than the whole workflow", "source": "BCG 'AI Is Reshaping Jobs Faster' survey, Jun 2026", "sourceUrl": "https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" },
@@ -288,7 +288,7 @@
       "tags": ["AI-Native LMS", "Workday", "Sana", "Learning Debt", "Shadow Competence", "Enterprise Governance", "Skill Gaps", "Content Creation", "Learning Architecture", "Measurement", "Onboarding"],
       "companies": ["Workday", "Sana", "Josh Bersin Company", "Accenture", "TalentLMS", "Epignosis", "Go1", "Synthesia"],
       "publishedAt": "2026-07-26",
-      "roles": ["AI Capability Engineer", "Code Learning Designer", "Learning Technology Strategist", "AI Learning Governance Lead", "CS Enablement Architect", "AI-Powered Customer Coach", "Learning Analytics Lead", "People Data Strategist", "AI QA Risk Analyst", "AI Learning Experience Designer", "AI Content Strategist"],
+      "roles": ["Artificial Intelligence Engineer", "Artificial Intelligence Consultant", "Artificial Intelligence Researcher", "Workforce Development Manager", "Learning Specialist", "Big Data Specialist", "Platform Engineer", "Human Resources Onboarding Specialist"],
       "tools": ["Workday Learning", "Sana", "TalentLMS", "Go1", "Synthesia"],
       "methods": [
         { "text": "Add 'explain the core logic of your most significant change' to code review template to surface learning debt before it accumulates", "source": "TalentLMS Learning Debt Report, Jul 2026", "sourceUrl": "https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" },

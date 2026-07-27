@@ -99,6 +99,7 @@ a:hover { text-decoration: underline; }
 
 
 mark.search-hl { background: rgba(255,0,131,0.18); color: inherit; border-radius: 2px; padding: 0 1px; }
+mark.search-hl.current { background: rgba(255,0,131,0.5); outline: 2px solid var(--lmnd-pink); border-radius: 2px; }
 
 /* TOOL / ROLE CATEGORIES */
 .tool-cat-group { margin-bottom: 28px; }
@@ -448,6 +449,9 @@ footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--t
 
   <!-- ROLES -->
   <div id="appendix-roles" class="section-label reveal">Roles gaining traction</div>
+  <div style="font-size:11px;color:var(--muted);margin:-8px 0 16px;padding:0 2px;">
+    Source: <a href="https://www.linkedin.com/pulse/linkedin-jobs-rise-2025-25-fastest-growing-us-linkedin-news-gryie" target="_blank" style="color:var(--muted);text-decoration:underline;">LinkedIn Jobs on the Rise 2025</a> · <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/" target="_blank" style="color:var(--muted);text-decoration:underline;">WEF Future of Jobs 2025</a>
+  </div>
   <div id="roles-cloud" style="margin-bottom:40px;"></div>
 
   <!-- COMPANIES -->
@@ -503,33 +507,18 @@ fetch('../data/weeks.json')
     // ROLES — grouped by category
     (function() {
       const RCAT = {
-        'CS Enablement Lead':'Enablement & L&D','Engineering Enablement Manager':'Enablement & L&D',
-        'AI Enablement Engineer':'Enablement & L&D','AI Enablement Lead':'Enablement & L&D',
-        'Developer Enablement Lead':'Enablement & L&D','Engineering Enablement Lead':'Enablement & L&D',
-        'AI Engineering Coach':'Enablement & L&D','Code Learning Designer':'Enablement & L&D',
-        'Learning Experience Designer':'Enablement & L&D','AI Learning Experience Designer':'Enablement & L&D',
-        'Learning Technology Strategist':'Enablement & L&D','CS Enablement Architect':'Enablement & L&D',
-        'Onboarding Specialist (AI-augmented)':'Enablement & L&D','Learning Ecosystem Architect':'Enablement & L&D',
-        'Analytics Engineer':'Analytics & Measurement','AI-Augmented Analyst':'Analytics & Measurement',
-        'L&D Analytics Lead':'Analytics & Measurement','Learning Impact Analyst':'Analytics & Measurement',
-        'Learning Impact Strategist':'Analytics & Measurement','Strategic Analytics Lead':'Analytics & Measurement',
-        'AI-Enabled Insights Partner':'Analytics & Measurement','Learning Analytics Lead':'Analytics & Measurement',
-        'People Data Strategist':'Analytics & Measurement','Customer Intelligence Analyst':'Analytics & Measurement',
-        'Evaluation Engineer':'AI Governance & Quality','AI QA Strategist':'AI Governance & Quality',
-        'AI Assurance Architect':'AI Governance & Quality','AI Governance Officer':'AI Governance & Quality',
-        'AI Learning Governance Lead':'AI Governance & Quality','AI QA Risk Analyst':'AI Governance & Quality',
-        'AI Literacy & Change Lead':'AI Governance & Quality',
-        'AI UX Designer':'Design & Experience','Design Ops':'Design & Experience',
-        'Human-AI Collaboration Designer':'Design & Experience','AI UX Strategist':'Design & Experience',
-        'AI-Augmented Experience Designer':'Design & Experience','Design Strategy Lead':'Design & Experience',
-        'AI Workflow Architect':'Engineering & Architecture','AI Capability Engineer':'Engineering & Architecture',
-        'AI Workforce Architect':'Engineering & Architecture','Judgment-Layer Engineer':'Engineering & Architecture',
-        'Skills & Culture Strategy Leader':'Strategy & Leadership','Role Redesign Strategist':'Strategy & Leadership',
-        'AI Content Strategist':'Strategy & Leadership',
-        'Customer Solutions Architect':'Customer & Product','AI-Augmented CS Lead':'Customer & Product',
-        'AI-Powered Customer Coach':'Customer & Product','Customer Education Strategist':'Customer & Product',
+        'Artificial Intelligence Engineer': 'AI & Technical Roles',
+        'Artificial Intelligence Consultant': 'AI & Technical Roles',
+        'Artificial Intelligence Researcher': 'AI & Technical Roles',
+        'AI and Machine Learning Specialist': 'AI & Technical Roles',
+        'Workforce Development Manager': 'L&D & Workforce',
+        'Learning Specialist': 'L&D & Workforce',
+        'Human Resources Onboarding Specialist': 'L&D & Workforce',
+        'Platform Engineer': 'Engineering & Platform',
+        'Big Data Specialist': 'Data & Analytics',
+        'Security Management Specialist': 'Security & Risk',
       };
-      const RCAT_ORDER = ['Enablement & L&D','Analytics & Measurement','AI Governance & Quality','Design & Experience','Engineering & Architecture','Strategy & Leadership','Customer & Product','Other'];
+      const RCAT_ORDER = ['AI & Technical Roles','L&D & Workforce','Engineering & Platform','Data & Analytics','Security & Risk','Other'];
       const counts = {}, firstSeen = {}, lastSeen = {};
       weeks.forEach(w => (w.roles||[]).forEach(r => {
         counts[r] = (counts[r]||0)+1;
@@ -545,13 +534,11 @@ fetch('../data/weeks.json')
       const el = document.getElementById('roles-cloud');
       el.innerHTML = RCAT_ORDER.filter(c => byCategory[c]).map(cat => {
       const CAT_DESC = {
-          'Enablement & L&D': 'Designs and delivers learning programs for technical teams.',
-          'Analytics & Measurement': 'Tracks and proves the impact of learning and capability programs.',
-          'AI Governance & Quality': 'Sets standards for safe, accountable AI use across the org.',
-          'Design & Experience': 'Designs human-centered AI workflows and product experiences.',
-          'Engineering & Architecture': 'Builds and maintains AI systems and developer tooling.',
-          'Strategy & Leadership': 'Leads workforce AI transformation and organizational change.',
-          'Customer & Product': 'Enables AI-powered customer service and product experiences.',
+          'AI & Technical Roles': 'Building and deploying AI systems, models, and products.',
+          'L&D & Workforce': 'Developing people capabilities, onboarding, and organizational learning.',
+          'Engineering & Platform': 'Building and maintaining developer infrastructure and tooling.',
+          'Data & Analytics': 'Managing and extracting value from large-scale data systems.',
+          'Security & Risk': 'Protecting systems, ensuring compliance, and managing AI risk.',
         };
         const pills = byCategory[cat].sort((a,b) => counts[b]-counts[a]).map(name => {
           const isNew = !prevSet.has(name);
@@ -690,7 +677,23 @@ fetch('../data/weeks.json')
     if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     const cnt = document.querySelectorAll('mark.search-hl').length;
-    document.getElementById('search-count').textContent = `${cnt} match${cnt!==1?'es':''}`;
+    currentIdx = -1;
+    document.getElementById('search-count').textContent = cnt ? `${cnt} match${cnt!==1?'es':''}` : '';
+  });
+
+  let currentIdx = -1;
+  input.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const marks = document.querySelectorAll('mark.search-hl');
+    if (!marks.length) return;
+    document.querySelectorAll('mark.search-hl.current').forEach(m => m.classList.remove('current'));
+    currentIdx = e.shiftKey
+      ? (currentIdx - 1 + marks.length) % marks.length
+      : (currentIdx + 1) % marks.length;
+    marks[currentIdx].classList.add('current');
+    marks[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('search-count').textContent = `${currentIdx + 1} / ${marks.length}`;
   });
 
   // Pre-create badge

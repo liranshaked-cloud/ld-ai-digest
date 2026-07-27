@@ -3,600 +3,507 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trends: Where L&D + AI Is Heading | L&D + AI Digest</title>
+<title>L&D + AI: What To Do Now | L&D + AI Digest</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <script data-goatcounter="https://liran-shaked.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --lmnd-pink: #FF0083; --lmnd-pink-tint: rgba(255,0,131,0.07); --lmnd-pink-tint-2: rgba(255,0,131,0.14);
-    --text-primary: #1F1F26; --text-muted: #6B6B75; --text-faint: #9999A2;
-    --surface: #FFFFFF; --surface-alt: #FAFAFB; --surface-sunken: #F4F4F6;
-    --border: #E8E8ED; --border-strong: #D6D6DC;
-    --shadow-sm: 0 1px 2px rgba(20,20,30,0.05); --shadow-md: 0 4px 18px rgba(20,20,30,0.07);
-    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px;
-  }
-  body { font-family: 'Lato', sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
-  a { color: var(--text-primary); text-decoration: none; }
-  .icon { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -3px; }
-  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-  .reveal.in { opacity: 1; transform: translateY(0); }
-  [x-cloak] { display: none !important; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --lmnd-pink: #FF0083; --lmnd-pink-tint: rgba(255,0,131,0.07); --lmnd-pink-tint-2: rgba(255,0,131,0.14);
+  --text-primary: #1F1F26; --text-muted: #6B6B75; --text-faint: #9999A2;
+  --surface: #FFFFFF; --surface-alt: #FAFAFB; --surface-sunken: #F4F4F6;
+  --border: #E8E8ED; --border-strong: #D6D6DC;
+  --shadow-sm: 0 1px 2px rgba(20,20,30,0.05); --shadow-md: 0 4px 18px rgba(20,20,30,0.07);
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px;
+}
+body { font-family: 'Lato', sans-serif; background: var(--surface-alt); color: var(--text-primary); line-height: 1.75; -webkit-font-smoothing: antialiased; }
+a { color: var(--lmnd-pink); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+[x-cloak] { display: none !important; }
 
-  /* NAV */
-  .top-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 52px; }
-  .top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; }
-  .top-nav a:hover { color: var(--lmnd-pink); }
+.top-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 52px; }
+.top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; }
+.top-nav a:hover { color: var(--lmnd-pink); text-decoration: none; }
 
-  /* HEADER */
-  .header { background: var(--surface); padding: 56px 24px 44px; text-align: center; border-bottom: 1px solid var(--border); }
-  .header h1 { font-size: clamp(28px,4.5vw,44px); font-weight: 900; margin-bottom: 12px; letter-spacing: -0.01em; }
-  .header p { font-size: 15px; color: var(--text-muted); max-width: 560px; margin: 0 auto; }
+.header { background: var(--surface); padding: 56px 24px 44px; text-align: center; border-bottom: 1px solid var(--border); }
+.header h1 { font-size: clamp(26px,4vw,40px); font-weight: 900; margin-bottom: 12px; letter-spacing: -0.01em; }
+.header p { font-size: 15px; color: var(--text-muted); max-width: 520px; margin: 0 auto 14px; }
+.header .meta { font-size: 12px; color: var(--text-faint); font-weight: 700; letter-spacing: 0.5px; }
 
-  /* LAYOUT */
-  .container { max-width: 900px; margin: 0 auto; padding: 52px 20px 64px; }
-  .section { margin-bottom: 60px; }
-  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-  .confidence-note { font-size: 12.5px; color: var(--text-faint); font-style: italic; margin-bottom: 20px; }
+.container { max-width: 860px; margin: 0 auto; padding: 52px 20px 80px; }
 
-  /* DELTA SECTION */
-  .delta-section { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--lmnd-pink); border-radius: var(--radius-lg); padding: 28px 32px 26px; box-shadow: var(--shadow-md); margin-bottom: 60px; }
-  .delta-header { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
-  .delta-header h2 { font-size: 16px; font-weight: 900; letter-spacing: -0.01em; }
-  .delta-week-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; background: var(--lmnd-pink-tint-2); color: var(--lmnd-pink); padding: 3px 11px; border-radius: 999px; }
-  .delta-group { margin-bottom: 18px; }
-  .delta-group:last-child { margin-bottom: 0; }
-  .delta-group-label { font-size: 10.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; }
-  .delta-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .delta-chip { background: var(--lmnd-pink-tint); border: 1px solid rgba(255,0,131,0.2); border-radius: 999px; padding: 5px 14px 5px 8px; font-size: 12.5px; font-weight: 700; color: var(--text-primary); display: inline-flex; align-items: center; gap: 7px; }
-  .new-badge { font-size: 9px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; background: var(--lmnd-pink); color: white; padding: 2px 6px; border-radius: 999px; flex-shrink: 0; }
-  .delta-empty { font-size: 13px; color: var(--text-faint); font-style: italic; }
+/* SECTION LABELS */
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+.section-divider { border: none; border-top: 1px solid var(--border); margin: 64px 0 48px; }
 
-  /* STEPPER / PHASES */
-  .stepper { display: flex; flex-direction: column; gap: 8px; }
-  .phase { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); overflow: hidden; transition: box-shadow .2s, border-color .2s; }
-  .phase:hover { box-shadow: var(--shadow-md); }
-  .phase.is-now { border-color: rgba(255,0,131,0.28); box-shadow: 0 0 0 3px rgba(255,0,131,0.06), var(--shadow-md); }
-  .phase-header { display: flex; align-items: center; gap: 16px; padding: 18px 22px; cursor: pointer; user-select: none; }
-  .phase-num { width: 36px; height: 36px; border-radius: 50%; background: var(--surface-sunken); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; color: var(--text-muted); flex-shrink: 0; transition: all .2s; }
-  .phase.is-now .phase-num { background: var(--lmnd-pink); border-color: var(--lmnd-pink); color: white; }
-  .phase-meta { flex: 1; min-width: 0; }
-  .phase-title { font-size: 15px; font-weight: 900; margin-bottom: 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .now-badge { font-size: 9px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; background: var(--lmnd-pink); color: white; padding: 2px 7px; border-radius: 999px; }
-  .phase-question { font-size: 13px; color: var(--text-muted); }
-  .phase-chevron { color: var(--text-faint); flex-shrink: 0; transition: transform .2s; width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .phase-chevron.open { transform: rotate(180deg); }
-  .phase-body { padding: 0 24px 24px 74px; }
-  .phase-body p { font-size: 14.5px; color: #33333c; line-height: 1.85; margin-bottom: 14px; }
-  .phase-body p:last-child { margin-bottom: 0; }
-  .phase-body strong { color: var(--lmnd-pink); }
-  @media (max-width: 600px) { .phase-body { padding-left: 22px; } }
+/* DIRECTION STEPPER */
+.stepper { display: flex; flex-direction: column; gap: 2px; margin-bottom: 0; }
+.phase-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; transition: box-shadow .2s ease; }
+.phase-item:hover { box-shadow: var(--shadow-md); }
+.phase-header { display: flex; align-items: center; gap: 16px; padding: 18px 22px; cursor: pointer; user-select: none; }
+.phase-num { width: 36px; height: 36px; border-radius: 50%; background: var(--surface-sunken); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: var(--text-muted); flex-shrink: 0; transition: all .2s; }
+.phase-item.now .phase-num { background: var(--lmnd-pink); border-color: var(--lmnd-pink); color: white; }
+.phase-item.now { border-color: var(--lmnd-pink); box-shadow: 0 0 0 2px var(--lmnd-pink-tint-2); }
+.phase-title-wrap { flex: 1; }
+.phase-title-wrap h3 { font-size: 15px; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+.now-badge { font-size: 10px; font-weight: 900; letter-spacing: 0.5px; background: var(--lmnd-pink); color: white; padding: 2px 8px; border-radius: 999px; }
+.phase-title-wrap .q { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.phase-chevron { color: var(--text-faint); font-size: 18px; transition: transform .2s; flex-shrink: 0; }
+.phase-body { padding: 0 22px 20px 74px; font-size: 14px; line-height: 1.8; color: #33333c; border-top: 1px solid var(--surface-sunken); }
+.phase-body p { margin-top: 14px; }
+.phase-body strong { color: var(--text-primary); }
 
-  /* FILTER CHIPS */
-  .filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-  .filter-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 5px 14px; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: all .15s; font-family: 'Lato', sans-serif; }
-  .filter-chip:hover { border-color: var(--lmnd-pink); color: var(--lmnd-pink); }
-  .filter-chip.active { background: var(--lmnd-pink); border-color: var(--lmnd-pink); color: white; }
+/* RECOMMENDATION CARDS */
+.rec-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px 38px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
+.rec-card-header { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 20px; }
+.rec-topic-num { width: 42px; height: 42px; border-radius: 50%; background: var(--lmnd-pink-tint); border: 2px solid var(--lmnd-pink-tint-2); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 900; color: var(--lmnd-pink); flex-shrink: 0; }
+.rec-topic-title { font-size: 20px; font-weight: 900; letter-spacing: -0.01em; line-height: 1.2; }
+.rec-topic-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
-  /* PILLS */
-  .pill-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
-  .pill-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 11px 16px 9px; font-size: 13px; color: var(--text-primary); box-shadow: var(--shadow-sm); transition: transform .15s, box-shadow .15s, border-color .15s; }
-  .pill-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--lmnd-pink); }
-  .pill-item.is-hot { border-color: rgba(255,0,131,0.22); }
-  .pill-name-row { display: flex; align-items: center; gap: 6px; font-weight: 700; margin-bottom: 5px; flex-wrap: wrap; }
-  .pill-count { color: var(--lmnd-pink); font-weight: 900; font-size: 12px; }
-  .badge-new { font-size: 9px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; background: var(--lmnd-pink); color: white; padding: 1px 6px; border-radius: 999px; }
-  .badge-hot { font-size: 11px; line-height: 1; }
-  .pill-meta { font-size: 11px; color: var(--text-faint); font-weight: 400; }
+.stat-callout { background: var(--lmnd-pink-tint); border-left: 3px solid var(--lmnd-pink); border-radius: var(--radius-sm); padding: 14px 18px; margin: 20px 0; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.stat-callout .num { font-size: 32px; font-weight: 900; color: var(--lmnd-pink); line-height: 1; }
+.stat-callout .desc { font-size: 13.5px; color: var(--text-primary); line-height: 1.5; flex: 1; min-width: 200px; }
 
-  /* DO / AVOID */
-  .do-avoid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .do-avoid-col { border-radius: var(--radius-lg); padding: 22px 24px; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-sm); }
-  .do-avoid-col.do { border-left: 4px solid var(--lmnd-pink); }
-  .do-avoid-col.avoid { border-left: 4px solid var(--text-faint); }
-  .do-avoid-col h3 { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
-  .do-avoid-col.do h3 { color: var(--lmnd-pink); }
-  .do-avoid-col.avoid h3 { color: var(--text-muted); }
-  .do-avoid-col ul { list-style: none; }
-  .do-avoid-col li { font-size: 13.5px; color: #33333c; line-height: 1.65; margin-bottom: 14px; padding-left: 20px; position: relative; }
-  .do-avoid-col li:last-child { margin-bottom: 0; }
-  .item-week-tag { font-size: 10.5px; color: var(--text-faint); font-weight: 700; display: block; margin-top: 3px; }
-  .do-avoid-col.do li::before { content: '✓'; position: absolute; left: 0; color: var(--lmnd-pink); font-weight: 900; }
-  .do-avoid-col.avoid li::before { content: '✕'; position: absolute; left: 0; color: var(--text-faint); font-weight: 900; }
-  @media (max-width: 620px) { .do-avoid { grid-template-columns: 1fr; } }
+.rec-body { font-size: 14.5px; color: #33333c; line-height: 1.85; }
+.rec-body p { margin-bottom: 14px; }
+.rec-body p:last-child { margin-bottom: 0; }
+.rec-body strong { color: var(--text-primary); }
+.rec-body .cite { font-size: 12.5px; color: var(--text-faint); font-weight: 700; }
+.rec-body .cite a { color: var(--text-faint); font-weight: 700; }
+.rec-body .cite a:hover { color: var(--lmnd-pink); }
 
-  /* METHODS */
-  .method-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow-sm); display: flex; gap: 16px; align-items: flex-start; }
-  .method-card .bullet { width: 8px; height: 8px; border-radius: 50%; background: var(--lmnd-pink); margin-top: 8px; flex-shrink: 0; }
-  .method-card .body { flex: 1; }
-  .method-card p { font-size: 14px; color: #33333c; line-height: 1.7; margin-bottom: 8px; }
-  .method-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .method-src { font-size: 11.5px; color: var(--text-faint); font-weight: 700; }
-  .week-label-tag { font-size: 10.5px; color: var(--lmnd-pink); background: var(--lmnd-pink-tint); padding: 2px 9px; border-radius: 999px; font-weight: 700; }
+.lemon-box { background: rgba(255, 200, 0, 0.07); border: 1px solid rgba(255, 180, 0, 0.25); border-radius: var(--radius-md); padding: 16px 20px; margin-top: 20px; font-size: 14px; line-height: 1.7; color: #3a3a2a; }
+.lemon-box .lemon-label { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: #b07d00; margin-bottom: 8px; }
+.lemon-box strong { color: #3a3a2a; }
 
-  /* COMPANIES CHART */
-  .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 24px 20px; box-shadow: var(--shadow-sm); }
+.tools-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.tool-chip { background: var(--surface-sunken); border: 1px solid var(--border); border-radius: 999px; padding: 5px 14px; font-size: 12.5px; font-weight: 700; color: var(--text-primary); text-decoration: none; transition: border-color .15s, color .15s; }
+.tool-chip:hover { border-color: var(--lmnd-pink); color: var(--lmnd-pink); text-decoration: none; }
+.tools-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-faint); margin-top: 18px; margin-bottom: 8px; }
 
-  .empty-note { background: var(--surface); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 20px 24px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
-  footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
+/* APPENDIX */
+.appendix-header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+.appendix-header h2 { font-size: 13px; font-weight: 700; color: var(--text-muted); }
+.appendix-note { font-size: 13px; color: var(--text-faint); margin-bottom: 36px; }
+.app-topic-group { margin-bottom: 32px; }
+.app-topic-label { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: var(--lmnd-pink); margin-bottom: 12px; }
+.app-item { display: flex; gap: 12px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 13px 18px; margin-bottom: 8px; box-shadow: var(--shadow-sm); font-size: 13.5px; color: #33333c; line-height: 1.6; }
+.app-item .bullet { width: 7px; height: 7px; border-radius: 50%; background: var(--lmnd-pink); margin-top: 7px; flex-shrink: 0; }
+.app-item .avoid-x { width: 14px; height: 14px; color: var(--text-faint); margin-top: 3px; flex-shrink: 0; font-size: 14px; font-weight: 900; }
+.app-item a { color: var(--lmnd-pink); font-size: 12px; white-space: nowrap; }
+.app-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 640px) { .app-two-col { grid-template-columns: 1fr; } }
 
-  /* SOURCE LINKS */
-  .method-src-link { color: inherit; text-decoration: underline; text-decoration-color: rgba(0,0,0,0.25); text-underline-offset: 2px; }
-  .method-src-link:hover { color: var(--lmnd-pink); text-decoration-color: var(--lmnd-pink); }
-  .tool-pill-link { color: inherit; text-decoration: none; font-weight: 700; }
-  .tool-pill-link:hover { color: var(--lmnd-pink); }
-  .item-src-link { color: var(--text-faint); font-size: 11px; text-decoration: none; margin-left: 2px; }
-  .item-src-link:hover { color: var(--lmnd-pink); }
+/* PILLS */
+.pill-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill-item { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 700; color: var(--text-primary); box-shadow: var(--shadow-sm); position: relative; transition: border-color .15s; }
+.pill-item:hover { border-color: var(--lmnd-pink); }
+.pill-item a { color: var(--text-primary); font-weight: 700; text-decoration: none; }
+.pill-item a:hover { color: var(--lmnd-pink); }
+.pill-count { color: var(--lmnd-pink); font-weight: 900; margin-left: 5px; font-size: 11px; }
+.pill-first { font-size: 10px; color: var(--text-faint); margin-top: 1px; }
+.pill-trending { background: var(--lmnd-pink); color: white; font-size: 9px; font-weight: 900; padding: 1px 5px; border-radius: 999px; margin-left: 4px; vertical-align: middle; }
+.pill-new { background: var(--text-primary); color: white; font-size: 9px; font-weight: 900; padding: 1px 5px; border-radius: 999px; margin-left: 4px; vertical-align: middle; }
+
+/* COMPANIES CHART */
+#companiesChart { max-height: 320px; }
+
+footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-faint); }
 </style>
 </head>
 <body>
 
 <nav class="top-nav">
   <a href="../index.html">← All Issues</a>
-  <div style="font-size:11px; color:var(--text-faint); font-weight:700; letter-spacing:1.2px; text-transform:uppercase;">Trends</div>
+  <div style="font-size:11px; color:var(--text-faint); font-weight:700; letter-spacing:1.2px; text-transform:uppercase;">L&D + AI — What To Do Now</div>
 </nav>
 
 <div class="header">
-  <h1>Where This Field Is Heading</h1>
-  <p>Not a word cloud — a synthesis of direction, guidance, roles, tools, and real methods pulled from every verified weekly update. Sharpens as more weeks publish.</p>
+  <h1>What To Do Now</h1>
+  <p>Advisory synthesis across every verified weekly update — what the research actually says, what it means for L&D at Lemonade, and which tools are worth using.</p>
+  <div class="meta" id="header-meta">Loading…</div>
 </div>
 
-<div class="container" x-data="trendsApp()" x-cloak>
+<div class="container">
 
-  <!-- WHAT'S NEW THIS WEEK -->
-  <template x-if="weeks.length >= 2">
-    <div class="delta-section reveal">
-      <div class="delta-header">
-        <h2>What's New This Week</h2>
-        <span class="delta-week-badge" x-text="latestWeek ? latestWeek.label : ''"></span>
-      </div>
-      <template x-if="deltaRoles.length > 0">
-        <div class="delta-group">
-          <div class="delta-group-label">Net-new Roles</div>
-          <div class="delta-chips">
-            <template x-for="r in deltaRoles" :key="r">
-              <span class="delta-chip"><span class="new-badge">NEW</span><span x-text="r"></span></span>
-            </template>
-          </div>
-        </div>
-      </template>
-      <template x-if="deltaTools.length > 0">
-        <div class="delta-group">
-          <div class="delta-group-label">Net-new Tools</div>
-          <div class="delta-chips">
-            <template x-for="t in deltaTools" :key="t">
-              <span class="delta-chip"><span class="new-badge">NEW</span><span x-text="t"></span></span>
-            </template>
-          </div>
-        </div>
-      </template>
-      <template x-if="deltaRoles.length === 0 && deltaTools.length === 0">
-        <p class="delta-empty">No net-new roles or tools this week — building on existing signals.</p>
-      </template>
-    </div>
-  </template>
-
-  <!-- DIRECTION STEPPER -->
-  <div class="section reveal">
-    <p class="section-label">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
-      Direction
-    </p>
-    <p class="confidence-note" x-text="confidenceNote"></p>
-    <div class="stepper">
-      <template x-for="(phase, idx) in phases" :key="idx">
-        <div class="phase" :class="{ 'is-now': phase.isNow }">
-          <div class="phase-header" @click="phase.open = !phase.open">
-            <div class="phase-num" x-text="idx + 1"></div>
-            <div class="phase-meta">
-              <div class="phase-title">
-                <span x-text="phase.title"></span>
-                <span class="now-badge" x-show="phase.isNow">NOW</span>
-              </div>
-              <div class="phase-question" x-text="phase.question"></div>
-            </div>
-            <svg class="phase-chevron" :class="{ open: phase.open }" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-          </div>
-          <div class="phase-body" x-show="phase.open" x-transition style="display:none;">
-            <template x-for="para in phase.body" :key="para">
-              <p x-html="para"></p>
-            </template>
-          </div>
-        </div>
-      </template>
-    </div>
+  <!-- DIRECTION ARC -->
+  <div class="section-label reveal">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+    Where the field is heading
   </div>
-
-  <!-- DO / AVOID -->
-  <div class="section reveal">
-    <p class="section-label">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
-      Do This / Avoid This
-    </p>
-    <div class="filter-bar">
-      <button class="filter-chip" :class="{ active: doAvoidFilter === 'all' }" @click="doAvoidFilter = 'all'">All</button>
-      <template x-for="w in weeks" :key="w.id">
-        <button class="filter-chip" :class="{ active: doAvoidFilter === w.id }" @click="doAvoidFilter = w.id" x-text="w.shortLabel"></button>
-      </template>
-    </div>
-    <div class="do-avoid">
-      <div class="do-avoid-col do">
-        <h3>Do This</h3>
-        <ul>
-          <template x-for="item in filteredDoItems" :key="item.text + item.weekId">
-            <li>
-              <span x-html="item.sourceUrl ? item.text + ' <a href=\'' + item.sourceUrl + '\' target=\'_blank\' rel=\'noopener\' class=\'item-src-link\'>↗</a>' : item.text"></span>
-              <span class="item-week-tag" x-show="doAvoidFilter === 'all'" x-text="item.shortLabel"></span>
-            </li>
-          </template>
-          <li x-show="filteredDoItems.length === 0" style="color:var(--text-faint);font-size:13px;">None recorded for this week.</li>
-        </ul>
+  <div class="stepper reveal" x-data="{open: 5}">
+    <div class="phase-item" :class="{now: false}">
+      <div class="phase-header" @click="open = open===1 ? null : 1">
+        <div class="phase-num">1</div>
+        <div class="phase-title-wrap"><h3>Adoption</h3><div class="q">"Will we use AI?" — answered: yes, 87%</div></div>
+        <div class="phase-chevron" :style="open===1 ? 'transform:rotate(90deg)' : ''">›</div>
       </div>
-      <div class="do-avoid-col avoid">
-        <h3>Avoid This</h3>
-        <ul>
-          <template x-for="item in filteredAvoidItems" :key="item.text + item.weekId">
-            <li>
-              <span x-html="item.sourceUrl ? item.text + ' <a href=\'' + item.sourceUrl + '\' target=\'_blank\' rel=\'noopener\' class=\'item-src-link\'>↗</a>' : item.text"></span>
-              <span class="item-week-tag" x-show="doAvoidFilter === 'all'" x-text="item.shortLabel"></span>
-            </li>
-          </template>
-          <li x-show="filteredAvoidItems.length === 0" style="color:var(--text-faint);font-size:13px;">None recorded for this week.</li>
-        </ul>
+      <div class="phase-body" x-show="open===1" x-cloak>
+        <p>The access question is settled. <strong>87% of L&D teams use AI in some form</strong> — but only 12% of individual employees use it daily. The gap isn't awareness. It's the absence of structured, repeated practice embedded in actual work.</p>
+        <p>The Booking.com case defined the shift: they replaced "access" with a measurable goal (12+ active days/month), supported by 2-day workshops and recurring office hours. Adoption jumped 65%. Duolingo went further: removing environment-setup friction via Codespaces had more impact than any training program.</p>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-header" @click="open = open===2 ? null : 2">
+        <div class="phase-num">2</div>
+        <div class="phase-title-wrap"><h3>Governance</h3><div class="q">"How do we govern it?"</div></div>
+        <div class="phase-chevron" :style="open===2 ? 'transform:rotate(90deg)' : ''">›</div>
+      </div>
+      <div class="phase-body" x-show="open===2" x-cloak>
+        <p>Microsoft's $2.5B "forward-deployed" model settled the governance debate: <strong>governance isn't an IT policy — it's a culture-building program.</strong> Embedding engineers directly in workflows, not training them separately, is the model that works.</p>
+        <p>Go1 found 80% of IT leaders discovered AI tools deployed without review. The governance failure isn't policy gaps — it's L&D teams treating governance as someone else's problem. iVentiv's analysis: orchestrate across culture, legal, HR, leadership — not just IT.</p>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-header" @click="open = open===3 ? null : 3">
+        <div class="phase-num">3</div>
+        <div class="phase-title-wrap"><h3>Measurement</h3><div class="q">"How do we prove it works?"</div></div>
+        <div class="phase-chevron" :style="open===3 ? 'transform:rotate(90deg)' : ''">›</div>
+      </div>
+      <div class="phase-body" x-show="open===3" x-cloak>
+        <p>Less than a quarter of L&D teams measure whether training achieves organizational goals (ATD 2026). <strong>83% of vendors sell analytics as feature #1 — the product moved faster than the practice.</strong></p>
+        <p>Faros AI's finding is the tell: AI adoption increased task volume 21%, but PR review time grew 91%. Measuring output alone missed the bottleneck entirely. The behavioral signal — not self-report, not completion rate — is the only measurement that holds.</p>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-header" @click="open = open===4 ? null : 4">
+        <div class="phase-num">4</div>
+        <div class="phase-title-wrap"><h3>Reshape</h3><div class="q">"How do we redesign work around it?"</div></div>
+        <div class="phase-chevron" :style="open===4 ? 'transform:rotate(90deg)' : ''">›</div>
+      </div>
+      <div class="phase-body" x-show="open===4" x-cloak>
+        <p>BCG's 14,000-worker survey: 72% say AI has already changed their skills expectations. <strong>42% are expected to figure it out alone</strong> (Bright Horizons). Amazon targeted 7× upskilling for 700,000 employees — not tool access, role reinvention.</p>
+        <p>BCG data shows 25 percentage points higher business impact when AI strategy accompanies tools versus tools alone. The unit of change is the team workflow, not the individual tool license.</p>
+      </div>
+    </div>
+    <div class="phase-item now">
+      <div class="phase-header" @click="open = open===5 ? null : 5">
+        <div class="phase-num">5</div>
+        <div class="phase-title-wrap"><h3>AI-Native <span class="now-badge">NOW</span></h3><div class="q">"Is our infrastructure built for this, or just bolt-on?"</div></div>
+        <div class="phase-chevron" :style="open===5 ? 'transform:rotate(90deg)' : ''">›</div>
+      </div>
+      <div class="phase-body" x-show="open===5" x-cloak>
+        <p>Workday Learning + Sana went GA July 22, 2026 — the first Tier 1 LMS built AI-first. 3× learner engagement, 98% faster content creation, learning paths tied to real HCM data. <strong>The evaluation criterion has shifted: not "does it have AI features?" but "is its AI foundational or cosmetic?"</strong></p>
+        <p>TalentLMS found 59% of employees use AI for tasks they were never trained for — invisible in any standard LMS report. That's a measurement gap AND an infrastructure gap: most learning systems weren't designed to detect this.</p>
       </div>
     </div>
   </div>
 
-  <!-- ROLES -->
-  <div class="section reveal">
-    <p class="section-label">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Roles &amp; Titles Gaining Traction
-    </p>
-    <div class="filter-bar">
-      <button class="filter-chip" :class="{ active: rolesFilter === 'all' }" @click="rolesFilter = 'all'">All</button>
-      <template x-for="w in weeks" :key="w.id">
-        <button class="filter-chip" :class="{ active: rolesFilter === w.id }" @click="rolesFilter = w.id" x-text="w.shortLabel"></button>
-      </template>
+  <hr class="section-divider">
+
+  <!-- RECOMMENDATIONS BY TOPIC -->
+  <div class="section-label reveal">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    What to do — by topic
+  </div>
+
+  <!-- 1. ADOPTION -->
+  <div class="rec-card reveal">
+    <div class="rec-card-header">
+      <div class="rec-topic-num">1</div>
+      <div>
+        <div class="rec-topic-title">Adoption</div>
+        <div class="rec-topic-subtitle">Moving from access to real, repeated use</div>
+      </div>
     </div>
-    <div class="pill-cloud">
-      <template x-for="item in filteredRoles" :key="item.name">
-        <div class="pill-item" :class="{ 'is-hot': item.isInLatest }">
-          <div class="pill-name-row">
-            <span x-text="item.name"></span>
-            <span class="pill-count" x-show="item.count > 1" x-text="item.count"></span>
-            <span class="badge-new" x-show="item.isNewInLatest">NEW</span>
-            <span class="badge-hot" x-show="item.isInLatest && !item.isNewInLatest">🔥</span>
-          </div>
-          <div class="pill-meta" x-text="'First seen: ' + item.firstShortLabel"></div>
-        </div>
-      </template>
-      <span x-show="filteredRoles.length === 0" style="color:var(--text-faint);font-size:13px;">None for this week.</span>
+    <div class="stat-callout">
+      <div class="num">12%</div>
+      <div class="desc">of employees use AI daily — despite 87% org-level adoption. The gap is structured practice, not awareness. <span class="cite">(<a href="https://chieflearningofficer.com/2026/05/gallup-ai-adoption" target="_blank">CLO / Gallup ↗</a>)</span></div>
+    </div>
+    <div class="rec-body">
+      <p>The Booking.com case is the clearest playbook available: replace "we gave them access" with a <strong>measurable use target</strong> (they chose 12+ active days/month), then back it with 2-day hands-on workshops and recurring weekly office hours. Adoption jumped 65%. The structural lesson: access is a precondition, not an outcome. <span class="cite">(<a href="https://getdx.com/customers/booking-drives-ai-adoption-with-dx/" target="_blank">DX / Booking.com case ↗</a>)</span></p>
+      <p>Remove setup friction before anything else. Duolingo's internal experience: eliminating environment-setup friction via GitHub Codespaces had more measurable impact on AI adoption than any training they ran. Developers who spend their first day fighting setup don't adopt. <span class="cite">(<a href="https://github.com/customer-stories/duolingo" target="_blank">GitHub / Duolingo ↗</a>)</span></p>
+      <p>Don't stop at literacy (safe baseline use). <strong>Most 2026 programs stop at literacy — the wrong finish line.</strong> The target is fluency: using AI for real advantage, knowing when not to trust it, developing judgment about what to hand off. Stripe's onboarding model — real backlog tasks with a mentor, not toy projects — produces developers who are fluent, not just licensed. <span class="cite">(<a href="https://stripe.com/guides/atlas/scaling-eng" target="_blank">Stripe Atlas ↗</a>)</span></p>
+    </div>
+    <div class="lemon-box">
+      <div class="lemon-label">🍋 At Lemonade</div>
+      <p>Your 3+ month onboarding ramp is the adoption window. <strong>Don't use it for content delivery — use it for structured practice with real backlog tasks.</strong> Set a measurable use target (e.g., AI-assisted PR reviews on at least 3 real tasks in the first 4 weeks). Add a retrieval layer over existing Slack threads, runbooks, and PR history — make existing knowledge findable before adding new content. Senior engineers are your highest-resistance cohort; target them specifically with workflow-level enablement, not general training.</p>
+    </div>
+    <div class="tools-label">Worth using</div>
+    <div class="tools-row">
+      <a class="tool-chip" href="https://github.com/features/copilot" target="_blank">GitHub Copilot ↗</a>
+      <a class="tool-chip" href="https://github.com/features/codespaces" target="_blank">GitHub Codespaces ↗</a>
+      <a class="tool-chip" href="https://enboarder.com" target="_blank">Enboarder ↗</a>
+      <a class="tool-chip" href="https://careerchoice.amazon/" target="_blank">Amazon Career Choice ↗</a>
     </div>
   </div>
 
-  <!-- TOOLS -->
-  <div class="section reveal">
-    <p class="section-label">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-      Tools &amp; Platforms Showing Up
-    </p>
-    <div class="filter-bar">
-      <button class="filter-chip" :class="{ active: toolsFilter === 'all' }" @click="toolsFilter = 'all'">All</button>
-      <template x-for="w in weeks" :key="w.id">
-        <button class="filter-chip" :class="{ active: toolsFilter === w.id }" @click="toolsFilter = w.id" x-text="w.shortLabel"></button>
-      </template>
+  <!-- 2. GOVERNANCE -->
+  <div class="rec-card reveal">
+    <div class="rec-card-header">
+      <div class="rec-topic-num">2</div>
+      <div>
+        <div class="rec-topic-title">Governance</div>
+        <div class="rec-topic-subtitle">Building judgment into the workflow, not a compliance layer on top</div>
+      </div>
     </div>
-    <div class="pill-cloud">
-      <template x-for="item in filteredTools" :key="item.name">
-        <div class="pill-item" :class="{ 'is-hot': item.isInLatest }">
-          <div class="pill-name-row">
-            <template x-if="item.url">
-              <a :href="item.url" target="_blank" rel="noopener" class="tool-pill-link" x-text="item.name + ' ↗'"></a>
-            </template>
-            <template x-if="!item.url">
-              <span x-text="item.name"></span>
-            </template>
-            <span class="pill-count" x-show="item.count > 1" x-text="item.count"></span>
-            <span class="badge-new" x-show="item.isNewInLatest">NEW</span>
-            <span class="badge-hot" x-show="item.isInLatest && !item.isNewInLatest">🔥</span>
-          </div>
-          <div class="pill-meta" x-text="'First seen: ' + item.firstShortLabel"></div>
-        </div>
-      </template>
-      <span x-show="filteredTools.length === 0" style="color:var(--text-faint);font-size:13px;">None for this week.</span>
+    <div class="stat-callout">
+      <div class="num">80%</div>
+      <div class="desc">of IT leaders discovered AI tools deployed without IT review — shadow AI is already the norm, not the exception. <span class="cite">(<a href="https://www.prnewswire.com/news-releases/confidence-in-ld-is-rising-but-ai-is-making-learning-tech-an-enterprise-decision-302795909.html" target="_blank">Go1 survey ↗</a>)</span></div>
+    </div>
+    <div class="rec-body">
+      <p>Microsoft's $2.5B "forward-deployed" AI implementation model defines the current benchmark: embed engineers directly into team workflows instead of training them separately. The governance insight isn't about policy — <strong>it's that governance and enablement are the same program</strong>, not sequential steps. <span class="cite">(<a href="https://www.cnbc.com/2026/07/02/microsoft-commits-2point5-billion-6000-employees-ai-implementation-unit.html" target="_blank">CNBC ↗</a>)</span></p>
+      <p>Build "when to trust AI / when to challenge it" directly into existing artifacts — PR templates, code review guides, incident post-mortems. Not a course, not a policy doc. The judgment habit becomes governance when it lives in the work itself. The Wharton finding is the risk case: people accepted wrong AI answers <strong>80% of the time, confidently</strong>. The confident tone is the hazard. <span class="cite">(<a href="https://www.iventiv.com/news/2026-ld-trends-skills-based-organisations-ai-governance-and-learning-culture" target="_blank">iVentiv ↗</a>)</span></p>
+      <p>On vendor evaluation: only 24% of AI features promised in vendor roadmap slides are actually live (Fosway Group 2026). <strong>Require a running demo, not a slide deck.</strong> Ask specifically: is the AI connected to our actual employee data, or is it generating from a generic model with no organizational context?</p>
+    </div>
+    <div class="lemon-box">
+      <div class="lemon-label">🍋 At Lemonade</div>
+      <p>Start with a 5-question AI tool census — what tools are actually in use by engineers right now, licensed or not. That's your real curriculum. Then build "why do you trust this?" into PR templates as a single required field — cheap, structural, and it builds the evaluation habit without a training module. <strong>Don't delegate AI governance to IT.</strong> Orchestrate it across engineering culture, team leads, and onboarding — that's where the actual decisions happen.</p>
+    </div>
+    <div class="tools-label">Worth using</div>
+    <div class="tools-row">
+      <a class="tool-chip" href="https://www.go1.com" target="_blank">Go1 ↗</a>
+      <a class="tool-chip" href="https://www.workday.com/en-us/products/human-capital-management/learning.html" target="_blank">Workday Learning ↗</a>
     </div>
   </div>
 
-  <!-- METHODS -->
-  <div class="section reveal">
-    <p class="section-label">
-      <svg class="icon" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
-      Methods &amp; Use Cases In Practice
-    </p>
-    <div class="filter-bar">
-      <button class="filter-chip" :class="{ active: methodsFilter === 'all' }" @click="methodsFilter = 'all'">All</button>
-      <template x-for="w in weeks" :key="w.id">
-        <button class="filter-chip" :class="{ active: methodsFilter === w.id }" @click="methodsFilter = w.id" x-text="w.shortLabel"></button>
-      </template>
+  <!-- 3. MEASUREMENT -->
+  <div class="rec-card reveal">
+    <div class="rec-card-header">
+      <div class="rec-topic-num">3</div>
+      <div>
+        <div class="rec-topic-title">Measurement</div>
+        <div class="rec-topic-subtitle">Behavioral signals over self-reports and completion rates</div>
+      </div>
     </div>
-    <div>
-      <template x-for="m in filteredMethods" :key="m.text + m.weekId">
-        <div class="method-card">
-          <div class="bullet"></div>
-          <div class="body">
-            <p x-html="m.sourceUrl ? '<a href=\'' + m.sourceUrl + '\' target=\'_blank\' rel=\'noopener\' class=\'method-src-link\'>' + m.text + '</a>' : m.text"></p>
-            <div class="method-meta">
-              <span class="method-src" x-text="m.source"></span>
-              <span class="week-label-tag" x-text="m.shortLabel"></span>
-            </div>
-          </div>
-        </div>
-      </template>
-      <div class="empty-note" x-show="filteredMethods.length === 0">No methods recorded for this week.</div>
+    <div class="stat-callout">
+      <div class="num">91%</div>
+      <div class="desc">longer PR review time after AI adoption — despite 21% more tasks completed. Output metrics missed the bottleneck entirely. <span class="cite">(<a href="https://www.faros.ai/blog/lab-vs-reality-ai-productivity-study-findings" target="_blank">Faros AI ↗</a>)</span></div>
+    </div>
+    <div class="rec-body">
+      <p>The ATD 2026 State of the Industry report: <strong>less than a quarter of L&D teams measure whether training achieves organizational goals.</strong> Completion rates are still the dominant metric. Meanwhile 83% of vendors sell analytics as their #1 feature — the product has moved faster than the practice. <span class="cite">(<a href="https://www.td.org/content/atd-blog/highlights-from-atd-s-2026-state-of-the-industry-report" target="_blank">ATD ↗</a>)</span></p>
+      <p>The Faros AI finding is the measurement case study: teams measured AI adoption by task volume (up 21%) and called it a win. The actual outcome — PR review time up 91% — only appeared when they measured cycle time and bottleneck location. <strong>The signal you need is behavioral and real-time, not a quarterly survey.</strong> <span class="cite">(<a href="https://www.faros.ai/blog/lab-vs-reality-ai-productivity-study-findings" target="_blank">Faros AI ↗</a>)</span></p>
+      <p>Schneider Electric's approach: replace skills surveys entirely with GitHub behavioral signals — commits, code review patterns, PR frequency — as a living skills atlas. IBM/Eightfold AI did the same for internal mobility. <strong>Actual work-sample data > self-report, every time.</strong> The 100-dev team study confirmed: teams with structured week-2 and week-6 checkpoint conversations see sustained AI adoption; teams without see regression by week 11. <span class="cite">(<a href="https://www.modernexecutivesolutions.com/articles/how-schneider-electric-built-an-internal-talent-market-nearly-all-its-employees-use" target="_blank">Schneider Electric ↗</a>, <a href="https://www.digitalapplied.com/blog/case-study-ai-coding-rollout-100-dev-team-quarterly-data-2026" target="_blank">100-dev study ↗</a>)</span></p>
+    </div>
+    <div class="lemon-box">
+      <div class="lemon-label">🍋 At Lemonade</div>
+      <p>Add "explain the core logic of your most significant change this week" to your code review template. This single field surfaces learning debt before it compounds — and costs nothing to implement. <strong>Define behavioral change metrics at week 1, 4, and 12 before designing any program</strong> — not the training content, the behavioral target. GitHub activity data (PR frequency, review patterns, commit patterns by new hire cohort) is your skills atlas. It already exists; you just need to read it.</p>
+    </div>
+    <div class="tools-label">Worth using</div>
+    <div class="tools-row">
+      <a class="tool-chip" href="https://faros.ai" target="_blank">Faros AI ↗</a>
+      <a class="tool-chip" href="https://getdx.com" target="_blank">DX (getdx.com) ↗</a>
+      <a class="tool-chip" href="https://eightfold.ai" target="_blank">Eightfold AI ↗</a>
     </div>
   </div>
+
+  <!-- 4. RESHAPE -->
+  <div class="rec-card reveal">
+    <div class="rec-card-header">
+      <div class="rec-topic-num">4</div>
+      <div>
+        <div class="rec-topic-title">Reshape</div>
+        <div class="rec-topic-subtitle">Team-level workflow redesign, not individual tool access</div>
+      </div>
+    </div>
+    <div class="stat-callout">
+      <div class="num">+25pp</div>
+      <div class="desc">higher business impact when AI strategy accompanies tools — versus tools alone. The unit of change is the team workflow, not the individual license. <span class="cite">(<a href="https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" target="_blank">BCG, 14K workers ↗</a>)</span></div>
+    </div>
+    <div class="rec-body">
+      <p>BCG's survey of 14,000 workers finds that 72% say AI has already changed their skills expectations, and 50-55% of US jobs will be substantially changed in the next 2-3 years. <strong>But 42% of employees are expected to figure it out alone</strong> (Bright Horizons). Amazon's Future Ready program overshot its 7× upskilling target for 700,000 employees — by designing for role reinvention, not tool access. <span class="cite">(<a href="https://investors.brighthorizons.com/news-releases/news-release-details/2026-workforce-outlook-employers-prioritize-ai-literacy-and" target="_blank">Bright Horizons ↗</a>)</span></p>
+      <p>The Faros AI finding tells you where individual adoption breaks down: task volume increases, but PR review time grows 91% because the constraint shifts to senior engineers. <strong>Individual AI access without workflow redesign just moves the bottleneck upstream.</strong> Build an explicit review triage standard — which AI-generated code gets fast-tracked vs. deep review — as a teachable, transferable skill embedded in onboarding. <span class="cite">(<a href="https://www.faros.ai/blog/lab-vs-reality-ai-productivity-study-findings" target="_blank">Faros AI ↗</a>)</span></p>
+      <p>Start with one squad, not a company-wide program. Map where AI is being used and where the human judgment bottleneck is in that squad's specific workflow. Redesign that single step. Then scale the pattern. BCG's data: teams with a clear AI strategy see 25pp more business impact than those with just tool access.</p>
+    </div>
+    <div class="lemon-box">
+      <div class="lemon-label">🍋 At Lemonade</div>
+      <p>Pick one squad. Run a 2-week observation: where is AI being used, and where does the work pile up at a senior engineer's queue? That bottleneck is your first design problem. <strong>Build a 3-item AI practice minimum into engineering onboarding</strong> — one prompt pattern to use, one anti-pattern to avoid, one review habit to apply. Not a course, a standard. Internal mobility at Lemonade will accelerate when you remove the first blocker (tenure/manager approval gates) before adding the tool layer. Design internal mobility as friction removal first, enablement second.</p>
+    </div>
+    <div class="tools-label">Worth using</div>
+    <div class="tools-row">
+      <a class="tool-chip" href="https://gloat.com" target="_blank">Gloat ↗</a>
+      <a class="tool-chip" href="https://www.rippling.com" target="_blank">Rippling ↗</a>
+      <a class="tool-chip" href="https://leena.ai" target="_blank">Leena AI ↗</a>
+    </div>
+  </div>
+
+  <!-- 5. AI-NATIVE -->
+  <div class="rec-card reveal">
+    <div class="rec-card-header">
+      <div class="rec-topic-num">5</div>
+      <div>
+        <div class="rec-topic-title">AI-Native Infrastructure</div>
+        <div class="rec-topic-subtitle">Foundational vs. cosmetic — the only platform question that matters now</div>
+      </div>
+    </div>
+    <div class="stat-callout">
+      <div class="num">59%</div>
+      <div class="desc">of employees use AI for tasks they were never trained for — invisible in any standard LMS completion report. <span class="cite">(<a href="https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" target="_blank">TalentLMS Learning Debt Report ↗</a>)</span></div>
+    </div>
+    <div class="rec-body">
+      <p>Workday Learning + Sana went GA on July 22, 2026 — the first Tier 1 LMS built AI-first rather than AI-added. 3× learner engagement, 98% faster content creation, learning paths connected to real HCM data. The significance isn't the product — it's what it signals: <strong>the evaluation criterion has permanently shifted from "does it have AI features?" to "is its AI foundational or cosmetic?"</strong> <span class="cite">(<a href="https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" target="_blank">Workday/Sana GA ↗</a>)</span></p>
+      <p>The TalentLMS Learning Debt Report identifies the infrastructure gap: 59% of employees use AI to complete tasks they were never trained for. That skill gap is invisible in any LMS built around completions and enrollments. The debt accumulates silently. <strong>An AI-native LMS detects behavioral gaps from actual work patterns — not from what people self-report.</strong></p>
+      <p>Bersin's Dynamic Enablement model, validated across fast-moving codebases: the fastest path to AI-native learning isn't a new platform — it's a retrieval layer over what you already have. Make existing knowledge findable (Slack, runbooks, PR history, docs) before buying a new system. That's infrastructure too. <span class="cite">(<a href="https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/" target="_blank">Josh Bersin ↗</a>)</span></p>
+    </div>
+    <div class="lemon-box">
+      <div class="lemon-label">🍋 At Lemonade</div>
+      <p>Before evaluating any L&D platform: <strong>build a retrieval layer over what you already have.</strong> 3+ months of engineer Slack threads, runbooks, PR comments, and architecture docs contain more relevant onboarding knowledge than any content you could create. Make it findable. Then, when evaluating new platforms, require a live demo showing the AI connected to real employee data — not a slide. Ask specifically: "show me a learning path generated from actual skill gap data in our org, not a generic template."</p>
+    </div>
+    <div class="tools-label">Worth using</div>
+    <div class="tools-row">
+      <a class="tool-chip" href="https://sana.ai" target="_blank">Sana ↗</a>
+      <a class="tool-chip" href="https://www.workday.com/en-us/products/human-capital-management/learning.html" target="_blank">Workday Learning ↗</a>
+      <a class="tool-chip" href="https://www.talentlms.com" target="_blank">TalentLMS ↗</a>
+      <a class="tool-chip" href="https://joshbersin.com/2023/11/galileo/" target="_blank">Galileo (Bersin) ↗</a>
+      <a class="tool-chip" href="https://www.aboutamazon.com/news/aws/amazon-quick-suite-agentic-ai-aws-work" target="_blank">Amazon Quick ↗</a>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- APPENDIX -->
+  <div class="appendix-header reveal">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+    <h2>APPENDIX — Full Reference Data</h2>
+  </div>
+  <p class="appendix-note reveal">Organized by topic. All sourced from verified published research.</p>
+
+  <!-- METHODS BY TOPIC -->
+  <div class="section-label reveal" style="margin-top:0">Methods in practice</div>
+
+  <div class="app-topic-group reveal">
+    <div class="app-topic-label">Adoption</div>
+    <div class="app-item"><div class="bullet"></div><div>Remove environment-setup friction (Codespaces) instead of running a training program <a href="https://github.com/customer-stories/duolingo" target="_blank">Duolingo ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Reframe the goal from 'adoption' to 'frequent, effective use' (12+ days/month), backed by 2-day workshops + recurring office hours <a href="https://getdx.com/customers/booking-drives-ai-adoption-with-dx/" target="_blank">Booking.com ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Pair new hires with a mentor on real backlog tasks for 3-4 weeks instead of toy onboarding projects <a href="https://stripe.com/guides/atlas/scaling-eng" target="_blank">Stripe ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Build a shared AI skill library specific to your codebase (not generic tips) with week-2 and week-6 checkpoint conversations <a href="https://www.digitalapplied.com/blog/case-study-ai-coding-rollout-100-dev-team-quarterly-data-2026" target="_blank">100-dev study ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Run a 5-question AI tool census to map what tools are actually in use before designing any training <a href="https://www.prnewswire.com/news-releases/confidence-in-ld-is-rising-but-ai-is-making-learning-tech-an-enterprise-decision-302795909.html" target="_blank">Go1 ↗</a></div></div>
+  </div>
+
+  <div class="app-topic-group reveal">
+    <div class="app-topic-label">Governance</div>
+    <div class="app-item"><div class="bullet"></div><div>Design human-AI collaboration into workflows from day one — don't add training layers on top of tools <a href="https://www.cnbc.com/2026/07/02/microsoft-commits-2point5-billion-6000-employees-ai-implementation-unit.html" target="_blank">Microsoft ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Shift L&D governance focus from 'what can AI do?' to 'what should it do?' — embed culture, ethics, judgment into enablement <a href="https://iventiv.com/news/2026-ld-trends-skills-based-organisations-ai-governance-and-learning-culture" target="_blank">iVentiv ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>During platform evaluation, require a live demo showing AI connected to real employee data — not a slideshow <a href="https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" target="_blank">Workday/Sana ↗</a></div></div>
+  </div>
+
+  <div class="app-topic-group reveal">
+    <div class="app-topic-label">Measurement</div>
+    <div class="app-item"><div class="bullet"></div><div>Treat GitHub behavioral signals (commits, code review patterns, PR frequency) as a skills atlas instead of relying on self-reported surveys <a href="https://www.modernexecutivesolutions.com/articles/how-schneider-electric-built-an-internal-talent-market-nearly-all-its-employees-use" target="_blank">Schneider Electric ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Mine real work-sample signals (GitHub activity, review patterns) instead of self-reported skills surveys <a href="https://www.reworked.co/employee-experience/internal-job-mobility-becomes-proactive-with-help-from-ai/" target="_blank">IBM/Eightfold ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Define behavioral change metrics at week 1, 4, and 12 before building any L&D program <a href="https://www.td.org/content/atd-blog/highlights-from-atd-s-2026-state-of-the-industry-report" target="_blank">ATD ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Add 'explain the core logic of your most significant change' to code review template to surface learning debt <a href="https://www.prnewswire.com/news-releases/talentlms-learning-debt-report-ai-use-may-be-masking-skill-gaps-302825216.html" target="_blank">TalentLMS ↗</a></div></div>
+  </div>
+
+  <div class="app-topic-group reveal">
+    <div class="app-topic-label">Reshape</div>
+    <div class="app-item"><div class="bullet"></div><div>Map one squad's AI usage and identify the human judgment bottleneck, then redesign that single step <a href="https://www.prnewswire.com/news-releases/ai-is-reshaping-jobs-faster-than-companies-are-reshaping-work-302789481.html" target="_blank">BCG ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Create explicit AI review triage criteria (which code gets fast-tracked vs. deep review) as a teachable standard <a href="https://www.faros.ai/blog/lab-vs-reality-ai-productivity-study-findings" target="_blank">Faros AI ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Automate deterministic onboarding tasks with agentic AI; save human attention for mentoring and cultural integration <a href="https://enboarder.com/blog/ai-onboarding-tool-guide-2026/" target="_blank">Enboarder ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Replace 'use AI however works for you' with a 3-item AI practice minimum embedded in onboarding <a href="https://investors.brighthorizons.com/news-releases/news-release-details/2026-workforce-outlook-employers-prioritize-ai-literacy-and" target="_blank">Bright Horizons ↗</a></div></div>
+  </div>
+
+  <div class="app-topic-group reveal">
+    <div class="app-topic-label">AI-Native</div>
+    <div class="app-item"><div class="bullet"></div><div>Build a retrieval layer over existing Slack/runbooks/PR history instead of writing new onboarding content <a href="https://joshbersin.com/2026/02/new-research-how-ai-transforms-400-billion-of-corporate-learning/" target="_blank">Bersin Dynamic Enablement ↗</a></div></div>
+    <div class="app-item"><div class="bullet"></div><div>Evaluate AI learning platforms by asking if the AI is foundational (connected to real HR data) or cosmetic (a 'generate with AI' button) <a href="https://www.prnewswire.com/news-releases/workday-learning-powered-by-sana-now-generally-available-as-an-ai-native-learning-experience-built-on-workdays-trusted-data-302831592.html" target="_blank">Workday/Sana ↗</a></div></div>
+  </div>
+
+  <hr class="section-divider" style="margin-top:16px;">
+
+  <!-- ROLES + TOOLS -->
+  <div class="section-label reveal">Roles gaining traction</div>
+  <div class="pill-cloud reveal" id="roles-cloud" style="margin-bottom:40px;"></div>
+
+  <div class="section-label reveal">Tools &amp; platforms</div>
+  <div class="pill-cloud reveal" id="tools-cloud" style="margin-bottom:40px;"></div>
 
   <!-- COMPANIES -->
-  <div class="section reveal">
-    <p class="section-label">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
-      Companies Cited
-    </p>
-    <div class="chart-wrap" x-show="companiesData.length > 0">
-      <div :style="'position:relative; height:' + Math.max(200, companiesData.length * 38) + 'px'">
-        <canvas id="companiesChart"></canvas>
-      </div>
-    </div>
-    <div class="empty-note" x-show="companiesData.length === 0">No company data recorded yet.</div>
+  <div class="section-label reveal">Companies cited</div>
+  <div class="reveal" style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:20px; box-shadow:var(--shadow-sm);">
+    <canvas id="companiesChart"></canvas>
+    <p id="no-companies" style="display:none; font-size:13px; color:var(--text-faint); text-align:center; padding:20px 0;">No company data yet.</p>
   </div>
 
 </div>
 
-<footer>L&amp;D + AI Weekly Digest · Trends synthesize real published weeks only</footer>
+<footer>L&D + AI Digest · Synthesized from verified published research · Updates every week</footer>
 
 <script>
-function trendsApp() {
-  return {
-    weeks: [],
-    latestWeek: null,
-    deltaRoles: [],
-    deltaTools: [],
-    phases: [],
-    doAvoidFilter: 'all',
-    rolesFilter: 'all',
-    toolsFilter: 'all',
-    methodsFilter: 'all',
-    companiesData: [],
-    confidenceNote: '',
-    toolUrls: {},
-    _allDoItems: [],
-    _allAvoidItems: [],
-    _allRoles: [],
-    _allTools: [],
-    _allMethods: [],
+fetch('../data/weeks.json')
+  .then(r => r.json())
+  .then(data => {
+    const weeks = (data.weeks || []).sort((a,b) => a.id.localeCompare(b.id));
+    const n = weeks.length;
+    if (!n) return;
 
-    get filteredDoItems() {
-      if (this.doAvoidFilter === 'all') {
-        const seen = new Set();
-        return this._allDoItems.filter(i => { if (seen.has(i.text)) return false; seen.add(i.text); return true; });
-      }
-      return this._allDoItems.filter(i => i.weekId === this.doAvoidFilter);
-    },
-    get filteredAvoidItems() {
-      if (this.doAvoidFilter === 'all') {
-        const seen = new Set();
-        return this._allAvoidItems.filter(i => { if (seen.has(i.text)) return false; seen.add(i.text); return true; });
-      }
-      return this._allAvoidItems.filter(i => i.weekId === this.doAvoidFilter);
-    },
-    get filteredRoles() {
-      if (this.rolesFilter === 'all') return this._allRoles;
-      return this._allRoles.filter(i => i.weekIds.includes(this.rolesFilter));
-    },
-    get filteredTools() {
-      if (this.toolsFilter === 'all') return this._allTools;
-      return this._allTools.filter(i => i.weekIds.includes(this.toolsFilter));
-    },
-    get filteredMethods() {
-      if (this.methodsFilter === 'all') return this._allMethods;
-      return this._allMethods.filter(m => m.weekId === this.methodsFilter);
-    },
+    document.getElementById('header-meta').textContent =
+      `Synthesized across ${n} verified weekly update${n > 1 ? 's' : ''} · Updated ${weeks[n-1].label}`;
 
-    shortLabel(label) {
-      return label.replace('Week of ', '').replace(/, \d{4}$/, '');
-    },
+    const latestWeek = weeks[n-1];
+    const prevWeeks = weeks.slice(0, -1);
 
-    async init() {
-      try {
-        const data = await fetch('../data/weeks.json').then(r => r.json());
-        this.toolUrls = data.toolUrls || {};
-        const raw = data.weeks || [];
-        if (!raw.length) return;
-
-        // Augment weeks with shortLabel
-        const weeks = raw.map(w => ({ ...w, shortLabel: this.shortLabel(w.label) }));
-        this.weeks = weeks;
-
-        this.confidenceNote = weeks.length === 1
-          ? 'Based on 1 verified week so far — direction will sharpen as more weeks publish.'
-          : `Synthesized across ${weeks.length} verified weekly updates.`;
-
-        const latest = weeks[weeks.length - 1];
-        this.latestWeek = latest;
-        const prior = weeks.slice(0, -1);
-        const priorRoleSet = new Set(prior.flatMap(w => w.roles || []));
-        const priorToolSet = new Set(prior.flatMap(w => w.tools || []));
-        this.deltaRoles = (latest.roles || []).filter(r => !priorRoleSet.has(r));
-        this.deltaTools = (latest.tools || []).filter(t => !priorToolSet.has(t));
-
-        // 5-phase stepper
-        this.phases = [
-          {
-            title: 'Adoption',
-            question: '"Will we use AI?"',
-            isNow: false,
-            open: false,
-            body: [
-              'The field answered this question definitively in 2026: <strong>87% of L&D teams are now using AI</strong>, crossing the tipping point from experimentation to expectation. But adoption rates mask a deeper gap — only 12% use AI daily, and most organizations are stuck between tool access and effective deployment.',
-              'The Booking.com case established the pattern: the first AI rollout stalled until real enablement was added. Tool access does not equal adoption. The confidence gap — knowing AI is available but not knowing what to build next — is where most L&D functions found themselves at the start of this arc.'
-            ]
-          },
-          {
-            title: 'Governance',
-            question: '"How do we govern it?"',
-            isNow: false,
-            open: false,
-            body: [
-              'Once adoption crossed the tipping point, governance became the next urgent question: <strong>not what AI can do, but what it should do</strong>. Decision rights, ethical guardrails, oversight accountability, and cultural integration all land here.',
-              'The Microsoft forward-deployed engineering model set the reference standard: embed L&D practitioners directly with AI-intensive teams, don\'t centralize training. The iVentiv analysis confirmed that governance must span culture, leadership, legal, risk, HR, and brand — not just IT. Organizations that designed governance early moved faster; those that didn\'t hit culture and adoption walls.'
-            ]
-          },
-          {
-            title: 'Measurement',
-            question: '"How do we prove it works?"',
-            isNow: false,
-            open: false,
-            body: [
-              '<strong>The measurement problem persists across every week.</strong> Less than a quarter of L&D teams measure whether training achieves organizational goals (ATD). 83% of L&D tech vendors now sell analytics as their #1 feature — but the practice hasn\'t followed. Completion rates are still the dominant metric in most organizations.',
-              'The TalentLMS Learning Debt report surfaces a new dimension: 59% of employees use AI to complete tasks they were never trained for — invisible to any LMS dashboard. The gap between AI appearance and actual skill is now a measurable organizational risk. The fix: define behavioral change expectations at week 1, 4, and 12 before building any program.'
-            ]
-          },
-          {
-            title: 'Reshape',
-            question: '"How do we redesign work around it?"',
-            isNow: false,
-            open: false,
-            body: [
-              '<strong>Reshape is the wave L&D has 2–3 years to act on.</strong> BCG\'s June 2026 survey of 14,000 workers finds 72% say AI has already changed their skills expectations, and 50–55% of US jobs will be substantially changed in the next 2–3 years. But 42% of employees are expected to figure it out alone (Bright Horizons).',
-              'Amazon\'s 7× upskilling overshoot on its Future Ready program shows what happens when you design for role reinvention rather than tool access. The Faros AI finding — 21% more tasks but 91% longer PR review time — shows what happens when you don\'t redesign the workflow around the tool. Individual AI access without collective workflow redesign just shifts the bottleneck; it doesn\'t remove it.'
-            ]
-          },
-          {
-            title: 'AI-Native',
-            question: '"Is our infrastructure built for this?"',
-            isNow: true,
-            open: true,
-            body: [
-              '<strong>The bolt-on AI era is ending.</strong> Workday Learning, powered by Sana, went GA on July 22, 2026 — the first Tier 1 LMS built AI-first, not AI-added: 3× learner engagement, 98% faster content creation, learning paths tied to real HCM data. The evaluation criterion for L&D platforms has shifted from "does it have AI features?" to "is its AI foundational or cosmetic?"',
-              'The Learning Debt report puts the infrastructure problem in concrete terms: 59% of employees are using AI for tasks they were never trained for — unmanaged, accumulating, invisible in any LMS report. The real architecture question is whether your measurement, governance, and content infrastructure is connected to actual workforce data — or still running on bolt-on features and completion rates.'
-            ]
-          }
-        ];
-
-        // Do/Avoid — store all per week, deduplicate in getter for "all" view
-        weeks.forEach(w => {
-          (w.doThis || []).forEach(t => this._allDoItems.push({ text: t, weekId: w.id, shortLabel: w.shortLabel }));
-          (w.avoidThis || []).forEach(t => this._allAvoidItems.push({ text: t, weekId: w.id, shortLabel: w.shortLabel }));
+    // PILLS helper
+    function buildPills(field, elId, urlMap) {
+      const counts = {}, firstSeen = {}, lastSeen = {};
+      weeks.forEach(w => {
+        (w[field] || []).forEach(item => {
+          const key = typeof item === 'object' ? item.text : item;
+          counts[key] = (counts[key] || 0) + 1;
+          if (!firstSeen[key]) firstSeen[key] = w;
+          lastSeen[key] = w;
         });
-
-        // Roles + Tools with temporal metadata
-        const buildPillData = (field) => {
-          const map = {};
-          weeks.forEach((w, idx) => {
-            (w[field] || []).forEach(name => {
-              if (!map[name]) {
-                map[name] = { name, count: 0, firstWeekIdx: idx, firstShortLabel: w.shortLabel, weekIds: [] };
-              }
-              map[name].count++;
-              if (!map[name].weekIds.includes(w.id)) map[name].weekIds.push(w.id);
-            });
-          });
-          const latestId = latest.id;
-          const latestIdx = weeks.length - 1;
-          return Object.values(map).map(item => ({
-            ...item,
-            isInLatest: item.weekIds.includes(latestId),
-            isNewInLatest: item.weekIds.includes(latestId) && item.firstWeekIdx === latestIdx,
-          })).sort((a, b) => b.count - a.count || (b.isInLatest ? 1 : 0) - (a.isInLatest ? 1 : 0));
-        };
-        this._allRoles = buildPillData('roles');
-        this._allTools = buildPillData('tools').map(t => ({ ...t, url: this.toolUrls[t.name] || null }));
-
-        // Methods with week metadata
-        weeks.forEach(w => {
-          (w.methods || []).forEach(m => this._allMethods.push({ ...m, weekId: w.id, shortLabel: w.shortLabel }));
-        });
-
-        // Companies
-        const compMap = {};
-        weeks.forEach(w => {
-          (w.companies || []).forEach(c => {
-            if (!compMap[c]) compMap[c] = { name: c, count: 0, weekLabels: [] };
-            compMap[c].count++;
-            compMap[c].weekLabels.push(w.shortLabel);
-          });
-        });
-        this.companiesData = Object.values(compMap).sort((a, b) => b.count - a.count);
-
-        // After DOM update: IntersectionObserver + Chart.js
-        this.$nextTick(() => {
-          const obs = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
-          }, { threshold: 0.05 });
-          document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-          if (this.companiesData.length > 0) {
-            const ctx = document.getElementById('companiesChart');
-            if (ctx) {
-              const labels = this.companiesData.map(c => c.name);
-              const counts = this.companiesData.map(c => c.count);
-              const weeksMap = this.companiesData.map(c => c.weekLabels);
-              new Chart(ctx, {
-                type: 'bar',
-                data: {
-                  labels,
-                  datasets: [{
-                    label: 'Mentions',
-                    data: counts,
-                    backgroundColor: 'rgba(255,0,131,0.15)',
-                    borderColor: '#FF0083',
-                    borderWidth: 2,
-                    borderRadius: 6,
-                    borderSkipped: false,
-                  }]
-                },
-                options: {
-                  indexAxis: 'y',
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                      callbacks: {
-                        label: (ctx) => {
-                          const wl = weeksMap[ctx.dataIndex];
-                          const n = counts[ctx.dataIndex];
-                          return ` ${n} mention${n > 1 ? 's' : ''} — ${wl.join(', ')}`;
-                        }
-                      }
-                    }
-                  },
-                  scales: {
-                    x: {
-                      grid: { color: 'rgba(0,0,0,0.04)' },
-                      ticks: { precision: 0, font: { family: 'Lato', size: 12 } },
-                      border: { display: false },
-                    },
-                    y: {
-                      grid: { display: false },
-                      ticks: { font: { family: 'Lato', size: 13, weight: '700' } },
-                      border: { display: false },
-                    }
-                  }
-                }
-              });
-            }
-          }
-        });
-      } catch(err) {
-        console.error('Trends data failed to load:', err);
-      }
+      });
+      const prevSet = new Set(prevWeeks.flatMap(w => (w[field]||[]).map(x => typeof x==='object'?x.text:x)));
+      const el = document.getElementById(elId);
+      const entries = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+      el.innerHTML = entries.map(([name, count]) => {
+        const isNew = !prevSet.has(name);
+        const isTrending = lastSeen[name]?.id === latestWeek?.id;
+        const url = urlMap && urlMap[name];
+        const inner = url
+          ? `<a href="${url}" target="_blank">${name} ↗</a>`
+          : name;
+        const badges = (isNew ? '<span class="pill-new">NEW</span>' : '') + (isTrending && !isNew ? '<span class="pill-trending">🔥</span>' : '');
+        const countBadge = count > 1 ? `<span class="pill-count">×${count}</span>` : '';
+        const firstLabel = `<div class="pill-first">first seen: ${firstSeen[name]?.label || ''}</div>`;
+        return `<div class="pill-item">${inner}${badges}${countBadge}${firstLabel}</div>`;
+      }).join('');
     }
-  };
-}
+
+    buildPills('roles', 'roles-cloud', null);
+    buildPills('tools', 'tools-cloud', data.toolUrls || {});
+
+    // COMPANIES CHART
+    const companyCounts = {}, companyWeeks = {};
+    weeks.forEach(w => {
+      (w.companies || []).forEach(c => {
+        companyCounts[c] = (companyCounts[c] || 0) + 1;
+        if (!companyWeeks[c]) companyWeeks[c] = [];
+        companyWeeks[c].push(w.label);
+      });
+    });
+    const entries = Object.entries(companyCounts).sort((a,b) => b[1]-a[1]).slice(0, 15);
+    if (!entries.length) {
+      document.getElementById('no-companies').style.display = 'block';
+      document.getElementById('companiesChart').style.display = 'none';
+    } else {
+      new Chart(document.getElementById('companiesChart'), {
+        type: 'bar',
+        data: {
+          labels: entries.map(e => e[0]),
+          datasets: [{ data: entries.map(e => e[1]), backgroundColor: 'rgba(255,0,131,0.12)', borderColor: '#FF0083', borderWidth: 2, borderRadius: 6 }]
+        },
+        options: {
+          indexAxis: 'y', responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => [`${ctx.raw} mention${ctx.raw>1?'s':''}`, `In: ${(companyWeeks[ctx.label]||[]).join(', ')}`] } }
+          },
+          scales: { x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { stepSize: 1 } }, y: { grid: { display: false } } }
+        }
+      });
+    }
+
+    // REVEAL
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } }), { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  })
+  .catch(() => { document.getElementById('header-meta').textContent = 'Data unavailable'; });
 </script>
 </body>
 </html>

@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <script data-goatcounter="https://liran-shaked.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -29,9 +28,8 @@ a:hover { text-decoration: underline; }
 .top-nav a { color: var(--text-muted); font-size: 13px; font-weight: 700; }
 .top-nav a:hover { color: var(--lmnd-pink); text-decoration: none; }
 
-.header { background: var(--surface); padding: 56px 24px 44px; text-align: center; border-bottom: 1px solid var(--border); }
-.header h1 { font-size: clamp(26px,4vw,40px); font-weight: 900; margin-bottom: 12px; letter-spacing: -0.01em; }
-.header p { font-size: 15px; color: var(--text-muted); max-width: 520px; margin: 0 auto 14px; }
+.header { background: var(--surface); padding: 28px 24px 18px; text-align: center; border-bottom: 1px solid var(--border); }
+.header h1 { font-size: clamp(22px,3vw,32px); font-weight: 900; margin-bottom: 6px; letter-spacing: -0.01em; }
 .header .meta { font-size: 12px; color: var(--text-faint); font-weight: 700; letter-spacing: 0.5px; }
 
 .container { max-width: 860px; margin: 0 auto; padding: 52px 20px 80px; }
@@ -41,14 +39,17 @@ a:hover { text-decoration: underline; }
 .section-divider { border: none; border-top: 1px solid var(--border); margin: 64px 0 48px; }
 
 /* STICKY SECTION NAV */
-.section-nav { position: sticky; top: 52px; z-index: 90; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-.section-nav::-webkit-scrollbar { display: none; }
-.section-nav a { flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--text-faint); text-decoration: none; padding: 10px 14px; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; white-space: nowrap; }
-.section-nav a:hover { color: var(--text-primary); }
-.section-nav a.active { color: var(--lmnd-pink); border-bottom-color: var(--lmnd-pink); }
-@media (prefers-color-scheme: dark) {
-  .section-nav { background: rgba(30,30,38,0.95); }
-}
+.section-nav { position: sticky; top: 52px; z-index: 90; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; align-items: center; }
+.snav-links { display: flex; gap: 0; overflow-x: auto; flex: 1; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.snav-links::-webkit-scrollbar { display: none; }
+.snav-links a { flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--text-faint); text-decoration: none; padding: 10px 13px; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; white-space: nowrap; }
+.snav-links a:hover { color: var(--text-primary); }
+.snav-links a.active { color: var(--lmnd-pink); border-bottom-color: var(--lmnd-pink); }
+.snav-search { flex-shrink: 0; padding: 5px 12px; }
+.snav-search input { padding: 6px 12px 6px 30px; border: 1px solid var(--border); border-radius: 999px; font-size: 12.5px; font-family: inherit; background: var(--surface-sunken); outline: none; color: var(--text-primary); width: 170px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 9px center; transition: border-color .15s, width .2s; }
+.snav-search input:focus { border-color: var(--lmnd-pink); width: 220px; }
+.snav-search input::placeholder { color: var(--text-faint); }
+@media (prefers-color-scheme: dark) { .section-nav { background: rgba(30,30,38,0.95); } }
 :root[data-theme="dark"] .section-nav { background: rgba(30,30,38,0.95); }
 
 /* DIRECTION STEPPER */
@@ -96,15 +97,14 @@ a:hover { text-decoration: underline; }
 .tool-chip:hover { border-color: var(--lmnd-pink); color: var(--lmnd-pink); text-decoration: none; }
 .tools-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-faint); margin-top: 18px; margin-bottom: 8px; }
 
-/* SEARCH */
-.search-wrap { padding: 10px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
-.search-input { width: 100%; max-width: 420px; padding: 9px 14px 9px 36px; border: 1px solid var(--border); border-radius: 999px; font-size: 13.5px; font-family: inherit; background: var(--surface-sunken); outline: none; color: var(--text-primary); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 11px center; transition: border-color .15s; }
-.search-input:focus { border-color: var(--lmnd-pink); }
-.search-input::placeholder { color: var(--text-faint); }
 
-/* TOOL CATEGORIES */
+mark.search-hl { background: rgba(255,0,131,0.18); color: inherit; border-radius: 2px; padding: 0 1px; }
+
+/* TOOL / ROLE CATEGORIES */
 .tool-cat-group { margin-bottom: 28px; }
 .tool-cat-label { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--text-faint); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.pill-desc { font-size: 11.5px; color: var(--text-muted); margin-top: 3px; font-weight: 400; line-height: 1.4; }
+.pill-date { font-size: 10px; color: var(--text-faint); margin-top: 2px; font-weight: 600; }
 
 /* APPENDIX */
 .appendix-header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
@@ -145,23 +145,24 @@ footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--t
 
 <div class="header">
   <h1>What To Do Now</h1>
-  <p>Advisory synthesis across every verified weekly update — what the research actually says, what it means for L&D at Lemonade, and which tools are worth using.</p>
   <div class="meta" id="header-meta">Loading…</div>
 </div>
 
-<div class="search-wrap">
-  <input type="search" class="search-input" id="trends-search" placeholder="Search methods, tools, roles…" autocomplete="off">
-</div>
 <nav class="section-nav" id="section-nav">
-  <a href="#topic-adoption" data-section="topic-adoption">Adoption</a>
-  <a href="#topic-governance" data-section="topic-governance">Governance</a>
-  <a href="#topic-measurement" data-section="topic-measurement">Measurement</a>
-  <a href="#topic-reshape" data-section="topic-reshape">Reshape</a>
-  <a href="#topic-ai-native" data-section="topic-ai-native">AI-Native</a>
-  <a href="#appendix-methods" data-section="appendix-methods">Methods</a>
-  <a href="#appendix-roles" data-section="appendix-roles">Roles</a>
-  <a href="#appendix-tools" data-section="appendix-tools">Tools</a>
-  <a href="#appendix-companies" data-section="appendix-companies">Companies</a>
+  <div class="snav-links">
+    <a href="#topic-adoption" data-section="topic-adoption">Adoption</a>
+    <a href="#topic-governance" data-section="topic-governance">Governance</a>
+    <a href="#topic-measurement" data-section="topic-measurement">Measurement</a>
+    <a href="#topic-reshape" data-section="topic-reshape">Reshape</a>
+    <a href="#topic-ai-native" data-section="topic-ai-native">AI-Native</a>
+    <a href="#appendix-methods" data-section="appendix-methods">Methods</a>
+    <a href="#appendix-tools" data-section="appendix-tools">Tools</a>
+    <a href="#appendix-roles" data-section="appendix-roles">Roles</a>
+    <a href="#appendix-companies" data-section="appendix-companies">Companies</a>
+  </div>
+  <div class="snav-search">
+    <input type="search" id="trends-search" placeholder="Search…" autocomplete="off">
+  </div>
 </nav>
 
 <div class="container">
@@ -441,19 +442,17 @@ footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--t
 
   <hr class="section-divider" style="margin-top:16px;">
 
-  <!-- ROLES + TOOLS -->
-  <div id="appendix-roles" class="section-label reveal">Roles gaining traction</div>
-  <div class="pill-cloud reveal" id="roles-cloud" style="margin-bottom:40px;"></div>
-
+  <!-- TOOLS -->
   <div id="appendix-tools" class="section-label reveal">Tools &amp; platforms</div>
-  <div class="pill-cloud reveal" id="tools-cloud" style="margin-bottom:40px;"></div>
+  <div id="tools-cloud" style="margin-bottom:40px;"></div>
+
+  <!-- ROLES -->
+  <div id="appendix-roles" class="section-label reveal">Roles gaining traction</div>
+  <div id="roles-cloud" style="margin-bottom:40px;"></div>
 
   <!-- COMPANIES -->
   <div id="appendix-companies" class="section-label reveal">Companies cited</div>
-  <div class="reveal" style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:20px; box-shadow:var(--shadow-sm);">
-    <canvas id="companiesChart"></canvas>
-    <p id="no-companies" style="display:none; font-size:13px; color:var(--text-faint); text-align:center; padding:20px 0;">No company data yet.</p>
-  </div>
+  <div id="companies-cloud" class="reveal"></div>
 
 </div>
 
@@ -501,7 +500,70 @@ fetch('../data/weeks.json')
       }).join('');
     }
 
-    buildPills('roles', 'roles-cloud', null);
+    // ROLES — grouped by category
+    (function() {
+      const RCAT = {
+        'CS Enablement Lead':'Enablement & L&D','Engineering Enablement Manager':'Enablement & L&D',
+        'AI Enablement Engineer':'Enablement & L&D','AI Enablement Lead':'Enablement & L&D',
+        'Developer Enablement Lead':'Enablement & L&D','Engineering Enablement Lead':'Enablement & L&D',
+        'AI Engineering Coach':'Enablement & L&D','Code Learning Designer':'Enablement & L&D',
+        'Learning Experience Designer':'Enablement & L&D','AI Learning Experience Designer':'Enablement & L&D',
+        'Learning Technology Strategist':'Enablement & L&D','CS Enablement Architect':'Enablement & L&D',
+        'Onboarding Specialist (AI-augmented)':'Enablement & L&D','Learning Ecosystem Architect':'Enablement & L&D',
+        'Analytics Engineer':'Analytics & Measurement','AI-Augmented Analyst':'Analytics & Measurement',
+        'L&D Analytics Lead':'Analytics & Measurement','Learning Impact Analyst':'Analytics & Measurement',
+        'Learning Impact Strategist':'Analytics & Measurement','Strategic Analytics Lead':'Analytics & Measurement',
+        'AI-Enabled Insights Partner':'Analytics & Measurement','Learning Analytics Lead':'Analytics & Measurement',
+        'People Data Strategist':'Analytics & Measurement','Customer Intelligence Analyst':'Analytics & Measurement',
+        'Evaluation Engineer':'AI Governance & Quality','AI QA Strategist':'AI Governance & Quality',
+        'AI Assurance Architect':'AI Governance & Quality','AI Governance Officer':'AI Governance & Quality',
+        'AI Learning Governance Lead':'AI Governance & Quality','AI QA Risk Analyst':'AI Governance & Quality',
+        'AI Literacy & Change Lead':'AI Governance & Quality',
+        'AI UX Designer':'Design & Experience','Design Ops':'Design & Experience',
+        'Human-AI Collaboration Designer':'Design & Experience','AI UX Strategist':'Design & Experience',
+        'AI-Augmented Experience Designer':'Design & Experience','Design Strategy Lead':'Design & Experience',
+        'AI Workflow Architect':'Engineering & Architecture','AI Capability Engineer':'Engineering & Architecture',
+        'AI Workforce Architect':'Engineering & Architecture','Judgment-Layer Engineer':'Engineering & Architecture',
+        'Skills & Culture Strategy Leader':'Strategy & Leadership','Role Redesign Strategist':'Strategy & Leadership',
+        'AI Content Strategist':'Strategy & Leadership',
+        'Customer Solutions Architect':'Customer & Product','AI-Augmented CS Lead':'Customer & Product',
+        'AI-Powered Customer Coach':'Customer & Product','Customer Education Strategist':'Customer & Product',
+      };
+      const RCAT_ORDER = ['Enablement & L&D','Analytics & Measurement','AI Governance & Quality','Design & Experience','Engineering & Architecture','Strategy & Leadership','Customer & Product','Other'];
+      const counts = {}, firstSeen = {}, lastSeen = {};
+      weeks.forEach(w => (w.roles||[]).forEach(r => {
+        counts[r] = (counts[r]||0)+1;
+        if (!firstSeen[r]) firstSeen[r] = w;
+        lastSeen[r] = w;
+      }));
+      const prevSet = new Set(prevWeeks.flatMap(w => w.roles||[]));
+      const byCategory = {};
+      Object.keys(counts).forEach(name => {
+        const cat = RCAT[name] || 'Other';
+        (byCategory[cat] = byCategory[cat] || []).push(name);
+      });
+      const el = document.getElementById('roles-cloud');
+      el.innerHTML = RCAT_ORDER.filter(c => byCategory[c]).map(cat => {
+      const CAT_DESC = {
+          'Enablement & L&D': 'Designs and delivers learning programs for technical teams.',
+          'Analytics & Measurement': 'Tracks and proves the impact of learning and capability programs.',
+          'AI Governance & Quality': 'Sets standards for safe, accountable AI use across the org.',
+          'Design & Experience': 'Designs human-centered AI workflows and product experiences.',
+          'Engineering & Architecture': 'Builds and maintains AI systems and developer tooling.',
+          'Strategy & Leadership': 'Leads workforce AI transformation and organizational change.',
+          'Customer & Product': 'Enables AI-powered customer service and product experiences.',
+        };
+        const pills = byCategory[cat].sort((a,b) => counts[b]-counts[a]).map(name => {
+          const isNew = !prevSet.has(name);
+          const isTrend = lastSeen[name]?.id === latestWeek?.id;
+          const badges = (isNew?'<span class="pill-new">NEW</span>':'')+(isTrend&&!isNew?'<span class="pill-trending">🔥</span>':'');
+          const jobUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(name)}`;
+          const desc = CAT_DESC[cat] || '';
+          return `<div class="pill-item"><a href="${jobUrl}" target="_blank">${name} ↗</a>${badges}<div class="pill-desc">${desc}</div><div class="pill-date">since ${firstSeen[name]?.label||''}</div></div>`;
+        }).join('');
+        return `<div class="tool-cat-group"><div class="tool-cat-label">${cat}</div><div class="pill-cloud">${pills}</div></div>`;
+      }).join('');
+    })();
 
     // TOOLS — grouped by category
     (function() {
@@ -545,36 +607,16 @@ fetch('../data/weeks.json')
       }).join('');
     })();
 
-    // COMPANIES CHART
-    const companyCounts = {}, companyWeeks = {};
-    weeks.forEach(w => {
-      (w.companies || []).forEach(c => {
-        companyCounts[c] = (companyCounts[c] || 0) + 1;
-        if (!companyWeeks[c]) companyWeeks[c] = [];
-        companyWeeks[c].push(w.label);
-      });
-    });
-    const entries = Object.entries(companyCounts).sort((a,b) => b[1]-a[1]).slice(0, 15);
-    if (!entries.length) {
-      document.getElementById('no-companies').style.display = 'block';
-      document.getElementById('companiesChart').style.display = 'none';
-    } else {
-      new Chart(document.getElementById('companiesChart'), {
-        type: 'bar',
-        data: {
-          labels: entries.map(e => e[0]),
-          datasets: [{ data: entries.map(e => e[1]), backgroundColor: 'rgba(255,0,131,0.12)', borderColor: '#FF0083', borderWidth: 2, borderRadius: 6 }]
-        },
-        options: {
-          indexAxis: 'y', responsive: true,
-          plugins: {
-            legend: { display: false },
-            tooltip: { callbacks: { label: ctx => [`${ctx.raw} mention${ctx.raw>1?'s':''}`, `In: ${(companyWeeks[ctx.label]||[]).join(', ')}`] } }
-          },
-          scales: { x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { stepSize: 1 } }, y: { grid: { display: false } } }
-        }
-      });
-    }
+    // COMPANIES — clickable chip grid
+    const companyUrls = data.companyUrls || {};
+    const companyCounts = {};
+    weeks.forEach(w => (w.companies||[]).forEach(c => companyCounts[c] = (companyCounts[c]||0)+1));
+    const allCompanies = Object.keys(companyCounts).sort();
+    const companiesEl = document.getElementById('companies-cloud');
+    companiesEl.innerHTML = `<div class="pill-cloud">${allCompanies.map(name => {
+      const url = companyUrls[name];
+      return `<div class="pill-item">${url ? `<a href="${url}" target="_blank">${name} ↗</a>` : name}</div>`;
+    }).join('')}</div>`;
 
     // REVEAL
     const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } }), { threshold: 0.08 });
@@ -582,45 +624,97 @@ fetch('../data/weeks.json')
   })
   .catch(() => { document.getElementById('header-meta').textContent = 'Data unavailable'; });
 
-// SEARCH — filter methods, tools, roles live
-document.getElementById('trends-search').addEventListener('input', function() {
-  const q = this.value.trim().toLowerCase();
-  document.querySelectorAll('.app-item').forEach(el => {
-    el.style.display = !q || el.innerText.toLowerCase().includes(q) ? '' : 'none';
+// SEARCH — highlight all matches page-wide
+(function() {
+  const input = document.getElementById('trends-search');
+  if (!input) return;
+
+  function clearHL() {
+    document.querySelectorAll('mark.search-hl').forEach(m => m.replaceWith(document.createTextNode(m.textContent)));
+    document.querySelectorAll('.rec-card,.app-item,.pill-item,.lemon-box').forEach(el => el.normalize());
+  }
+
+  function hlNode(container, re) {
+    const tw = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => n.parentElement.closest('script,style,.section-nav,.top-nav') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+    });
+    const nodes = [];
+    let n;
+    while ((n = tw.nextNode())) { re.lastIndex = 0; if (re.test(n.textContent)) nodes.push(n); }
+    nodes.forEach(tn => {
+      re.lastIndex = 0;
+      const frag = document.createDocumentFragment();
+      let text = tn.textContent, last = 0, m;
+      while ((m = re.exec(text)) !== null) {
+        frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+        const mk = document.createElement('mark'); mk.className = 'search-hl'; mk.textContent = m[0];
+        frag.appendChild(mk); last = m.index + m[0].length;
+      }
+      frag.appendChild(document.createTextNode(text.slice(last)));
+      tn.parentNode.replaceChild(frag, tn);
+    });
+  }
+
+  input.addEventListener('input', function() {
+    clearHL();
+    // Reset appendix visibility
+    document.querySelectorAll('.app-item,.pill-item,.tool-cat-group,.app-topic-group').forEach(el => el.style.display = '');
+
+    const q = this.value.trim().toLowerCase();
+    if (!q) { document.getElementById('search-count').textContent = ''; return; }
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+
+    // Highlight in rec-cards (always visible, never hidden)
+    document.querySelectorAll('.rec-card').forEach(card => { if (card.innerText.toLowerCase().includes(q)) hlNode(card, re); });
+
+    // Filter + highlight appendix items
+    document.querySelectorAll('.app-item').forEach(el => {
+      const match = el.innerText.toLowerCase().includes(q);
+      el.style.display = match ? '' : 'none';
+      if (match) hlNode(el, re);
+    });
+    document.querySelectorAll('.pill-item').forEach(el => {
+      const match = el.innerText.toLowerCase().includes(q);
+      el.style.display = match ? '' : 'none';
+      if (match) hlNode(el, re);
+    });
+    document.querySelectorAll('.tool-cat-group').forEach(g => {
+      g.style.display = [...g.querySelectorAll('.pill-item')].some(p => p.style.display !== 'none') ? '' : 'none';
+    });
+    document.querySelectorAll('.app-topic-group').forEach(g => {
+      g.style.display = [...g.querySelectorAll('.app-item')].some(p => p.style.display !== 'none') ? '' : 'none';
+    });
+
+    // Scroll to first highlight
+    const first = document.querySelector('mark.search-hl');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    const cnt = document.querySelectorAll('mark.search-hl').length;
+    document.getElementById('search-count').textContent = `${cnt} match${cnt!==1?'es':''}`;
   });
-  document.querySelectorAll('.pill-item').forEach(el => {
-    el.style.display = !q || el.innerText.toLowerCase().includes(q) ? '' : 'none';
-  });
-  document.querySelectorAll('.tool-cat-group').forEach(g => {
-    const anyVisible = [...g.querySelectorAll('.pill-item')].some(p => p.style.display !== 'none');
-    g.style.display = anyVisible ? '' : 'none';
-  });
-  document.querySelectorAll('.app-topic-group').forEach(g => {
-    const anyVisible = [...g.querySelectorAll('.app-item')].some(p => p.style.display !== 'none');
-    g.style.display = anyVisible ? '' : 'none';
-  });
-  document.querySelectorAll('.rec-card').forEach(card => {
-    card.style.opacity = !q || card.innerText.toLowerCase().includes(q) ? '' : '0.3';
-  });
-});
+
+  // Pre-create badge
+  const badge = document.createElement('span');
+  badge.id = 'search-count';
+  badge.style.cssText = 'margin-left:8px;font-size:11px;font-weight:700;color:var(--lmnd-pink);white-space:nowrap;';
+  input.parentNode.appendChild(badge);
+})();
 
 // SECTION NAV — highlight active section as you scroll
 (function() {
-  const navLinks = document.querySelectorAll('.section-nav a[data-section]');
+  const navLinks = document.querySelectorAll('.snav-links a[data-section]');
   const sections = Array.from(navLinks).map(a => document.getElementById(a.dataset.section)).filter(Boolean);
   if (!sections.length) return;
   const navObs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         navLinks.forEach(a => a.classList.toggle('active', a.dataset.section === entry.target.id));
-        // scroll active link into view within nav
-        const active = document.querySelector('.section-nav a.active');
+        const active = document.querySelector('.snav-links a.active');
         if (active) active.scrollIntoView({ inline: 'nearest', block: 'nearest' });
       }
     });
   }, { rootMargin: '-52px 0px -60% 0px', threshold: 0 });
   sections.forEach(s => navObs.observe(s));
-  // smooth scroll on click
   navLinks.forEach(a => a.addEventListener('click', e => {
     e.preventDefault();
     const target = document.getElementById(a.dataset.section);
